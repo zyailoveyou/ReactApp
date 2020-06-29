@@ -1,0 +1,20 @@
+import React from "react";
+
+const MyContext = React.createContext();
+class MyContextinfo extends React.Component{
+
+    constructor(props) {
+        super(props);
+    }
+    day = 5;
+    render() {
+        return(
+            <MyContext.Provider value='gooog'>
+                {this.props.children}
+            </MyContext.Provider>
+        )
+    }
+}
+
+export default  MyContextinfo;
+

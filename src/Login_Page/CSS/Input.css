@@ -1,0 +1,61 @@
+.InputWrapper{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 0.8rem;
+    width: 100%;
+
+}
+
+.Input{
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 0.2rem solid #9b9b9b;
+    font-size: 1.3rem;
+    outline: 0;
+    color: #1E1E1E;
+    padding-bottom:  0.3rem;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+
+.Input::placeholder{
+    color: transparent;
+}
+
+.InputLabel{
+    position: absolute;
+    top: -10%;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #9B9B9B;
+}
+
+.Input:placeholder-shown + .InputLabel{
+    font-size: 1.3rem;
+    cursor: text;
+    top: 12%;
+}
+
+.Input:focus{
+
+    border-image: linear-gradient(to right, #11998e, #38ef7d);
+    border-image-slice: 1;
+}
+
+.Input:focus + .InputLabel{
+
+    position: absolute;
+    top: -10%;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #11998e;
+    font-weight: 700;
+}
+
+
+
+
+
+

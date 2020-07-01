@@ -2,7 +2,7 @@ import React from "react";
 import UserName_Component from "../MixedComponent/UserName_Component";
 import Password_Component from "../MixedComponent/Password_Component";
 import Button_Group from "../Button/Button_Group";
-import "../CSS/Login_Panel.css"
+import "../CSS/Login_Register_Panel.scss"
 
 
 export default class Login_Register_Panel extends React.Component{
@@ -66,9 +66,12 @@ export default class Login_Register_Panel extends React.Component{
 
         return (
             <div className='Login_Register_Panel'>
+            <div className='BackGround'></div>
+            <div className='PanelContent'>
                 <UserName_Component SetData = {this.SetUserName}/>
                 <Password_Component SetData = {this.SetPassWord}/>
                 <Button_Group OnClickLogin ={this.OnClickLogin} OnClickRegister = {this.OnClickRegister}/>
+            </div>
             </div>
 
         );

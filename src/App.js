@@ -8,7 +8,9 @@ import Login_Register_Panel from "./Login_Page/Panel/Login_Register_Panel";
 
 function App() {
   return (
+      <div className='PageWrapper'>
       <Login_Register_Panel />
+      </div>
   );
 }
 

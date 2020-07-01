@@ -1,6 +1,6 @@
 import React from "react";
-import Login_Button_Component from "./Login_Button_Component";
-import Register_Button_Component from "./Register_Button_Component";
+import Button_Component from "./Button_Component";
+import '../CSS/Button.scss'
 
 export default class Button_Group extends React.Component{
 
@@ -12,8 +12,8 @@ export default class Button_Group extends React.Component{
 
         return (
             <div className='Button_Group'>
-                <Login_Button_Component  OnClickLogin = {this.props.OnClickLogin}/>
-                <Register_Button_Component  OnClickRegister = {this.props.OnClickRegister}/>
+                <Button_Component Class = 'Login_Button' Name = '登录' OnClick = {this.props.OnClickLogin}/>
+                <Button_Component Class = 'Register_Button' Name = '注册' OnClick = {this.props.OnClickRegister}/>
             </div>
 
         );

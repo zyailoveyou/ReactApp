@@ -1,0 +1,26 @@
+@import './Mixin';
+@import './ColorVariables';
+
+.Login_Register_Panel{
+  @include FlexCenter(column);
+  position: relative;
+  padding-top: 3rem;
+  padding-bottom: 0rem;
+  background: transparent;
+  width: 30%;
+  display: flex;
+  .BackGround{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    color: rebeccapurple;
+    background: #3d3d3d;
+    opacity: 0.8;
+    z-index: -1;
+    border-radius: 1rem;
+  }
+
+}
+
+

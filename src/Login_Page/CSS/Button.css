@@ -1,9 +1,0 @@
-.brick {
-    border: 2px solid #FF5722;
-    color: #FF5722;
-}
-.brick:hover {
-    background-color: #FF5722;
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-}

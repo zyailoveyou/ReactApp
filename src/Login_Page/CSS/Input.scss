@@ -1,0 +1,67 @@
+@import './ColorVariables';
+
+.InputWrapper{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: 100%;
+
+  .Input{
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 0.2rem solid $FontWhite;
+    font-size: 1.3rem;
+    outline: 0;
+    color: White;
+    padding-bottom:  0.3rem;
+    background: transparent;
+    transition: border-color 0.2s;
+
+    &::placeholder{
+      color: transparent;
+    }
+
+    &:placeholder-shown + .InputLabel{
+      font-size: 1.3rem;
+      cursor: text;
+      top: 12%;
+    }
+
+    &:focus{
+      border-image: linear-gradient(to right,$LightWineRed, $WineRed);
+      border-image-slice: 1;
+    }
+
+    &:focus + .InputLabel{
+
+      position: absolute;
+      top: -10%;
+      transition: 0.2s;
+      font-size: 1rem;
+      color: $FontWhite;
+      font-weight: 700;
+    }
+  }
+
+  .InputLabel{
+    position: absolute;
+    top: -10%;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: $LightWhite;
+
+  }
+
+}
+
+
+
+
+
+
+
+
+

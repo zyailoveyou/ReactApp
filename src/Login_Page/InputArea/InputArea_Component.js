@@ -1,6 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
-import '../CSS/Input.css'
+import '../CSS/Input.scss'
 
 
 export default class InputArea_Component extends React.Component{

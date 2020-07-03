@@ -15,6 +15,7 @@ export default class InputArea_Component extends React.Component{
         let SetType = this.InputAreaType;
         return (
             <div className='InputWrapper'>
+                <div className='InputCombine'>
                 <input
                     className='Input'
                     type={SetType}
@@ -23,6 +24,7 @@ export default class InputArea_Component extends React.Component{
                     id = {SetType}/>
                 <label className='InputLabel'
                        htmlFor={SetType}>{SetType}</label>
+                </div>
             </div>
         );
     }

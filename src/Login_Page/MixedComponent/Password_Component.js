@@ -15,7 +15,7 @@ export default class Password_Component extends React.Component{
         return (
             <div className='Password_Component'>
                 <InputArea_Component
-                    Type ='Password'
+                    Type ='密码'
                     SetData = {this.props.SetData}>
                 </InputArea_Component>
             </div>

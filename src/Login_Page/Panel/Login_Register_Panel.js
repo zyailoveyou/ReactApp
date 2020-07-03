@@ -3,6 +3,7 @@ import UserName_Component from "../MixedComponent/UserName_Component";
 import Password_Component from "../MixedComponent/Password_Component";
 import Button_Group from "../Button/Button_Group";
 import "../CSS/Login_Register_Panel.scss"
+import Logo from '../../Image/Logo/Logo.png'
 
 
 export default class Login_Register_Panel extends React.Component{
@@ -66,6 +67,8 @@ export default class Login_Register_Panel extends React.Component{
 
         return (
             <div className='Login_Register_Panel'>
+                <img src={Logo} className='LogoPng' alt=""/>
+            <p className='LoginTitle'>眼球后台管理系统</p>
             <div className='BackGround'></div>
             <div className='PanelContent'>
                 <UserName_Component SetData = {this.SetUserName}/>

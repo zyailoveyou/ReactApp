@@ -1,16 +1,24 @@
 @import './ColorVariables';
+@import 'Mixin';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500&display=swap');
 
 .InputWrapper{
-  display: flex;
-  flex-direction: column;
+  @include FlexCenter(column);
   position: relative;
   padding-top: 1rem;
   padding-bottom: 1rem;
   width: 100%;
+  font-family: 'Noto Sans SC', sans-serif;
+
+  .InputCombine{
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
 
   .Input{
     font-family: inherit;
-    width: 100%;
+    width: 70%;
     border: 0;
     border-bottom: 0.2rem solid $FontWhite;
     font-size: 1.3rem;
@@ -27,7 +35,7 @@
     &:placeholder-shown + .InputLabel{
       font-size: 1.3rem;
       cursor: text;
-      top: 12%;
+      top: 0%;
     }
 
     &:focus{
@@ -38,7 +46,7 @@
     &:focus + .InputLabel{
 
       position: absolute;
-      top: -10%;
+      top: -50%;
       transition: 0.2s;
       font-size: 1rem;
       color: $FontWhite;
@@ -47,8 +55,10 @@
   }
 
   .InputLabel{
+    align-self: flex-start;
     position: absolute;
-    top: -10%;
+    top: -50%;
+    left: 18%;
     transition: 0.2s;
     font-size: 1rem;
     color: $LightWhite;

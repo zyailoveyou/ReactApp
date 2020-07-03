@@ -13,7 +13,7 @@ export default class UserName_Component extends React.Component{
         return (
             <div className='UserName_Component'>
                 <InputArea_Component
-                    Type ='UserName'
+                    Type ='用户名'
                     SetData = {this.props.SetData}>
                 </InputArea_Component>
             </div>

@@ -1,0 +1,28 @@
+
+.main_holder{
+  display: flex;
+  flex-direction: column;
+}
+
+.status_bar{
+  background-color: aqua;
+
+}
+
+.operation_area{
+  display: flex;
+
+}
+
+.menu_holder{
+  flex-grow: 1;
+  background-color: #bfbfbf;
+
+}
+
+.panel_holder{
+  flex-grow: 9;
+  background-color: #1cd425;
+
+
+}

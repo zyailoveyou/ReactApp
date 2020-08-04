@@ -10,17 +10,13 @@ import PrivateRoute from "./Private_Router/PrivateRoute";
 
 
 function App() {
-
     return (
-
-
         <BrowserRouter>
             <Switch>
                 <Route path='/' exact component={Login_Page}></Route>
                 <PrivateRoute path='/main'  component={Main_Page}></PrivateRoute>
             </Switch>
         </BrowserRouter>
-
         // <Myco data = {testinf}></Myco>
         // <div>
         //     <Accordion_Comtainer
@@ -28,11 +24,6 @@ function App() {
         //         padding="2rem"
         //     />
         // </div>
-
-
-
-
-
     );
 }
 

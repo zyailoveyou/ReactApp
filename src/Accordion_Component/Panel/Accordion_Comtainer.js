@@ -45,23 +45,36 @@ export default class Accordion_Comtainer extends React.Component {
         const id = item.id;
         const clickable = item.clickable;
         const title = item.title;
-        if (item.icon !== null) {
-
-            return (
-                <div
-                    className={classname + ' title'}
-                    onClick={() => this.onclicklisttitle(id, clickable)}
-                >
-
-                    <div  className={classname + ' holder'}>
-                        <img className={classname + ' icon'} src={item.icon} alt=""/>
-                        <p>{title}</p>
+        if (item.icon!== null) {
+            if (item.classname !== 'main_menu')
+            {
+                return (
+                    <div
+                        className={classname + ' title'}
+                        onClick={() => this.onclicklisttitle(id, clickable)}
+                    >
+                        <div  className={classname + ' holder'}>
+                            <img className={classname + ' icon'} src={item.icon} alt=""/>
+                            <p>{title}</p>
+                        </div>
+                        <img className={classname + ' arrow'} src={Arrow} alt=""/>
                     </div>
-                    <img className={classname + ' arrow'} src={Arrow} alt=""/>
+                )
+            }else {
+                return (
+                    <div
+                        className={classname + ' title'}
+                        onClick={() => this.onclicklisttitle(id, clickable)}
+                    >
+                        <div  className={classname + ' holder'}>
+                            <img className={classname + ' icon'} src={item.icon} alt=""/>
+                            <p>{title}</p>
+                        </div>
+                    </div>
+                )
+            }
 
-                </div>
 
-            )
         } else {
 
             return (
@@ -94,10 +107,7 @@ export default class Accordion_Comtainer extends React.Component {
                 if (item.type === 'list') {
                     return (
                         <div
-                            className={classname + ' menu' +
-
-                            // (clickable? (onopen ?' open' : ''):'')}
-                            (onopen ? ' open' : '')}
+                            className={classname + ' menu' + (onopen ? ' open' : '')}
                         >
                             {
                                 this.creatTitle_Containner(item)
@@ -105,7 +115,6 @@ export default class Accordion_Comtainer extends React.Component {
                             <div className={classname + ' listgroup'}>
                                 <Accordion_Comtainer
                                     menu={item.list}
-
                                 />
                             </div>
                         </div>

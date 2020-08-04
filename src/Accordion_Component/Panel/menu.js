@@ -2,27 +2,29 @@
 import Download from "../icon_group/download.png";
 import Edit from "../icon_group/edit.png";
 import Information from "../icon_group/information.png";
+import Menu from '../icon_group/main.png'
+import Arrow from '../icon_group/arrow.png'
 
 
 export const menu =
     [
         {
-            title: '主菜单',
+            title: '菜单',
             classname: 'main_menu',
             type: 'list',
             onopen: true,
             level: 'main_menu',
             clickable: false,
             id: 0,
-            icon:null,
+            icon:Menu,
             list:
                 [
                     {
-                        title: '详细信息',
-                        classname: 'detail_menu',
+                        title: '公司管理',
+                        classname: 'corporation_menu',
                         onopen: false,
                         type: 'list',
-                        level: 'detail_menu',
+                        level: 'corporation_menu',
                         clickable: true,
                         id: 0,
                         icon:Download,
@@ -36,12 +38,28 @@ export const menu =
                                 id: 0,
                             },
                             {
-                                title: '员工信息',
+                                title: '员工名单',
                                 classname: 'worker_inf',
                                 type: 'item',
                                 level: 'employee_inf',
                                 clickable: true,
                                 id: 1,
+                            },
+                            {
+                                title: '部门层级',
+                                classname: 'department_inf',
+                                type: 'item',
+                                level: 'department_inf',
+                                clickable: true,
+                                id: 2,
+                            },
+                            {
+                                title: '账号维护',
+                                classname: 'account_inf',
+                                type: 'item',
+                                level: 'account_inf',
+                                clickable: true,
+                                id: 3,
                             },
                         ]
                     },

@@ -1,28 +1,31 @@
 
-.main_holder{
+@import "ColorVariables";
+
+
+.status_bar_holder{
+  height: 8vh;
+  border-radius: 1rem;
+
+}
+.main_holder {
   display: flex;
   flex-direction: column;
+  border-radius: 0.1rem;
 }
 
-.status_bar{
-  background-color: aqua;
-
-}
-
-.operation_area{
+.operation_area_holder {
   display: flex;
+  height: 92vh;
 
 }
 
-.menu_holder{
-  flex-grow: 1;
-  background-color: #bfbfbf;
+.menu_holder {
+  flex-grow: 0.5;
+  background-color: $LightWineRed;
 
 }
 
-.panel_holder{
-  flex-grow: 9;
+.panel_holder {
+  flex-grow: 9.5;
   background-color: #1cd425;
-
-
 }

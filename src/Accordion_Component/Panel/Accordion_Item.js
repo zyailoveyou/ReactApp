@@ -1,6 +1,7 @@
 import React from "react";
+import {Route, withRouter} from 'react-router-dom';
 
-export default class Accordion_Item extends React.Component {
+class Accordion_Item extends React.Component {
 
     Details =
         {
@@ -20,8 +21,10 @@ export default class Accordion_Item extends React.Component {
 
     render() {
         return (
-            <div className={this.level +" item"} >{this.Details.title}</div>
+            <div className={this.level +" item"} onClick={() => this.props.onclick(this)} >{this.Details.title}</div>
         );
     }
 }
+
+export default withRouter(Accordion_Item);
 

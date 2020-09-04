@@ -16,12 +16,12 @@ class PrivateRoute extends Component {
                 history.replace("/");
             }, 1000)
         }
+
     }
 
     render() {
         // let {...props} = this.props;
         let props2 = this.props;
-        console.log(props2);
         return  this.state.isAuthenticated ?
             (<Route {...props2} />)
             :

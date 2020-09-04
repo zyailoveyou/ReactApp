@@ -5,7 +5,9 @@ import Arrow from "../icon_group/arrow.png";
 
 
 
-export default class Accordion_Comtainer extends React.Component {
+export default class Accordion_Container extends React.Component {
+
+
 
     constructor(props) {
         super(props);
@@ -14,15 +16,16 @@ export default class Accordion_Comtainer extends React.Component {
         this.onclicklisttitle = this.onclicklisttitle.bind(this);
         this.creatTitle_Containner = this.creatTitle_Containner.bind(this);
         //设为state
-        this.state = {inf: props.menu}
+        this.state = {inf: this.props.menu}
 
     }
 
     onclicklisttitle(id, clickable) {
-        console.log('执行了修改state函数')
+
         if (!clickable) {
             return
         }
+        console.log(id);
         this.setState(function (prestate) {
             const copy = JSON.parse(JSON.stringify(prestate.inf));
             const newstate = copy.map(function (item, index, arr) {
@@ -35,7 +38,7 @@ export default class Accordion_Comtainer extends React.Component {
                 }
                 return item;
             })
-            console.log(newstate);
+
             return {inf: newstate};
         })
     }
@@ -45,6 +48,7 @@ export default class Accordion_Comtainer extends React.Component {
         const id = item.id;
         const clickable = item.clickable;
         const title = item.title;
+
         if (item.icon!== null) {
             if (item.classname !== 'main_menu')
             {
@@ -92,7 +96,7 @@ export default class Accordion_Comtainer extends React.Component {
     }
 
     creatAccordion_Comtainer(Nodeinf) {
-        console.log(Nodeinf);
+
         return (
             Nodeinf.map(function (item, index, arr) {
                 //初始化基本数据
@@ -103,18 +107,24 @@ export default class Accordion_Comtainer extends React.Component {
                 const onopen = item.onopen;
                 const id = item.id;
                 const classname = item.classname;
+                const key = item.classname+item.id;
+                const onclick= item.onclick;
 
                 if (item.type === 'list') {
                     return (
                         <div
                             className={classname + ' menu' + (onopen ? ' open' : '')}
+                            key = {key}
                         >
                             {
                                 this.creatTitle_Containner(item)
                             }
-                            <div className={classname + ' listgroup'}>
-                                <Accordion_Comtainer
-                                    menu={item.list}
+                            <div
+                                className={classname + ' listgroup'}
+                                key = {key}
+                            >
+                                <Accordion_Container
+                                    menu={item.list} key = {key}
                                 />
                             </div>
                         </div>
@@ -127,6 +137,8 @@ export default class Accordion_Comtainer extends React.Component {
                             id={id}
                             padding={padding}
                             level={level}
+                            key = {key}
+                            onclick = {onclick}
                         />
                     )
                 }

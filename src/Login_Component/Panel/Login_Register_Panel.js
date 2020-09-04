@@ -61,7 +61,7 @@ class Login_Register_Panel extends React.Component {
 
         console.log(username);
         console.log(password);
-        this.props.history.push('/main');
+        this.props.history.push('/main/cop/cop');
 
 
     }
@@ -69,6 +69,8 @@ class Login_Register_Panel extends React.Component {
     OnClickRegister() {
         console.log('执行了OnClickRegister')
         //执行注册操作
+
+        this.props.history.push('main/cop/worker_inf');
 
     }
 

@@ -24,8 +24,6 @@ class Login_Register_Panel extends React.Component {
         this.OnClickLogin = this.OnClickLogin.bind(this);
         this.OnClickRegister = this.OnClickRegister.bind(this);
         this.state = this.Login_Data;
-
-
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -62,7 +60,6 @@ class Login_Register_Panel extends React.Component {
         console.log(username);
         console.log(password);
         this.props.history.push('/main/cop/cop');
-
 
     }
 

@@ -1,14 +1,18 @@
-import {unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles';
+import {unstable_createMuiStrictModeTheme as createMuiTheme} from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
     palette: {
         primary: {
-            main: '#FF5722'
+            main: '#F0501F',
         },
         secondary: {
-            main: '#5722FF'
+            main: '#004EC2',
+            dark: '#293F96',
         },
-
+        grey: {
+            A100: '#2c2c2c'
+        },
+        text: {}
     },
 });
 

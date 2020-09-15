@@ -54,7 +54,8 @@ const Input_Information_Component = (props) => {
                     fullWidth
                     size='small'
                     error={false}
-                    onChange={(e) =>props.Data_Set_Function(props.Data_Set_Name,e.target.value)}
+                    // onChange={(e) =>props.Data_Set_Function(props.Data_Set_Name,e.target.value)}
+                    onBlur={(e) =>props.Data_Set_Function(props.Data_Set_Name,e.target.value)}
                 >
                 </TextField>
             </Grid>

@@ -45,7 +45,7 @@ const Input_Password_Component = (props) => {
 
     const handleChange = (prop) => (event) => {
         setValues({...values, [prop]: event.target.value});
-        props.Data_Set_Function(props.Data_Set_Name,event.target.value);
+
     };
 
     const handleClickShowPassword = () => {
@@ -74,6 +74,7 @@ const Input_Password_Component = (props) => {
                     variant='outlined'
                     value={values.password}
                     onChange={handleChange('password')}
+                    onBlur={(e) =>props.Data_Set_Function(props.Data_Set_Name,e.target.value)}
                     type={(values.showPassword ? 'text' : 'password')}
                     InputProps={{
                         endAdornment:

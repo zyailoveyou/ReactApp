@@ -1,163 +1,191 @@
 import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-
-import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
-import {Typography} from "@material-ui/core";
 import Box from '@material-ui/core/Box';
+import Avatar from '@material-ui/core/Avatar';
+import Logo from './Avatar/Logo.png'
+//my customized
+import theme from "../../MyTheme/Theme";
+//test icon
+import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
+
+const useStyles = makeStyles({
+    sticky: {
         width: '100%',
-        maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
+        position: "sticky",
+        top: 0,
+        background: theme.palette.grey.A100,
+        // color: theme.palette.grey["200"],
     },
     nested: {
-        paddingLeft: theme.spacing(4),
+        paddingLeft: (props) => {
+            return theme.spacing(props.left);
+        },
     },
-}));
+    Avatar: {
+        width: theme.spacing(6),
+        height: theme.spacing(6),
+        backgroundColor: "white",
+    },
+    List_Header: {
+        paddingLeft:'2rem'
+
+
+    },
+
+    List_Item_Root: {
+        paddingLeft: (props) => {
+            return theme.spacing(props.left);
+        },
+
+        color: theme.palette.grey["400"],
+        "&:hover": {
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.secondary.contrastText,
+            '& $Icon_Hover': {
+                color: 'white',
+            },
+        },
+    },
+
+    List_Item_Selected: {
+        backgroundColor: theme.palette.secondary.main+' !important',
+        color: theme.palette.secondary.contrastText+' !important',
+    },
+
+    Icon_Hover: {
+        color: theme.palette.grey["400"],
+    },
+});
 
 const List_Component = (props) => {
 
-    const menu = props.Menu;
-    const classes = useStyles();
-    let signal = false;
-
+    const classes = useStyles(props);
+    let Current_Selected_Item = null;
     const [Open_Manager, Set_Open_Manager] = React.useState(
-        props.Menu
+        props.menu
     );
 
-    const Search_Upper_Indicator = (List, indicator) => {
-        return List.find((item) => {
-           return item.Indicator === indicator
-        })
-    }
-
-
-    const handleClick = (indicator, upper_indicator,node_type) => {
-        if(node_type ==='list'){
-            Set_Open_Manager((prevState) => {
-                const a =  {
-                    ...prevState, List: (
-                        function () {
-                            //查找一下最顶级的菜单
-                            if (prevState.Indicator != undefined) {
-                                let result_main= null;
-                                if (prevState.Indicator === upper_indicator) {
-                                    result_main = prevState.List.map((item, index, arr) => {
-                                        if (item.Node_Type === 'list') {
-                                            if (item.Indicator === indicator) {
-                                                item.On_Open = !item.On_Open;
-                                            } else if (props.Accordion === true) {
-                                                item.On_Open = false;
-                                            }
-                                        }
-                                        return item;
-                                    })
-                                    return result_main
-                                }
-                                //查找下级
-                                else {
-                                    const result = prevState.List.map((item) => {
-                                        if (item.Indicator === upper_indicator) {
-                                            item.List.forEach((item2, index, arr) => {
-                                                if (item2.Node_Type === 'list') {
-                                                    if (item2.Indicator === indicator) {
-                                                        item2.On_Open = !item2.On_Open;
-                                                    } else if (props.Accordion === true) {
-                                                        item2.On_Open = false;
-                                                    }
-                                                }
-                                            })
-                                            return item;
-                                        }
-                                        else {
-                                            return item;
-                                        }
-                                    })
-                                    return result;
-                                }
-                            }
-                        }()
-                    )
+    useEffect(()=>{
+        Set_Open_Manager((PreManager)=>{
+            PreManager.forEach((item)=>{
+                if (item.Node_Type==='item' && item.Indicator !=Current_Selected_Item){
+                    item.Selected = false;
                 }
-                return a;
             })
-        }
+            return PreManager;
+        })
 
-    };
+    },[Open_Manager])
 
 
-    function get_checked(Passed, Now_Indicator) {
-        if (Passed.Indicator === Now_Indicator) {
-            return Passed.On_Open;
-        } else {
-            if (Passed.List != null || Passed.List != undefined) {
-                for (let i = 0; i < Passed.List.length; i++) {
-                    const result = get_checked(Passed.List[i], Now_Indicator)
-                    if (result != null) {
-                        return result
+    const handleClick = (Indicator) => {
+        Set_Open_Manager((PreManager) => {
+            let manager = JSON.parse(JSON.stringify(PreManager));
+            manager.forEach((item) => {
+                if (item.Indicator === Indicator) {
+                    if (item.Node_Type === 'list') {
+                        item.On_Open = !item.On_Open;
+                    } else {
+                        item.Selected = !item.Selected;
+                        Current_Selected_Item = Indicator;
+                    }
+                } else {
+                    if (props.Accordion === true) {
+                        item.On_Open = false;
                     }
                 }
-            } else {
-                return null;
-            }
-        }
+            })
+            return manager;
+        })
+    };
 
+    const get_checked = (Passed, Now_Indicator) => {
+        const result = Passed.find((item) => {
+            if (item.Indicator === Now_Indicator) {
+                return item;
+            }
+        })
+        if (result.Node_Type === 'list') {
+            return result.On_Open;
+        } else {
+            return true
+        }
+    }
+
+    const get_selected = (Passed, Now_Indicator) => {
+        const result = Passed.find((item) => {
+            if (item.Indicator === Now_Indicator) {
+                return item;
+            }
+        })
+        if (result.Node_Type === 'item') {
+            return result.Selected;
+        } else {
+            return undefined
+        }
     }
 
 
-    function Creat_List(List, Indicator) {
+    function Creat_List(List, left) {
         return (
-            List.map((item, index, arr) => {
-                return (
-                    <Box className={classes.nested} key={index}>
-                        <Collapse in={get_checked(Open_Manager, Indicator)}
-                                  timeout="auto"
-                                  unmountOnExit
-                        >
-                            <ListItem button onClick={() => handleClick(item.Indicator, item.Upper_List_Indicator,item.Node_Type)}
-                                      name={item.Indicator}
-                                      key={index}
-                            >
-                                <ListItemIcon>
-                                    <StarBorder/>
-                                </ListItemIcon>
-                                <ListItemText primary={item.Title}/>
-                            </ListItem>
-                            {item.Node_Type === 'list' ? Creat_List(item.List, item.Indicator) : null}
-                        </Collapse>
-                    </Box>
-                )
-            })
+            List.map((item, index) => {
+                    if (item.Is_Top === true) {
+                        return (
+                            <Box name={'top'} className={classes.sticky} key={index}>
+                                <ListItem classes={classes.List_Header}>
+                                    <Avatar src={Logo} className={classes.Avatar}></Avatar>
+                                    {/*123123123*/}
+                                </ListItem>
+                                <List_Component menu={item.List} left={left} Accordion={props.Accordion}/>
+                            </Box>
+                        )
+                    } else {
+                        return (
+                            <Box name={'inner'} key={index}>
+                                <ListItem button
+                                          classes={{
+                                              root: classes.List_Item_Root,
+                                              selected: classes.List_Item_Selected,
+                                          }}
+                                          selected={get_selected(Open_Manager, item.Indicator)}
+                                          name={item.Indicator}
+                                          onClick={() => handleClick(item.Indicator)}
+                                >
+                                    <ListItemIcon className={classes.Icon_Hover}>
+                                        {item.Icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.Title}/>
+                                </ListItem>
+                                <Collapse in={get_checked(Open_Manager, item.Indicator)}
+                                          timeout="auto"
+                                          unmountOnExit
+                                >
+                                    {item.Node_Type === 'list'
+                                        ?
+                                        <List_Component menu={item.List} left={left + 4} Accordion={props.Accordion}/>
+                                        :
+                                        null}
+                                </Collapse>
+                            </Box>
+                        )
+                    }
+                }
+            )
+
         )
     }
 
     return (
-        <List
-            subheader={
-                <ListSubheader>
-                    {menu.Title}
-                </ListSubheader>
-            }
-            className={classes.root}
-            dense={false}
-        >
-            {
-                Creat_List(menu.List, menu.Indicator)
-            }
-        </List>
-    )
+
+        Creat_List(props.menu, props.left)
+
+    );
 };
 
 

@@ -4,6 +4,10 @@ import Navigation_Text from '../Component_Category/Breadcrumb/Navigation_Text_Co
 import {Route} from 'react-router-dom'
 import Corporation_Information_Page from "./Fuction_Page/Corporation_Information_Page";
 import Worker_Information_Page from "./Fuction_Page/Worker_Information_Page";
+import List_Component from "../Component_Category/Menu_List/List_Component";
+import menu from "../Component_Category/Menu_List/Data/menu";
+
+//material ui
 import Divider from "@material-ui/core/Divider";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -11,19 +15,22 @@ import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
 import theme from "../MyTheme/Theme";
 import {Corporation_Context} from "../Context/Corporation_Context";
-//data
 import Corporation_Form from "./Data/Corporation_Form";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from "@material-ui/core/Typography";
+import {Box} from "@material-ui/core";
+import Myco from "../Test_Component/Myco";
 
 const useStyles_container = makeStyles({
+    position: {
+        position: "relative",
+        width: '100%',
+    },
     container: {
         padding: '1.5rem',
-        overflowX: "hidden",
-        overflowY: "hidden",
-        background:theme.palette.grey["200"],
-        width:'100%'
+        background: theme.palette.grey["200"],
+        width: '100%'
     },
     root: {
         background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -33,6 +40,9 @@ const useStyles_container = makeStyles({
             boxShadow: 'none',
             outline: "none",
         },
+    },
+    fill_in: {
+        width: '100%',
     },
     selected: {},
 });
@@ -106,10 +116,12 @@ const Main_Page = (props) => {
     return (
         <Corporation_Context.Provider value={Corporation}>
             <Grid container>
-                <Grid container item xs ={2}>
-                    <div>这是导航栏区域</div>
+                <Grid container item xs={2}>
+                    <Box className={classes_container.fill_in}>
+                        <List_Component menu={menu} left={2} Accordion={false}/>
+                    </Box>
                 </Grid>
-                <Grid container item xs = {10}>
+                <Grid container item xs={10}>
                     <AppBar position={"sticky"}>
                         <Toolbar>
 
@@ -124,7 +136,8 @@ const Main_Page = (props) => {
                                 <Divider orientation='horizontal' variant='middle'/>
                             </Grid>
                             <Grid item container>
-                                <Tabs value={value} onChange={handleChange} classes={{indicator: classes_tab.indicator}}>
+                                <Tabs value={value} onChange={handleChange}
+                                      classes={{indicator: classes_tab.indicator}}>
                                     <Tab label="公司信息"
                                          classes={{
                                              root: classes_tab.root,
@@ -136,10 +149,11 @@ const Main_Page = (props) => {
                                              selected: classes_tab.selected,
                                          }}/>
                                 </Tabs>
-                                <Route path='/main/corporation/information' component={Corporation_Information_Page}></Route>
+                                <Route path='/main/corporation/information'
+                                       component={Corporation_Information_Page}></Route>
                                 <Route path='/main/corporation/worker' component={Worker_Information_Page}></Route>
                             </Grid>
-                            <Footer_Component Title = 'React Admin ©2020 Created By Neo Zhang'/>
+                            <Footer_Component Title='React Admin ©2020 Created By Neo Zhang'/>
                         </Grid>
                     </div>
                 </Grid>

@@ -1,16 +1,14 @@
+import {Route} from 'react-router-dom'
 import React, {useEffect, useState} from "react";
 import Footer_Component from "../Component_Category/Footer/Footer_Component";
 import Navigation_Text from '../Component_Category/Breadcrumb/Navigation_Text_Component'
-import {Route} from 'react-router-dom'
-import Corporation_Information_Page from "./Fuction_Page/Corporation_Information_Page";
-import Worker_Information_Page from "./Fuction_Page/Worker_Information_Page";
+import Home_Page from "./Home/Home_Page";
 import List_Component from "../Component_Category/Menu_List/List_Component";
 import menu from "../Component_Category/Menu_List/Data/menu";
-
+import Corporation_Page from "./Corporation_Manage/Corporation_Page";
+import App_Bar from "../Component_Category/App_Bar/App_Bar";
 //material ui
 import Divider from "@material-ui/core/Divider";
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
 import theme from "../MyTheme/Theme";
@@ -18,9 +16,7 @@ import {Corporation_Context} from "../Context/Corporation_Context";
 import Corporation_Form from "./Data/Corporation_Form";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from "@material-ui/core/Typography";
 import {Box} from "@material-ui/core";
-import Myco from "../Test_Component/Myco";
 
 const useStyles_container = makeStyles({
     position: {
@@ -43,115 +39,48 @@ const useStyles_container = makeStyles({
     },
     fill_in: {
         width: '100%',
+        background: theme.palette.grey.A100,
     },
     selected: {},
 });
 
 
-const useStyles_tab = makeStyles(
-    {
-        root: {
-            background: (theme.palette.grey["400"]),
-            color: (theme.palette.primary.contrastText),
-            borderTopRightRadius: '0.5rem',
-            borderTopLeftRadius: '0.5rem',
-            '&$selected': {
-                background: (theme.palette.primary.main),
-                color: (theme.palette.primary.contrastText),
-                boxShadow: 'none',
-                outline: "none",
-            },
-        },
-        selected: {},
-        indicator: {
-            background: (theme.palette.secondary.main),
-
-        }
-    });
-
-const page_map = [
-    {
-        value: 0,
-        url: '/main/corporation/information'
-    },
-    {
-        value: 1,
-        url: '/main/corporation/worker'
-    }
-]
-
 const Main_Page = (props) => {
 
     const classes_container = useStyles_container();
-    const classes_tab = useStyles_tab();
-    const {history} = props;
-    const [value, setValue] = useState(0);
-
     const setData = (data_name, data) => {
         SetCorporation((prevCorporation) => {
             return {...prevCorporation, [data_name]: data};
         })
     }
-
-
     const [Corporation, SetCorporation] = useState({...Corporation_Form, 'SetData': setData});
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
     useEffect(() => {
-        page_map.forEach((page_inf) => {
-            if (page_inf.value === value) {
-                history.push(page_inf.url);
-            }
-        })
-    }, [value]);
-
-    useEffect(() => {
-        console.log('name已经变更')
+        console.log('已经变更')
         console.log(Corporation)
     }, [Corporation])
-
 
     return (
         <Corporation_Context.Provider value={Corporation}>
             <Grid container>
                 <Grid container item xs={2}>
                     <Box className={classes_container.fill_in}>
-                        <List_Component menu={menu} left={2} Accordion={false}/>
+                        <List_Component menu={menu} left={2} Accordion={true}/>
                     </Box>
                 </Grid>
                 <Grid container item xs={10}>
-                    <AppBar position={"sticky"}>
-                        <Toolbar>
-
-                        </Toolbar>
-                    </AppBar>
+                    <App_Bar />
                     <div className={classes_container.container}>
                         <Grid container spacing={2} direction={"column"}>
-                            <Grid item>
+                            <Grid item xs={12}>
                                 <Navigation_Text/>
                             </Grid>
-                            <Grid item>
+                            <Grid item xs={12}>
                                 <Divider orientation='horizontal' variant='middle'/>
                             </Grid>
-                            <Grid item container>
-                                <Tabs value={value} onChange={handleChange}
-                                      classes={{indicator: classes_tab.indicator}}>
-                                    <Tab label="公司信息"
-                                         classes={{
-                                             root: classes_tab.root,
-                                             selected: classes_tab.selected,
-                                         }}/>
-                                    <Tab label="员工信息"
-                                         classes={{
-                                             root: classes_tab.root,
-                                             selected: classes_tab.selected,
-                                         }}/>
-                                </Tabs>
-                                <Route path='/main/corporation/information'
-                                       component={Corporation_Information_Page}></Route>
-                                <Route path='/main/corporation/worker' component={Worker_Information_Page}></Route>
+                            <Grid item>
+                                <Route path='/Main/Home' component={Home_Page}></Route>
+                                <Route path='/Main/Corporation' component={Corporation_Page}></Route>
                             </Grid>
                             <Footer_Component Title='React Admin ©2020 Created By Neo Zhang'/>
                         </Grid>

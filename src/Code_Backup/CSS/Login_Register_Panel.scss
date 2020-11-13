@@ -1,5 +1,5 @@
-@import './Mixin';
-@import './ColorVariables';
+@import 'src/Code_Backup/CSS/Mixin';
+@import 'src/Code_Backup/CSS/ColorVariables';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500&display=swap');
 
 
@@ -24,7 +24,6 @@
   }
 
   .LoginTitle{
-
     color: $LightWhite;
     font-family: 'Noto Sans SC', sans-serif;
     font-size: medium;
@@ -37,7 +36,7 @@
     width: 80%;
     height: 100%;
     top: 0;
-    background-image: url('../../Image/BackGround/TextureBG.png');
+    background-image: url('src/Image/BackGround/TextureBG.png');
     background-size: cover;
     background-repeat: no-repeat;
     opacity: 0.9;

@@ -2,7 +2,6 @@ import React, {useEffect, useRef} from 'react';
 import Collapse from "@material-ui/core/Collapse";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import StarBorder from "@material-ui/icons/StarBorder";
 import ListItemText from "@material-ui/core/ListItemText";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../MyTheme/Theme";
@@ -32,10 +31,48 @@ const useStyles = makeStyles({
 
 const Myco = (props) => {
     const classes = useStyles(props);
-    let Current_Selected_Item = null;
     const [Open_Manager, Set_Open_Manager] = React.useState(
         props.menu
     );
+
+
+    useEffect(() => {
+        if(Open_Manager[0].Last_Choice_Type ==='item'){
+            Unselected_Other_item();
+        }
+
+        // console.log(Open_Manager[0].Last_Choice_Type)
+        // console.log(Open_Manager[0].Last_Choice_Indicator)
+
+    }, [Open_Manager])
+
+    const Unselected_Other_item = () => {
+        Set_Open_Manager((PreManager) => {
+            let copy_manager = cloneDeep(PreManager);
+            console.log(copy_manager);
+            const result = Cancel_Other_Item(copy_manager,copy_manager[0].Last_Choice_Indicator);
+            result[0].Last_Choice_Indicator = null;
+            result[0].Last_Choice_Type = null;
+            return result;
+        })
+    }
+
+    const Cancel_Other_Item = (Passed,indicator) => {
+
+        for (let i = 0; i < Passed.length; i++) {
+            if (Passed[i].Node_Type === 'item') {
+                if (Passed[i].Indicator != indicator){
+                    Passed[i].Selected = false;
+                }
+            } else {
+                if (Passed[i].List != null && Passed[i].List != undefined) {
+                    Cancel_Other_Item(Passed[i].List, indicator)
+                }
+            }
+        }
+        return Passed;
+    }
+
 
     const Search_Menu_Indicator = (Passed, indicator) => {
         console.log('执行次数')
@@ -61,21 +98,22 @@ const Myco = (props) => {
             console.log(copy_manager);
             let Upper_Menu = Search_Menu_Indicator(copy_manager, upper_indicator);
             console.log(Upper_Menu)
-            
+
             for (let i = 0; i < Upper_Menu.List.length; i++) {
 
-                if (Upper_Menu.List[i].Indicator === now_indicator){
-                    if (Upper_Menu.List[i].Node_Type==='list')
-                    {
-                        Upper_Menu.List[i].On_Open =!Upper_Menu.List[i].On_Open
-                    }
-                    else {
-                        Upper_Menu.List[i].Selected =!Upper_Menu.List[i].Selected
+                if (Upper_Menu.List[i].Indicator === now_indicator) {
+                    if (Upper_Menu.List[i].Node_Type === 'list') {
+                        Upper_Menu.List[i].On_Open = !Upper_Menu.List[i].On_Open
+                        copy_manager[0].Last_Choice_Type = 'list';
+                        copy_manager[0].Last_Choice_Indicator = now_indicator;
+                    } else {
+                        Upper_Menu.List[i].Selected = !Upper_Menu.List[i].Selected
+                        copy_manager[0].Last_Choice_Type = 'item';
+                        copy_manager[0].Last_Choice_Indicator = now_indicator;
                         break;
                     }
                 }
             }
-
             return copy_manager;
         })
     }
@@ -89,7 +127,7 @@ const Myco = (props) => {
                                 <ListItem classes={classes.List_Header}>
                                     <Avatar src={Logo} className={classes.Avatar}></Avatar>
                                 </ListItem>
-                                <Myco2 menu={item.List} left={4} Set_Data={Set_State}/>
+                                <Myco2 menu={item.List} left={4} Set_Data={Set_State} level={item.Level}/>
                             </Box>
                         )
                     }

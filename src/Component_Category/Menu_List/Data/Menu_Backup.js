@@ -21,7 +21,6 @@ import SecurityIcon from '@material-ui/icons/Security';
 import PhotoIcon from '@material-ui/icons/Photo';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
-import Logo_List from '../../../Image/Logo/Logo_Avatar.png'
 
 
 const menu =
@@ -36,20 +35,18 @@ const menu =
             Last_Choice_Type:null,
             Last_Choice_Indicator:null,
             Upper_List_Indicator: null,
-            Logo:Logo_List,
             Level:1,
             List:
                 [
                     {
                         Title: '首页',
                         Indicator: 'Home_Page',
-                        Selected:true,
+                        Selected:false,
                         Node_Type: 'item',
                         Clickable: true,
                         Icon: <HomeIcon/>,
                         Id: 0,
                         Upper_List_Indicator: 'Main_Menu',
-                        On_Click:function(history){history.push('/Main/Home')},
                         Level:2,
                     },
                     {
@@ -68,26 +65,91 @@ const menu =
                             {
                                 Title: '公司信息',
                                 Indicator: 'Corp_Information',
-                                Node_Type: 'item',
-                                Selected:false,
+                                Node_Type: 'list',
+                                On_Open: false,
                                 Clickable: true,
                                 Icon: <DvrIcon/>,
                                 Id: 0,
                                 Upper_List_Indicator: 'Corp_Manage',
-                                On_Click:function(history){history.push('/Main/Corporation/Information')},
+                                ExpandLess:<ExpandLess/>,
+                                ExpandMore:<ExpandMore/>,
                                 Level:3,
+                                List: [
+                                    {
+                                        Title: '三级1',
+                                        Indicator: 'three1',
+                                        Selected:false,
+                                        Node_Type: 'item',
+                                        Clickable: true,
+                                        Icon: <HomeWorkIcon/>,
+                                        Id: 0,
+                                        Upper_List_Indicator: 'Corp_Information',
+                                        Level:4,
+                                    },
+                                    {
+                                        Title: '三级2',
+                                        Indicator: 'three2',
+                                        Selected:false,
+                                        Node_Type: 'item',
+                                        Clickable: true,
+                                        Icon: <HomeWorkIcon/>,
+                                        Id: 0,
+                                        Upper_List_Indicator: 'Corp_Information',
+                                        Level:4,
+                                    },
+                                ]
                             },
                             {
                                 Title: '员工名单',
                                 Indicator: 'Corp_Worker',
-                                Node_Type: 'item',
-                                Selected:false,
+                                Node_Type: 'list',
+                                On_Open: false,
                                 Clickable: true,
                                 Icon: <PeopleAltIcon/>,
                                 Id: 1,
                                 Upper_List_Indicator: 'Corp_Manage',
-                                On_Click:function(history){history.push('/Main/Corporation/Worker')},
+                                ExpandLess:<ExpandLess/>,
+                                ExpandMore:<ExpandMore/>,
                                 Level:3,
+                                List: [
+                                    {
+                                        Title: '三级3',
+                                        Indicator: 'three3',
+                                        Selected:false,
+                                        Node_Type: 'item',
+                                        Clickable: true,
+                                        Icon: <HomeWorkIcon/>,
+                                        Id: 0,
+                                        Upper_List_Indicator: 'Corp_Worker',
+                                        Level:4,
+                                    },
+                                    {
+                                        Title: '三级4',
+                                        Indicator: 'three4',
+                                        Selected:false,
+                                        Node_Type: 'list',
+                                        On_Open: false,
+                                        Clickable: true,
+                                        Icon: <HomeWorkIcon/>,
+                                        Id: 0,
+                                        Upper_List_Indicator: 'Corp_Worker',
+                                        ExpandLess:<ExpandLess/>,
+                                        ExpandMore:<ExpandMore/>,
+                                        Level:4,
+                                        List: [
+                                            {
+                                                Title: '四级1',
+                                                Indicator: 'four1',
+                                                Selected:false,
+                                                Node_Type: 'item',
+                                                Clickable: true,
+                                                Icon: <HomeWorkIcon/>,
+                                                Id: 0,
+                                                Upper_List_Indicator: 'three4',
+                                                Level:5,
+                                            }]
+                                    },
+                                ]
 
                             },
                             {
@@ -360,80 +422,6 @@ const menu =
                             },
                         ]
                     },
-
-
-                    {
-                        Title: 'N级菜单',
-                        Indicator: 'Hierarchy_Page',
-                        On_Open: false,
-                        Node_Type: 'list',
-                        Clickable: true,
-                        Id: 7,
-                        Icon: <ApartmentIcon/>,
-                        Upper_List_Indicator: 'Main_Menu',
-                        ExpandLess:<ExpandLess/>,
-                        ExpandMore:<ExpandMore/>,
-                        Level:2,
-                        List: [
-                            {
-                                Title: '三级',
-                                Indicator: 'Hierarchy_2',
-                                Node_Type: 'list',
-                                On_Open: false,
-                                Clickable: true,
-                                Icon: <PeopleAltIcon/>,
-                                Id: 1,
-                                Upper_List_Indicator: 'Hierarchy_Page',
-                                ExpandLess:<ExpandLess/>,
-                                ExpandMore:<ExpandMore/>,
-                                Level:3,
-                                List: [
-                                    {
-                                        Title: '三级1',
-                                        Indicator: 'Hierarchy_2_1',
-                                        Selected:false,
-                                        Node_Type: 'item',
-                                        Clickable: true,
-                                        Icon: <HomeWorkIcon/>,
-                                        Id: 0,
-                                        Upper_List_Indicator: 'Hierarchy_2',
-                                        Level:4,
-                                    },
-                                    {
-                                        Title: '三级2',
-                                        Indicator: 'Hierarchy_2_2',
-                                        Selected:false,
-                                        Node_Type: 'list',
-                                        On_Open: false,
-                                        Clickable: true,
-                                        Icon: <HomeWorkIcon/>,
-                                        Id: 0,
-                                        Upper_List_Indicator: 'Hierarchy_2',
-                                        ExpandLess:<ExpandLess/>,
-                                        ExpandMore:<ExpandMore/>,
-                                        Level:4,
-                                        List: [
-                                            {
-                                                Title: '四级1',
-                                                Indicator: 'Hierarchy_2_2_1',
-                                                Selected:false,
-                                                Node_Type: 'item',
-                                                Clickable: true,
-                                                Icon: <HomeWorkIcon/>,
-                                                Id: 0,
-                                                Upper_List_Indicator: 'Hierarchy_2_2',
-                                                Level:5,
-                                            }]
-                                    },
-                                ]
-
-                            },
-                        ]
-                    },
-
-
-
-
                     {
                         Title: '关于',
                         Indicator: 'About_Page',
@@ -441,7 +429,7 @@ const menu =
                         Node_Type: 'item',
                         Clickable: true,
                         Icon: <InfoIcon/>,
-                        Id: 8,
+                        Id: 7,
                         Upper_List_Indicator: 'Main_Menu',
                         Level:2,
                     },

@@ -9,34 +9,46 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import theme from "../../MyTheme/Theme";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles({
-    container: {
-        display: "flex",
-
+    root:{
+        paddingLeft:props => {
+            return props.Padding
+        }
     },
-    align_right: {
+    helper_text: {
+        color: theme.palette.grey["500"],
+        fontSize: '0.75rem',
+        marginLeft: (props => {
+                let len = 0;
+                for (let i = 0; i < props.Title.length; i++) {
+                    let a = props.Title.charAt(i);
+                    if (a.match(/[^\x00-\xff]/ig) != null) {
+                        len += 1;
+                    } else {
+                        len += 0.5;
+                    }
+                }
+                return len + 1 + 'rem'
+            }
+        )
+    },
+    box_Container: {
         display: "flex",
-        justifyContent: "flex-end",
+        flexDirection: "row",
         alignItems: "center",
-
+        width: '100%',
+        flexWrap: "nowrap",
     },
-    align_left: {
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
+    box_Title: {},
+    box_Textfield: {
+        flex: 1
     },
-    helper_text:{
-        color:theme.palette.grey["500"],
-        fontSize:'0.75rem',
-        marginLeft : theme.spacing(2)
-
-    }
-
 });
 
 const Input_Password_Component = (props) => {
-    const classes = useStyles();
+    const classes = useStyles(props);
     const [values, setValues] = React.useState({
         password: '',
         showPassword: false,
@@ -57,45 +69,50 @@ const Input_Password_Component = (props) => {
     };
 
     return (
-        <Grid container className={classes.container} spacing={1}>
-            <Grid item xs={4} className={classes.align_right}>
-                {
-                    props.Has_Icon?
-                        <ErrorOutlineIcon color='primary' className='mr-1'/>
-                        :
-                        null
-                }
-                <Typography>{props.Title + ':'}</Typography>
-            </Grid>
-            <Grid item xs={4} className={classes.align_left}>
-                <TextField
-                    id="standard-adornment-password"
-                    size={"small"}
-                    variant='outlined'
-                    value={values.password}
-                    onChange={handleChange('password')}
-                    onBlur={(e) =>props.Data_Set_Function(props.Data_Set_Name,e.target.value)}
-                    type={(values.showPassword ? 'text' : 'password')}
-                    InputProps={{
-                        endAdornment:
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                >
-                                    {values.showPassword ? <Visibility/> : <VisibilityOff/>}
-                                </IconButton>
-                            </InputAdornment>,
-                    }}
-                />
-            </Grid>
-            <Grid item container xs={12} className={classes.align_left}>
-                <Grid item xs={4} className={classes.align_right}>
+        <Grid container direction={"column"} className={classes.root} spacing={1}>
+            <Grid item>
+                <Grid container alignItems={"center"}>
+                    <Grid item xs={12}>
+                        <Box className={classes.box_Container}>
+                            {
+                                props.Has_Icon ?
+                                    <ErrorOutlineIcon color='primary'/>
+                                    :
+                                    null
+                            }
+                            <Box className={classes.box_Title}>
+                                <Typography>{props.Title + '：'}</Typography>
+                            </Box>
+                            <Box className={classes.box_Textfield}>
+                                <TextField
+                                    id="standard-adornment-password"
+                                    size={"small"}
+                                    variant='outlined'
+                                    fullWidth
+                                    value={values.password}
+                                    onChange={handleChange('password')}
+                                    onBlur={(e) => props.Data_Set_Function(props.Data_Set_Name, e.target.value)}
+                                    type={(values.showPassword ? 'text' : 'password')}
+                                    InputProps={{
+                                        endAdornment:
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                                </IconButton>
+                                            </InputAdornment>,
+                                    }}
+                                />
+                            </Box>
+                        </Box>
+                    </Grid>
                 </Grid>
-                <Grid item xs={4} className={classes.align_left}>
-                    <Typography className={classes.helper_text}>{props.Helper_Text}</Typography>
-                </Grid>
+            </Grid>
+            <Grid item>
+                <Typography className={classes.helper_text} noWrap>{props.Helper_Text}</Typography>
             </Grid>
         </Grid>
     );

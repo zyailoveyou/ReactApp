@@ -29,10 +29,25 @@ const useStyles = makeStyles({
         backgroundColor: "white",
     },
     List_Header: {
-        paddingLeft:'2rem'
-
-
+        paddingLeft: '2rem'
     },
+
+    Level_1: {
+        backgroundColor: "purple"
+    },
+
+    Level_2: {
+        backgroundColor: "blue"
+    },
+
+    Level_3: {
+        backgroundColor: "white"
+    },
+
+    Level_4: {
+        backgroundColor: "red"
+    },
+
 
     List_Item_Root: {
         paddingLeft: (props) => {
@@ -50,8 +65,8 @@ const useStyles = makeStyles({
     },
 
     List_Item_Selected: {
-        backgroundColor: theme.palette.secondary.main+' !important',
-        color: theme.palette.secondary.contrastText+' !important',
+        backgroundColor: theme.palette.secondary.main + ' !important',
+        color: theme.palette.secondary.contrastText + ' !important',
     },
 
     Icon_Hover: {
@@ -63,13 +78,9 @@ const useStyles = makeStyles({
 const Myco2 = (props) => {
 
     const classes = useStyles(props);
-    // const [Open_Manager, Set_Open_Manager] = React.useState(
-    //     props.menu
-    // );
 
-
-    const handleClick = (e,Now_Indicator,Upper_Indicator) => {
-        props.Set_Data(e,Now_Indicator,Upper_Indicator);
+    const handleClick = (e, Now_Indicator, Upper_Indicator) => {
+        props.Set_Data(e, Now_Indicator, Upper_Indicator);
     };
 
     const get_checked = (Passed, Now_Indicator) => {
@@ -103,15 +114,27 @@ const Myco2 = (props) => {
         return (
             List.map((item, index) => {
                     return (
-                        <Box name={'inner'} key={index}>
+                        <Box name={'inner'} key={index} className={function () {
+                            console.log('1232')
+                            switch (props.level) {
+                                case 1:
+                                    return classes.Level_1;
+                                case 2:
+                                    return classes.Level_2;
+                                case 3:
+                                    return classes.Level_3;
+                                case 4:
+                                    return classes.Level_4;
+                            }
+                        }()}>
                             <ListItem button
                                       classes={{
                                           root: classes.List_Item_Root,
                                           selected: classes.List_Item_Selected,
                                       }}
-                                      selected={get_selected(props.menu,item.Indicator)}
+                                      selected={get_selected(props.menu, item.Indicator)}
                                       name={item.Indicator}
-                                      onClick={(e) => handleClick(e,item.Indicator,item.Upper_List_Indicator)}
+                                      onClick={(e) => handleClick(e, item.Indicator, item.Upper_List_Indicator)}
                             >
                                 <ListItemIcon className={classes.Icon_Hover}>
                                     {item.Icon}
@@ -124,10 +147,7 @@ const Myco2 = (props) => {
                             >
                                 {item.Node_Type === 'list'
                                     ?
-                                    <Myco2 menu={function () {
-                                        console.log(item.List)
-                                        return item.List;
-                                    }()} left={left + 4}  Set_Data = {props.Set_Data}/>
+                                    <Myco2 menu={item.List} left={left + 4} Set_Data={props.Set_Data} level={item.Level}/>
                                     :
                                     null}
                             </Collapse>
@@ -140,7 +160,7 @@ const Myco2 = (props) => {
     }
 
     return (
-        Creat_List(props.menu,props.left)
+        Creat_List(props.menu, props.left)
     );
 }
 

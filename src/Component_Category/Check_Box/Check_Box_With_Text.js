@@ -75,10 +75,8 @@ const Check_Box_With_Text = (props) => {
 
     return (
 
-        <Grid container direction={"column"} className={classes.root} spacing={1}>
-            <Grid item>
-                <Grid container alignItems={"center"}>
-                    <Grid item xs={12}>
+
+
                         <Box className={classes.box_Container}>
                             <Checkbox
                                 color={"secondary"}
@@ -91,10 +89,7 @@ const Check_Box_With_Text = (props) => {
                             <Typography>请认真阅读</Typography>
                             <Link href='#' onClick={(e) => onLinkClicked(e)} style={{color:theme.palette.primary.light}}>此协议</Link>
                         </Box>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grid>
+
 
     );
 };

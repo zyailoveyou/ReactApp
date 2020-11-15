@@ -8,10 +8,18 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import EmailIcon from '@material-ui/icons/Email';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import LockIcon from '@material-ui/icons/Lock';
+import Typography from "@material-ui/core/Typography";
+import theme from "../../../MyTheme/Theme";
+import {Box} from "@material-ui/core";
+
 
 import Check_Box_With_Text from "../../Check_Box/Check_Box_With_Text";
 
-
+//my_component
+import Alert_Component from "../../Alert/Alert_Component";
+import IconButton from "@material-ui/core/IconButton";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 
 const useStyles = makeStyles({
@@ -31,16 +39,22 @@ const useStyles = makeStyles({
     Input_Text: {
         fontSize: '1.4rem',
     },
+    Caption:{
+        color:theme.palette.secondary.main
+    }
 })
 
-
-const Register_Account = () => {
-    const classes = useStyles();
+const ComfirmPassword = (props) => {
+    const classes = useStyles(props);
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
     return (
         <Grid container direction={"column"} spacing={3}>
             <Grid item>
                 <TextField
-                    label={'请输入注册邮箱'}
+                    label={'请输入注册密码'}
                     fullWidth
                     InputLabelProps={{
                         classes: {
@@ -52,11 +66,24 @@ const Register_Account = () => {
                         classes: {
                             underline: classes.input_underline
                         },
+                        type:function(){
+                            console.log('12312')
+                            return showPassword? 'password':'text'
+                        }(),
                         startAdornment: (
                             <InputAdornment position="start">
-                                <EmailIcon color={"primary"}/>
+                                <LockIcon color={"primary"}/>
                             </InputAdornment>
                         ),
+                        endAdornment:
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                >
+                                    {showPassword ? <Visibility/> : <VisibilityOff/>}
+                                </IconButton>
+                            </InputAdornment>,
                     }}
                     inputProps={{
                         className: classes.Input_Text
@@ -67,29 +94,18 @@ const Register_Account = () => {
             </Grid>
             <Grid item>
                 <TextField
-                    label={'请输入验证码'}
+                    label={'请输入确认密码'}
                     fullWidth
                     InputProps={{
                         classes: {
                             underline: classes.input_underline
                         },
+                        type:'password',
                         startAdornment: (
                             <InputAdornment position="start">
                                 <VpnKeyIcon color={"primary"}/>
                             </InputAdornment>
                         ),
-                        endAdornment: (
-                            <InputAdornment position={'end'}>
-                                <Button
-                                    variant={"outlined"}
-                                    size={"small"}
-                                    color={"secondary"}
-                                    className={classes.Button}
-                                >
-                                    获取验证码
-                                </Button>
-                            </InputAdornment>
-                        )
                     }}
                     inputProps={{
                         className: classes.Input_Text
@@ -99,14 +115,10 @@ const Register_Account = () => {
                 </TextField>
             </Grid>
             <Grid item>
-                <Check_Box_With_Text
-                    Title="协议认可"
-                    Helper_Text='协议认可'
-                    Data_Set_Name={'Has_Read_Agreement'}
-                    Has_Icon={false}/>
+                <Alert_Component content={'请注意认真保管您的密码'} severity={'info'} switch={false}></Alert_Component>
             </Grid>
         </Grid>
     );
 };
 
-export default Register_Account;
+export default ComfirmPassword;

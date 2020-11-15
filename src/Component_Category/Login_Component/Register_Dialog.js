@@ -1,5 +1,5 @@
 import React, {useState, useEffect,useRef,useLayoutEffect} from 'react';
-
+import ReactDOM from 'react-dom'
 import {Grid} from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
@@ -16,8 +16,10 @@ import useResizeObserver from '@react-hook/resize-observer'
 //Icons
 import theme from "../../MyTheme/Theme";
 import Register_Account from "./Progress_Component/Register_Account";
+import ComfirmPassword from "./Progress_Component/Comfirm_Password";
 import useMeasure from 'react-use-measure'
 import Box from "@material-ui/core/Box";
+
 
 
 
@@ -49,7 +51,7 @@ const useStyles = makeStyles({
 
 const Step_Pages = [
     <Register_Account/>,
-    <div>good</div>,
+    <ComfirmPassword />,
     <div>hello</div>,
 ]
 
@@ -65,6 +67,17 @@ const Register_Dialog = (props) => {
     //展开动画测试
     const Expand_Height = useSpring({
         height: open ? 625 : 0
+    })
+    useLayoutEffect(()=>{
+        console.log('组件挂在')
+        if (target.current)
+        {
+            let height = (ReactDOM.findDOMNode(target.current).clientHeight);
+            console.log(height)
+        }
+        else {
+            console.log(0)
+        }
     })
 
     const transitions = useTransition(activeStep, p => p, {
@@ -89,7 +102,7 @@ const Register_Dialog = (props) => {
                 paper: classes.Dialog
             }}
         >
-            <animated.div ref={target} style={Expand_Height}>
+            <animated.div ref={target} >
                 <Grid container direction={"column"} className={classes.Dialog_Content}>
                     <Grid item>
                         <img src={Banner} alt="" style={{width: '450px', height: "100px"}}/>
@@ -118,7 +131,7 @@ const Register_Dialog = (props) => {
                                 <Horizontal_Stepper activeStep={activeStep}/>
                             </Grid>
                             <Grid item>
-                                <Grid container direction={"column"} spacing={2}
+                                <Grid container direction={"column"} spacing={3}
                                       style={{paddingLeft: '3rem', paddingRight: '3rem'}}>
                                     <Grid item>
                                         {

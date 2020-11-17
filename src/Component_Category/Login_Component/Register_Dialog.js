@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState,useRef} from 'react';
 import ReactDOM from 'react-dom'
 import {Grid} from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog';
@@ -42,25 +42,25 @@ const useStyles = makeStyles({
 })
 
 
-const Step_Pages = [
-    <Register_Account/>,
-    <Confirm_Password/>,
-    <Loading_Result/>,
-]
-
-
 const Register_Dialog = (props) => {
     const target = React.useRef(null)
 
     const {open, onClose, onOpen,} = props
     const [activeStep, setActiveStep] = useState(0);
+    const [checkCondition,setCheckCondition] = useState(false);
     const [dimensions, setDimensions] = useState({});
+    const ref = useRef()
+
+    const Step_Pages = [
+        <Register_Account Condition ={checkCondition} setCondition = {setCheckCondition}/>,
+        <Confirm_Password Condition ={checkCondition} setCondition = {setCheckCondition}/>,
+        <Loading_Result Condition ={checkCondition} setCondition = {setCheckCondition}/>,
+    ]
 
     //展开动画测试
     let Expand_Height = useSpring({
         height: open ? 657 : 0
     })
-
 
     useLayoutEffect(() => {
         console.log('组件挂在')
@@ -82,9 +82,12 @@ const Register_Dialog = (props) => {
     const classes = useStyles();
     const handleNext = () => {
         // setActiveStep((prevActiveStep) => (prevActiveStep + 1) % 3);
-        setActiveStep((prevActiveStep) => (prevActiveStep + 1));
+        if(checkCondition)
+        {
+            setActiveStep((prevActiveStep) => (prevActiveStep + 1));
+            setCheckCondition(false);
+        }
     };
-
 
     return (
         <Dialog
@@ -143,7 +146,7 @@ const Register_Dialog = (props) => {
                                     <Grid item>
                                         {
                                             function () {
-                                                if (activeStep === Step_Pages.length-1) {
+                                                if (activeStep === Step_Pages.length - 1) {
                                                     return null
                                                 } else {
                                                     return (

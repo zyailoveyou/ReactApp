@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {Grid} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import {makeStyles} from "@material-ui/core/styles";
@@ -32,8 +32,41 @@ const useStyles = makeStyles({
 })
 
 
-const Register_Account = () => {
-    const classes = useStyles();
+const Register_Account = (props) => {
+    const classes = useStyles(props);
+    const [emailState,setEmailState] = useState(-1);
+    const [confirmState,setConfirmState] = useState(-1)
+
+    const checkEmail = (e) =>{
+        if (e.target.value ===''){
+            setEmailState(0)
+        }
+        else {
+            setEmailState(1)
+        }
+    }
+
+    const checkConfirm = (e)=>{
+        if (e.target.value ===''){
+            setConfirmState(0)
+        }
+        else {
+            setConfirmState(1)
+        }
+    }
+
+    const checkCondition = ()=>{
+        if (emailState ===1 && confirmState ===1){
+            props.setCondition(true)
+        }
+    }
+
+    useEffect(()=>{
+        checkCondition()
+    },[emailState,confirmState])
+
+
+
     return (
         <Grid container direction={"column"} spacing={3}>
             <Grid item>
@@ -60,6 +93,24 @@ const Register_Account = () => {
                         className: classes.Input_Text
                     }
                     }
+                    onBlur={e =>checkEmail(e)}
+                    helperText={function () {
+                        switch (emailState) {
+                            case 0:
+                                return '邮箱不能为空'
+                            case 1:
+                                return null
+                        }
+                    }()}
+                    error={function () {
+                        if (emailState === 1||emailState===-1){
+                            return false
+                        }
+                        else{
+                            return true
+                        }
+
+                    }()}
                 >
                 </TextField>
             </Grid>
@@ -93,6 +144,24 @@ const Register_Account = () => {
                         className: classes.Input_Text
                     }
                     }
+                    onBlur={e =>checkConfirm(e)}
+                    helperText={function () {
+                        switch (confirmState) {
+                            case 0:
+                                return '验证码不能为空'
+                            case 1:
+                                return null
+                        }
+                    }()}
+                    error={function () {
+                        if (confirmState === 1||confirmState===-1){
+                            return false
+                        }
+                        else{
+                            return true
+                        }
+
+                    }()}
                 >
                 </TextField>
             </Grid>

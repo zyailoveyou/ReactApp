@@ -55,7 +55,7 @@ const menu =
                     {
                         Title: '公司管理',
                         Indicator: 'Corp_Manage',
-                        On_Open: false,
+                        Selected: false,
                         Node_Type: 'list',
                         Clickable: true,
                         Id: 1,
@@ -118,7 +118,7 @@ const menu =
                         Title: '统计报表',
                         Indicator: 'Statis_Form',
                         Node_Type: 'list',
-                        On_Open: false,
+                        Selected: false,
                         Clickable: true,
                         Icon: <FormatListNumberedIcon/>,
                         Id: 2,
@@ -166,7 +166,7 @@ const menu =
 
                     {
                         Title: '功能管理',
-                        On_Open: false,
+                        Selected: false,
                         Indicator: 'Function_Manager',
                         Node_Type: 'list',
                         Clickable: true,
@@ -215,7 +215,7 @@ const menu =
 
                     {
                         Title: '图表展示',
-                        On_Open: false,
+                        Selected: false,
                         Indicator: 'Figure_Show',
                         Node_Type: 'list',
                         Clickable: true,
@@ -265,7 +265,7 @@ const menu =
 
                     {
                         Title: '其他功能',
-                        On_Open: false,
+                        Selected: false,
                         Indicator: 'Other_Option',
                         Node_Type: 'list',
                         Clickable: true,
@@ -314,7 +314,7 @@ const menu =
 
                     {
                         Title: '导览',
-                        On_Open: false,
+                        Selected: false,
                         Indicator: 'Direct_Page',
                         Node_Type: 'list',
                         Clickable: true,
@@ -365,7 +365,7 @@ const menu =
                     {
                         Title: 'N级菜单',
                         Indicator: 'Hierarchy_Page',
-                        On_Open: false,
+                        Selected: false,
                         Node_Type: 'list',
                         Clickable: true,
                         Id: 7,
@@ -379,7 +379,7 @@ const menu =
                                 Title: '三级',
                                 Indicator: 'Hierarchy_2',
                                 Node_Type: 'list',
-                                On_Open: false,
+                                Selected: false,
                                 Clickable: true,
                                 Icon: <PeopleAltIcon/>,
                                 Id: 1,
@@ -404,7 +404,7 @@ const menu =
                                         Indicator: 'Hierarchy_2_2',
                                         Selected:false,
                                         Node_Type: 'list',
-                                        On_Open: false,
+                                        // Selected: false,
                                         Clickable: true,
                                         Icon: <HomeWorkIcon/>,
                                         Id: 0,

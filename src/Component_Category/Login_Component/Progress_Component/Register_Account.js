@@ -12,8 +12,6 @@ import LockIcon from '@material-ui/icons/Lock';
 import Check_Box_With_Text from "../../Check_Box/Check_Box_With_Text";
 
 
-
-
 const useStyles = makeStyles({
     label_focused: {},
     label: {},

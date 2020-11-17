@@ -1,4 +1,4 @@
-import React, {useState, useEffect,useRef,useLayoutEffect} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import ReactDOM from 'react-dom'
 import {Grid} from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog';
@@ -7,20 +7,13 @@ import Banner from '../../Image/Logo/Banner.png'
 import {makeStyles} from "@material-ui/core/styles";
 import Horizontal_Stepper from "../Stepper/Horizontal_Stepper";
 import Typography from "@material-ui/core/Typography";
-import Fade from '@material-ui/core/Fade';
-import Slide from '@material-ui/core/Slide';
 import Link from '@material-ui/core/Link';
-import {useSpring, animated, useTransition} from 'react-spring';
-import Paper from '@material-ui/core/Paper';
-import useResizeObserver from '@react-hook/resize-observer'
+import {animated, useSpring, useTransition} from 'react-spring';
 //Icons
 import theme from "../../MyTheme/Theme";
 import Register_Account from "./Progress_Component/Register_Account";
-import ComfirmPassword from "./Progress_Component/Comfirm_Password";
-import useMeasure from 'react-use-measure'
-import Box from "@material-ui/core/Box";
-
-
+import Confirm_Password from "./Progress_Component/Confirm_Password";
+import Loading_Result from "./Progress_Component/Loading_Result";
 
 
 const useStyles = makeStyles({
@@ -51,8 +44,8 @@ const useStyles = makeStyles({
 
 const Step_Pages = [
     <Register_Account/>,
-    <ComfirmPassword />,
-    <div>hello</div>,
+    <Confirm_Password/>,
+    <Loading_Result/>,
 ]
 
 
@@ -61,21 +54,20 @@ const Register_Dialog = (props) => {
 
     const {open, onClose, onOpen,} = props
     const [activeStep, setActiveStep] = useState(0);
-    const defaultHeight = 400;
-    const [dimensions, setDimensions] = useState({ width:0, height: 0 });
+    const [dimensions, setDimensions] = useState({});
 
     //展开动画测试
-    const Expand_Height = useSpring({
-        height: open ? 625 : 0
+    let Expand_Height = useSpring({
+        height: open ? 657 : 0
     })
-    useLayoutEffect(()=>{
+
+
+    useLayoutEffect(() => {
         console.log('组件挂在')
-        if (target.current)
-        {
-            let height = (ReactDOM.findDOMNode(target.current).clientHeight);
-            console.log(height)
-        }
-        else {
+        if (target.current) {
+            console.log(target.current.offsetWidth)
+            console.log(target.current.offsetHeight)
+        } else {
             console.log(0)
         }
     })
@@ -89,7 +81,8 @@ const Register_Dialog = (props) => {
 
     const classes = useStyles();
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => (prevActiveStep + 1) % 3);
+        // setActiveStep((prevActiveStep) => (prevActiveStep + 1) % 3);
+        setActiveStep((prevActiveStep) => (prevActiveStep + 1));
     };
 
 
@@ -102,7 +95,7 @@ const Register_Dialog = (props) => {
                 paper: classes.Dialog
             }}
         >
-            <animated.div ref={target} >
+            <animated.div ref={target}>
                 <Grid container direction={"column"} className={classes.Dialog_Content}>
                     <Grid item>
                         <img src={Banner} alt="" style={{width: '450px', height: "100px"}}/>
@@ -148,15 +141,24 @@ const Register_Dialog = (props) => {
                                         }
                                     </Grid>
                                     <Grid item>
-                                        <Button
-                                            className={classes.Button}
-                                            color="primary"
-                                            variant='contained'
-                                            size={"large"}
-                                            fullWidth
-                                            onClick={handleNext}
-                                        >下一步
-                                        </Button>
+                                        {
+                                            function () {
+                                                if (activeStep === Step_Pages.length-1) {
+                                                    return null
+                                                } else {
+                                                    return (
+                                                        <Button
+                                                            className={classes.Button}
+                                                            color="primary"
+                                                            variant='contained'
+                                                            size={"large"}
+                                                            fullWidth
+                                                            onClick={handleNext}
+                                                        >下一步
+                                                        </Button>)
+                                                }
+                                            }()
+                                        }
                                     </Grid>
                                 </Grid>
                             </Grid>

@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 
         },
         Icon_Completed: {
-
+            color:theme.palette.success.main+'!important'
         },
         Stepper: {
             padding: 0,
@@ -66,6 +66,7 @@ const QontoConnector = withStyles({
     },
     completed: {
         '& $line': {},
+
     },
     line: {
         borderColor: '#eaeaf0',
@@ -102,7 +103,6 @@ const steps = ['注册', '填写', '完成'];
 const Horizontal_Stepper = (props) => {
 
     const classes = useStyles();
-    const classes2 = useCustomStepIconStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
     const handleNext = () => {

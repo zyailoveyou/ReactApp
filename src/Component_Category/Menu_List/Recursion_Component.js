@@ -29,8 +29,6 @@ const useStyles = makeStyles({
     },
     List_Header: {
         paddingLeft: '2rem'
-
-
     },
 
     List_Item_Root: {
@@ -62,11 +60,9 @@ const useStyles = makeStyles({
     Level_2: {
         backgroundColor: theme.palette.grey.A200
     },
-
     Level_3: {
         backgroundColor: theme.palette.grey.A400
     },
-
     Level_4: {
         backgroundColor: theme.palette.grey.A700
     },
@@ -74,7 +70,7 @@ const useStyles = makeStyles({
 
 const Recursion_Component = (props) => {
 
-    const history = useHistory();
+    const history = useHistory(props);
     const classes = useStyles(props);
 
     const handleClick = (item,Now_Indicator, Upper_Indicator) => {
@@ -87,29 +83,31 @@ const Recursion_Component = (props) => {
 
     };
 
-    const get_checked = (Passed, Now_Indicator) => {
-        const result = Passed.find((item) => {
-            if (item.Indicator === Now_Indicator) {
-                return item;
-            }
-        })
-        if (result.Node_Type === 'list') {
-            return result.On_Open;
-        } else {
-            return true
-        }
-    }
-
     const get_selected = (Passed, Now_Indicator) => {
         const result = Passed.find((item) => {
             if (item.Indicator === Now_Indicator) {
                 return item;
             }
         })
-        if (result.Node_Type === 'item') {
+        if (result.Node_Type === 'item' || result.Node_Type === 'list') {
             return result.Selected;
         } else {
             return undefined
+        }
+    }
+
+
+
+    const get_style = (Passed, Now_Indicator) => {
+        const result = Passed.find((item) => {
+            if (item.Indicator === Now_Indicator) {
+                return item;
+            }
+        })
+        if (result.Node_Type === 'item') {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -133,7 +131,10 @@ const Recursion_Component = (props) => {
                             <ListItem button
                                       classes={{
                                           root: classes.List_Item_Root,
-                                          selected: classes.List_Item_Selected,
+                                          selected: function () {
+                                              const result = get_style(props.menu, item.Indicator);
+                                              return result ?  classes.List_Item_Selected:null
+                                          }()
                                       }}
                                       selected={get_selected(props.menu, item.Indicator)}
                                       name={item.Indicator}
@@ -144,10 +145,10 @@ const Recursion_Component = (props) => {
                                 </ListItemIcon>
                                 <ListItemText primary={item.Title}/>
                                 {
-                                    item.Node_Type === 'list' ? get_checked(props.menu, item.Indicator) ? item.ExpandLess : item.ExpandMore : null
+                                    item.Node_Type === 'list' ? get_selected(props.menu, item.Indicator) ? item.ExpandLess : item.ExpandMore : null
                                 }
                             </ListItem>
-                            <Collapse in={get_checked(props.menu, item.Indicator)}
+                            <Collapse in={get_selected(props.menu, item.Indicator)}
                                       timeout="auto"
                                       unmountOnExit
                             >

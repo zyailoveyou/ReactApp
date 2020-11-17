@@ -39,16 +39,24 @@ const useStyles = makeStyles({
     Input_Text: {
         fontSize: '1.4rem',
     },
-    Caption:{
-        color:theme.palette.secondary.main
+    Caption: {
+        color: theme.palette.secondary.main
     }
 })
 
 const ComfirmPassword = (props) => {
     const classes = useStyles(props);
-    const [showPassword, setShowPassword] = React.useState(false);
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
+    const [showPassword, setShowPassword] = React.useState([false,false]);
+    const handleClickShowPasswordPass = () => {
+        setShowPassword((prev)=>{
+            console.log([!prev[0],prev[1]])
+            return [!prev[0],prev[1]]
+        });
+    };
+    const handleClickShowPasswordSecondComfirm = () => {
+        setShowPassword((prev)=>{
+            return[prev[0],!prev[1]]
+        });
     };
     return (
         <Grid container direction={"column"} spacing={3}>
@@ -66,24 +74,24 @@ const ComfirmPassword = (props) => {
                         classes: {
                             underline: classes.input_underline
                         },
-                        type:function(){
-                            console.log('12312')
-                            return showPassword? 'password':'text'
+                        type: function () {
+                            return showPassword[0] ? 'text' : 'password'
                         }(),
                         startAdornment: (
                             <InputAdornment position="start">
                                 <LockIcon color={"primary"}/>
                             </InputAdornment>
                         ),
-                        endAdornment:
+                        endAdornment:(
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
+                                    onClick={handleClickShowPasswordPass}
                                 >
-                                    {showPassword ? <Visibility/> : <VisibilityOff/>}
+                                    {showPassword[0] ? <Visibility/> : <VisibilityOff/>}
                                 </IconButton>
-                            </InputAdornment>,
+                            </InputAdornment>
+                        ),
                     }}
                     inputProps={{
                         className: classes.Input_Text
@@ -100,10 +108,22 @@ const ComfirmPassword = (props) => {
                         classes: {
                             underline: classes.input_underline
                         },
-                        type:'password',
+                        type: function () {
+                            return showPassword[1] ? 'text' : 'password'
+                        }(),
                         startAdornment: (
                             <InputAdornment position="start">
-                                <VpnKeyIcon color={"primary"}/>
+                                <LockIcon color={"primary"}/>
+                            </InputAdornment>
+                        ),
+                        endAdornment:(
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPasswordSecondComfirm}
+                                >
+                                    {showPassword[1] ? <Visibility/> : <VisibilityOff/>}
+                                </IconButton>
                             </InputAdornment>
                         ),
                     }}

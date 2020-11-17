@@ -28,13 +28,13 @@ const useStyles = makeStyles({
         width: '3.5rem',
         height: '3.5rem',
         backgroundColor: "white",
-        color:"black"
+        color: "black"
     },
     List_Header: {
-        display:"flex",
-        justifyContent:"center",
-        alignItems:"center",
-        padding:'1rem'
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: '1rem'
 
     },
 
@@ -53,15 +53,14 @@ const useStyles = makeStyles({
     },
 
     List_Item_Selected: {
-        backgroundColor: theme.palette.secondary.main+' !important',
-        color: theme.palette.secondary.contrastText+' !important',
+        backgroundColor: theme.palette.secondary.main + ' !important',
+        color: theme.palette.secondary.contrastText + ' !important',
     },
 
     Icon_Hover: {
         color: theme.palette.grey["400"],
     },
 });
-
 
 
 const List_Component = (props) => {
@@ -73,7 +72,7 @@ const List_Component = (props) => {
 
 
     useEffect(() => {
-        if(Open_Manager[0].Last_Choice_Type ==='item'){
+        if (Open_Manager[0].Last_Choice_Type === 'item') {
             Unselected_Other_item();
         }
     }, [Open_Manager])
@@ -82,18 +81,18 @@ const List_Component = (props) => {
         Set_Open_Manager((PreManager) => {
             let copy_manager = cloneDeep(PreManager);
             console.log(copy_manager);
-            const result = Cancel_Other_Item(copy_manager,copy_manager[0].Last_Choice_Indicator);
+            const result = Cancel_Other_Item(copy_manager, copy_manager[0].Last_Choice_Indicator);
             result[0].Last_Choice_Indicator = null;
             result[0].Last_Choice_Type = null;
             return result;
         })
     }
 
-    const Cancel_Other_Item = (Passed,indicator) => {
+    const Cancel_Other_Item = (Passed, indicator) => {
 
         for (let i = 0; i < Passed.length; i++) {
             if (Passed[i].Node_Type === 'item') {
-                if (Passed[i].Indicator != indicator){
+                if (Passed[i].Indicator != indicator) {
                     Passed[i].Selected = false;
                 }
             } else {
@@ -133,22 +132,18 @@ const List_Component = (props) => {
 
             for (let i = 0; i < Upper_Menu.List.length; i++) {
                 if (Upper_Menu.List[i].Indicator === now_indicator) {
-                    if (Upper_Menu.List[i].Node_Type === 'list') {
-                        Upper_Menu.List[i].On_Open = !Upper_Menu.List[i].On_Open
+                    Upper_Menu.List[i].Selected = !Upper_Menu.List[i].Selected
+                    if (Upper_Menu.List[i].Node_Type === 'list')
+                    {
                         copy_manager[0].Last_Choice_Type = 'list';
-                        copy_manager[0].Last_Choice_Indicator = now_indicator;
-                    } else {
-                        if (Upper_Menu.List[i].Selected === false){
-                            Upper_Menu.List[i].Selected = true
-                            copy_manager[0].Last_Choice_Type = 'item';
-                            copy_manager[0].Last_Choice_Indicator = now_indicator;
-                            break;
-                        }
                     }
-                }
-                else {
-                    if (Upper_Menu.List[i].Node_Type === 'list' && props.Accordion === true){
-                        Upper_Menu.List[i].On_Open = false;
+                    else {
+                        copy_manager[0].Last_Choice_Type = 'item';
+                    }
+                    copy_manager[0].Last_Choice_Indicator = now_indicator;
+                } else {
+                    if (Upper_Menu.List[i].Node_Type === 'list' && props.Accordion === true) {
+                        Upper_Menu.List[i].Selected = false;
                     }
                 }
             }

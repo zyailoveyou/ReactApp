@@ -43,18 +43,34 @@ const useStyles = makeStyles({
 
 
 const Register_Dialog = (props) => {
-    const target = React.useRef(null)
-
-    const {open, onClose, onOpen,} = props
+    const target = useRef(null);
+    const classes = useStyles();
+    const {open, onClose, onOpen,} = props;
     const [activeStep, setActiveStep] = useState(0);
+    const [shouldUpdate,setShouldUpdate] = useState(false);
     const [checkCondition,setCheckCondition] = useState(false);
     const [dimensions, setDimensions] = useState({});
     const ref = useRef()
 
     const Step_Pages = [
-        <Register_Account Condition ={checkCondition} setCondition = {setCheckCondition}/>,
-        <Confirm_Password Condition ={checkCondition} setCondition = {setCheckCondition}/>,
-        <Loading_Result Condition ={checkCondition} setCondition = {setCheckCondition}/>,
+        <Register_Account
+            Condition ={checkCondition}
+            setCondition = {setCheckCondition}
+            shouldUpdate={shouldUpdate}
+            setShouldUpdate={setShouldUpdate}
+        />,
+        <Confirm_Password
+            Condition ={checkCondition}
+            setCondition = {setCheckCondition}
+            shouldUpdate={shouldUpdate}
+            setShouldUpdate={setShouldUpdate}
+        />,
+        <Loading_Result
+            Condition ={checkCondition}
+            setCondition = {setCheckCondition}
+            shouldUpdate={shouldUpdate}
+            setShouldUpdate={setShouldUpdate}
+        />,
     ]
 
     //展开动画测试
@@ -78,10 +94,9 @@ const Register_Dialog = (props) => {
         leave: {opacity: 0, transform: 'translate3d(-50%,0,0)', position: "absolute"},
     })
 
-
-    const classes = useStyles();
     const handleNext = () => {
         // setActiveStep((prevActiveStep) => (prevActiveStep + 1) % 3);
+        setShouldUpdate(true);
         if(checkCondition)
         {
             setActiveStep((prevActiveStep) => (prevActiveStep + 1));

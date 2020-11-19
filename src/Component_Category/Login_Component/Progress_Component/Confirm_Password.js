@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Grid} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import {makeStyles} from "@material-ui/core/styles";
@@ -47,6 +47,10 @@ const useStyles = makeStyles({
 const ComfirmPassword = (props) => {
     const classes = useStyles(props);
     const [showPassword, setShowPassword] = React.useState([false,false]);
+    const [passwordState,setPassWordState] = useState(-1);
+    const [confirmPassWordState,setConfirmPassWordState] = useState(-1)
+
+
     const handleClickShowPasswordPass = () => {
         setShowPassword((prev)=>{
             console.log([!prev[0],prev[1]])
@@ -58,6 +62,37 @@ const ComfirmPassword = (props) => {
             return[prev[0],!prev[1]]
         });
     };
+
+    const checkPassword = (e) =>{
+        if (e.target.value ===''){
+            setPassWordState(0)
+        }
+        else {
+            setPassWordState(1)
+        }
+    }
+
+    const checkConfirmPassWord = (e)=>{
+        if (e.target.value ===''){
+            setConfirmPassWordState(0)
+        }
+        else {
+            setConfirmPassWordState(1)
+        }
+    }
+
+    const checkCondition = ()=>{
+        if (passwordState ===1 && confirmPassWordState ===1){
+            props.setCondition(true)
+        }
+    }
+
+    useEffect(()=>{
+        checkCondition()
+    },[passwordState,confirmPassWordState])
+
+
+
     return (
         <Grid container direction={"column"} spacing={3}>
             <Grid item>
@@ -97,6 +132,25 @@ const ComfirmPassword = (props) => {
                         className: classes.Input_Text
                     }
                     }
+
+                    onBlur={e =>checkPassword(e)}
+                    helperText={function () {
+                        switch (passwordState) {
+                            case 0:
+                                return '密码不能为空'
+                            case 1:
+                                return null
+                        }
+                    }()}
+                    error={function () {
+                        if (passwordState === 1 ||passwordState ===-1){
+                            return false
+                        }
+                        else{
+                            return true
+                        }
+
+                    }()}
                 >
                 </TextField>
             </Grid>
@@ -131,6 +185,25 @@ const ComfirmPassword = (props) => {
                         className: classes.Input_Text
                     }
                     }
+
+                    onBlur={e =>checkConfirmPassWord(e)}
+                    helperText={function () {
+                        switch (confirmPassWordState) {
+                            case 0:
+                                return '验证码不能为空'
+                            case 1:
+                                return null
+                        }
+                    }()}
+                    error={function () {
+                        if (confirmPassWordState===-1 || confirmPassWordState===1){
+                            return false
+                        }
+                        else{
+                            return true
+                        }
+
+                    }()}
                 >
                 </TextField>
             </Grid>

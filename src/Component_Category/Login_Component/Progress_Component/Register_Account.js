@@ -34,8 +34,11 @@ const useStyles = makeStyles({
 
 const Register_Account = (props) => {
     const classes = useStyles(props);
+
     const [emailState,setEmailState] = useState(-1);
     const [confirmState,setConfirmState] = useState(-1)
+    const ref = useRef()
+
 
     const checkEmail = (e) =>{
         if (e.target.value ===''){
@@ -65,6 +68,12 @@ const Register_Account = (props) => {
         checkCondition()
     },[emailState,confirmState])
 
+    useEffect((e)=>{
+        if (props.shouldUpdate === true){
+            console.log(ref.current)
+            console.log(ref.current.value)
+        }
+    },[props.shouldUpdate])
 
 
     return (
@@ -72,6 +81,7 @@ const Register_Account = (props) => {
             <Grid item>
                 <TextField
                     label={'请输入注册邮箱'}
+                    ref={ref}
                     fullWidth
                     InputLabelProps={{
                         classes: {

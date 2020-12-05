@@ -10,12 +10,6 @@ import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles({
 
-    root: {
-        paddingLeft: props => {
-            return props.Padding
-        }
-    },
-
     helper_text: {
         color: theme.palette.grey["500"],
         fontSize: '0.75rem',
@@ -38,6 +32,9 @@ const useStyles = makeStyles({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+        paddingLeft: props => {
+            return props.Padding
+        }
     },
     box_Title: {},
     box_Textfield: {
@@ -63,7 +60,7 @@ const Check_Box_With_Text = (props) => {
     }
 
     useEffect(() => {
-        // props.Data_Set_Function(props.Data_Set_Name, checked);
+        props.Data_Set_Function(props.Data_Set_Name, checked);
     }, [checked])
 
     const onLinkClicked = (e) => {
@@ -74,23 +71,19 @@ const Check_Box_With_Text = (props) => {
     }
 
     return (
-
-
-
-                        <Box className={classes.box_Container}>
-                            <Checkbox
-                                color={"secondary"}
-                                classes={{
-                                    root: classes.root_checkBox,
-                                }}
-                                checked={checked}
-                                onChange={(e) => onHandleChange(e)}
-                            />
-                            <Typography>请认真阅读</Typography>
-                            <Link href='#' onClick={(e) => onLinkClicked(e)} style={{color:theme.palette.primary.light}}>此协议</Link>
-                        </Box>
-
-
+        <Box className={classes.box_Container}>
+            <Checkbox
+                color={"secondary"}
+                classes={{
+                    root: classes.root_checkBox,
+                }}
+                checked={checked}
+                onChange={(e) => onHandleChange(e)}
+                
+            />
+            <Typography>请认真阅读</Typography>
+            <Link href='#' onClick={(e) => onLinkClicked(e)} style={{color: theme.palette.primary.light}}>此协议</Link>
+        </Box>
     );
 };
 

@@ -19,6 +19,7 @@ const useStyles = makeStyles({
         position: "relative",
         display: "inline-flex",
         alignItems: "center",
+        justifyContent:'center',
         margin: theme.spacing(1),
     },
 
@@ -34,7 +35,7 @@ const useStyles = makeStyles({
     },
     Progress_Bar: {
         position: 'absolute',
-        color:theme.palette.success.main,
+        color:theme.palette.secondary.main,
         top: props => props.Circle_Position,
         left: props => props.Circle_Position,
         zIndex: -1,
@@ -50,7 +51,6 @@ const Button_Progress = (props) => {
                 <Typography variant={"h5"}>请稍等</Typography>
             </Fab>
             <CircularProgress
-
                 className={classes.Progress_Bar}
                 size={props.Circle_Size}
             />

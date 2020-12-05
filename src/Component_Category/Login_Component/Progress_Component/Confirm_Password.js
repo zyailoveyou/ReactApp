@@ -1,25 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Grid} from "@material-ui/core";
-import Button from '@material-ui/core/Button';
 import {makeStyles} from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 //Icons
-import EmailIcon from '@material-ui/icons/Email';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import LockIcon from '@material-ui/icons/Lock';
-import Typography from "@material-ui/core/Typography";
 import theme from "../../../MyTheme/Theme";
-import {Box} from "@material-ui/core";
-
-
-import Check_Box_With_Text from "../../Check_Box/Check_Box_With_Text";
-
 //my_component
 import Alert_Component from "../../Alert/Alert_Component";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Certification from "../Function_List/Certification_Function";
 
 
 const useStyles = makeStyles({
@@ -44,12 +36,13 @@ const useStyles = makeStyles({
     }
 })
 
-const ComfirmPassword = (props) => {
+const ConfirmPassword = (props) => {
     const classes = useStyles(props);
     const [showPassword, setShowPassword] = React.useState([false,false]);
     const [passwordState,setPassWordState] = useState(-1);
     const [confirmPassWordState,setConfirmPassWordState] = useState(-1)
-
+    const confirmRef = useRef();
+    const passwordRef = useRef();
 
     const handleClickShowPasswordPass = () => {
         setShowPassword((prev)=>{
@@ -57,33 +50,31 @@ const ComfirmPassword = (props) => {
             return [!prev[0],prev[1]]
         });
     };
-    const handleClickShowPasswordSecondComfirm = () => {
+
+    const handleClickShowPasswordSecondConfirm = () => {
         setShowPassword((prev)=>{
             return[prev[0],!prev[1]]
         });
     };
-
-    const checkPassword = (e) =>{
-        if (e.target.value ===''){
-            setPassWordState(0)
-        }
-        else {
-            setPassWordState(1)
+    const checkPassword = (value) =>{
+        const a = Certification['Certify_Password'](value,confirmRef.current.value)
+        setPassWordState(a)
+        if (a === 0||a===2){
+            setConfirmPassWordState(a)
         }
     }
 
-    const checkConfirmPassWord = (e)=>{
-        if (e.target.value ===''){
-            setConfirmPassWordState(0)
-        }
-        else {
-            setConfirmPassWordState(1)
-        }
+    const checkConfirmPassWord = (value)=>{
+        const a = Certification['Certify_Confirm_Password'](value,passwordRef.current.value)
+        setConfirmPassWordState(a)
     }
 
     const checkCondition = ()=>{
-        if (passwordState ===1 && confirmPassWordState ===1){
+        if (passwordState ===0 || confirmPassWordState ===0){
             props.setCondition(true)
+        }
+        else {
+            props.setCondition(false)
         }
     }
 
@@ -91,7 +82,14 @@ const ComfirmPassword = (props) => {
         checkCondition()
     },[passwordState,confirmPassWordState])
 
-
+    useEffect(()=>{
+        if (props.flashData === true){
+            props.setInfoGroup((preInfo)=>{
+                return {...preInfo,'password':passwordRef.current.value}
+            })
+            props.setflashData(false);
+        }
+    },[props.flashData])
 
     return (
         <Grid container direction={"column"} spacing={3}>
@@ -122,34 +120,39 @@ const ComfirmPassword = (props) => {
                                 <IconButton
                                     aria-label="toggle password visibility"
                                     onClick={handleClickShowPasswordPass}
+                                    style={{
+                                        outline:"none"
+                                    }}
                                 >
                                     {showPassword[0] ? <Visibility/> : <VisibilityOff/>}
                                 </IconButton>
                             </InputAdornment>
                         ),
+                        inputRef:passwordRef
                     }}
                     inputProps={{
                         className: classes.Input_Text
                     }
                     }
-
-                    onBlur={e =>checkPassword(e)}
+                    onChange={e =>checkPassword(e.target.value)}
+                    onBlur={e =>checkPassword(e.target.value)}
                     helperText={function () {
                         switch (passwordState) {
                             case 0:
-                                return '密码不能为空'
-                            case 1:
                                 return null
+                            case 1:
+                                return '密码不能为空'
+                            case 3:
+                                return '密码至少包含两个英文，不少于8位，不超过16位'
                         }
                     }()}
                     error={function () {
-                        if (passwordState === 1 ||passwordState ===-1){
+                        if (passwordState === 0 ||passwordState === -1||passwordState===2){
                             return false
                         }
                         else{
                             return true
                         }
-
                     }()}
                 >
                 </TextField>
@@ -174,35 +177,41 @@ const ComfirmPassword = (props) => {
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="toggle password visibility"
-                                    onClick={handleClickShowPasswordSecondComfirm}
+                                    onClick={handleClickShowPasswordSecondConfirm}
+                                    style={{
+                                        outline:"none"
+                                    }}
                                 >
                                     {showPassword[1] ? <Visibility/> : <VisibilityOff/>}
                                 </IconButton>
                             </InputAdornment>
                         ),
+                        inputRef:confirmRef
                     }}
                     inputProps={{
                         className: classes.Input_Text
                     }
                     }
 
-                    onBlur={e =>checkConfirmPassWord(e)}
+                    onChange={e =>checkConfirmPassWord(e.target.value)}
+                    onBlur={e =>checkConfirmPassWord(e.target.value)}
                     helperText={function () {
                         switch (confirmPassWordState) {
                             case 0:
-                                return '验证码不能为空'
-                            case 1:
                                 return null
+                            case 1:
+                                return '确认密码不能为空'
+                            case 2:
+                                return '两次输入密码不一致'
                         }
                     }()}
                     error={function () {
-                        if (confirmPassWordState===-1 || confirmPassWordState===1){
+                        if (confirmPassWordState===0 || confirmPassWordState===-1){
                             return false
                         }
                         else{
                             return true
                         }
-
                     }()}
                 >
                 </TextField>
@@ -214,4 +223,4 @@ const ComfirmPassword = (props) => {
     );
 };
 
-export default ComfirmPassword;
+export default ConfirmPassword;

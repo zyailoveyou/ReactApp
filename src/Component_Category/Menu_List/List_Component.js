@@ -52,14 +52,6 @@ const useStyles = makeStyles({
         },
     },
 
-    List_Item_Selected: {
-        backgroundColor: theme.palette.secondary.main + ' !important',
-        color: theme.palette.secondary.contrastText + ' !important',
-    },
-
-    Icon_Hover: {
-        color: theme.palette.grey["400"],
-    },
 });
 
 

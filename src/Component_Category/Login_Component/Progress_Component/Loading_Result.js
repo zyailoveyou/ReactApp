@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from "@material-ui/core/Typography";
 import {Grid} from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../MyTheme/Theme";
 //Icons
@@ -14,14 +15,11 @@ const useStyles = makeStyles({
     },
 })
 
-const Loading_Result = () => {
-    const classes = useStyles();
+const Loading_Result = (props) => {
+    const classes = useStyles(props);
+    const {load, setLoad, success, setSuccess} = props
     return (
-        <Grid container direction={"column"} spacing={3}>
-            <Grid item className={classes.Wrapper}>
-                <Button_Progress Fab_Size={'8rem'} Circle_Size={'9rem'} Circle_Position={-8}/>
-            </Grid>
-        </Grid>
+        <Button_Progress Fab_Size={'8rem'} Circle_Size={'9rem'} Circle_Position={-8}/>
     );
 };
 

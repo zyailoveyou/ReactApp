@@ -1,6 +1,5 @@
 
 const Corporation_Form = {
-
     Corporation_Name:'',
     Corporation_Address:'',
     Corporation_Email:'',
@@ -11,7 +10,6 @@ const Corporation_Form = {
     Check_Option:'',
     Switch_Option:false,
     Has_Read_Agreement:false,
-
 }
 
 

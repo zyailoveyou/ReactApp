@@ -10,6 +10,11 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import LockIcon from '@material-ui/icons/Lock';
 
 import Check_Box_With_Text from "../../Check_Box/Check_Box_With_Text";
+import Certification from "../Function_List/Certification_Function";
+import theme from "../../../MyTheme/Theme";
+import IconButton from "@material-ui/core/IconButton";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 
 const useStyles = makeStyles({
@@ -21,67 +26,65 @@ const useStyles = makeStyles({
     Dialog_Content: {
         overflow: "hidden !important",
     },
-
     Button: {
         outline: "none !important",
         borderRadius: '2rem'
     },
     Input_Text: {
         fontSize: '1.4rem',
+        border:'4px'
     },
+    Input:{
+        '& fieldset': {
+            borderWidth:2,
+        },
+    }
 })
-
 
 const Register_Account = (props) => {
     const classes = useStyles(props);
-
     const [emailState,setEmailState] = useState(-1);
-    const [confirmState,setConfirmState] = useState(-1)
-    const ref = useRef()
-
-
-    const checkEmail = (e) =>{
-        if (e.target.value ===''){
-            setEmailState(0)
-        }
-        else {
-            setEmailState(1)
-        }
+    const [checkState,setCheckState] = useState({Checked:false});
+    const setCheckData = (data_name, data) => {
+        setCheckState((prevConfirm) => {
+            return {...prevConfirm, [data_name]: data};
+        })
     }
 
-    const checkConfirm = (e)=>{
-        if (e.target.value ===''){
-            setConfirmState(0)
-        }
-        else {
-            setConfirmState(1)
-        }
+    const Email_Ref = useRef();
+
+
+    const checkEmail = (value) =>{
+        const a = Certification.Certify_Email(value)
+        setEmailState(a)
     }
 
     const checkCondition = ()=>{
-        if (emailState ===1 && confirmState ===1){
+        if (emailState ===0 &&  checkState.Checked ===true){
             props.setCondition(true)
         }
+        else props.setCondition(false)
     }
 
     useEffect(()=>{
         checkCondition()
-    },[emailState,confirmState])
+    },[emailState,checkState])
 
     useEffect((e)=>{
-        if (props.shouldUpdate === true){
-            console.log(ref.current)
-            console.log(ref.current.value)
+        if (props.flashData === true){
+            props.setInfoGroup((preInfo)=>{
+                return {...preInfo,'email':Email_Ref.current.value}
+            })
+            props.setflashData(false);
         }
-    },[props.shouldUpdate])
-
+    },[props.flashData])
 
     return (
+
         <Grid container direction={"column"} spacing={3}>
-            <Grid item>
+            <Grid item id={'testup'}>
                 <TextField
                     label={'请输入注册邮箱'}
-                    ref={ref}
                     fullWidth
                     InputLabelProps={{
                         classes: {
@@ -91,86 +94,41 @@ const Register_Account = (props) => {
                     }}
                     InputProps={{
                         classes: {
-                            underline: classes.input_underline
+                            underline: classes.input_underline,
+                            root:classes.Input
                         },
                         startAdornment: (
                             <InputAdornment position="start">
                                 <EmailIcon color={"primary"}/>
                             </InputAdornment>
                         ),
+                        inputRef:Email_Ref
                     }}
                     inputProps={{
                         className: classes.Input_Text
                     }
                     }
-                    onBlur={e =>checkEmail(e)}
+                    onChange={e =>checkEmail(e.target.value)}
+                    onBlur={e =>checkEmail(e.target.value)}
                     helperText={function () {
                         switch (emailState) {
+                            case -1:
+                                return null
                             case 0:
+                                return null
+                            case 1:
                                 return '邮箱不能为空'
-                            case 1:
-                                return null
+                            case 2:
+                                return '邮箱格式不正确'
                         }
                     }()}
                     error={function () {
-                        if (emailState === 1||emailState===-1){
+                        if (emailState === 0||emailState === -1){
                             return false
                         }
                         else{
                             return true
                         }
-
-                    }()}
-                >
-                </TextField>
-            </Grid>
-            <Grid item>
-                <TextField
-                    label={'请输入验证码'}
-                    fullWidth
-                    InputProps={{
-                        classes: {
-                            underline: classes.input_underline
-                        },
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <VpnKeyIcon color={"primary"}/>
-                            </InputAdornment>
-                        ),
-                        endAdornment: (
-                            <InputAdornment position={'end'}>
-                                <Button
-                                    variant={"outlined"}
-                                    size={"small"}
-                                    color={"secondary"}
-                                    className={classes.Button}
-                                >
-                                    获取验证码
-                                </Button>
-                            </InputAdornment>
-                        )
-                    }}
-                    inputProps={{
-                        className: classes.Input_Text
-                    }
-                    }
-                    onBlur={e =>checkConfirm(e)}
-                    helperText={function () {
-                        switch (confirmState) {
-                            case 0:
-                                return '验证码不能为空'
-                            case 1:
-                                return null
-                        }
-                    }()}
-                    error={function () {
-                        if (confirmState === 1||confirmState===-1){
-                            return false
-                        }
-                        else{
-                            return true
-                        }
-
                     }()}
                 >
                 </TextField>
@@ -179,7 +137,8 @@ const Register_Account = (props) => {
                 <Check_Box_With_Text
                     Title="协议认可"
                     Helper_Text='协议认可'
-                    Data_Set_Name={'Has_Read_Agreement'}
+                    Data_Set_Name={'Checked'}
+                    Data_Set_Function = {setCheckData}
                     Has_Icon={false}/>
             </Grid>
         </Grid>

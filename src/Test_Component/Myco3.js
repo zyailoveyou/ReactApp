@@ -8,8 +8,10 @@ import Button from '@material-ui/core/Button';
 import {easeBounceIn} from "d3-ease";
 import {easeQuadInOut} from "d3-ease";
 import transitions from "@material-ui/core/styles/transitions";
+import useResizeObserver from '@react-hook/resize-observer';
 
-import useResizeObserver from '@react-hook/resize-observer'
+import cloudbase from "@cloudbase/js-sdk";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,24 +29,32 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const useSize = (target) => {
-    const [size, setSize] = React.useState()
 
-    React.useLayoutEffect(() => {
-        setSize(target.current.getBoundingClientRect())
-    }, [target])
+const app = cloudbase.init({
+    env: "good-5gou5n09e975182b"
+});
 
-    // Where the magic happens
-    useResizeObserver(target, (entry) => setSize(entry.contentRect))
-    return size
+
+const email = "zyailoveyou123@163.com";
+const password = "z456";
+const test= () =>{
+
+
+
 }
 
+
 export default function Myco3() {
-    const target = React.useRef(null)
-    const size = useSize(target)
-    console.log(size)
+
+    app
+        .auth()
+        .signUpWithEmailAndPassword(email, password)
+        .then(() => {
+            console.log('23')
+        }).catch(function (reason) {
+            console.log(reason)
+    })
     return (
-        <pre ref={target}>
-            123123123</pre>
+        <div>123123123</div>
     )
 }

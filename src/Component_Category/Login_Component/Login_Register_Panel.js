@@ -76,9 +76,7 @@ const useStyles = makeStyles({
 
 
 const Login_Register_Panel = (props) => {
-
     const classes = useStyles();
-
     const Login_Data_Initial = {
         UserName: '',
         PassWord: '',
@@ -114,19 +112,15 @@ const Login_Register_Panel = (props) => {
         console.log('执行了OnClickLogin')
         const username = Login_Data.UserName;
         const password = Login_Data.PassWord;
-
         console.log(username);
         console.log(password);
         history.push('/Main/Home');
-
     }
 
     const OnClickRegister = () => {
         console.log('执行了OnClickRegister')
-        //执行注册操作
-        handleClickOpen_Dialog();
+        Set_Open_Dialog(true);
     }
-
 
     const handleClickOpen_Dialog = () => {
         Set_Open_Dialog(true);
@@ -139,13 +133,13 @@ const Login_Register_Panel = (props) => {
 
     return (
         <Box>
-            <Grid container className={classes.main_Panel} spacing={4}>
+            <Grid container className={classes.main_Panel} spacing={3}>
                 <Grid item>
                     <img src={Logo} alt="" className={classes.image_Logo}/>
                     <Typography className={classes.label_text}>眼球后台管理系统</Typography>
                 </Grid>
                 <Grid item>
-                    <Grid container direction={"column"} spacing={2}>
+                    <Grid container direction={"column"} spacing={3}>
                         <Grid item>
                             <TextField
                                 label={'账号'}
@@ -209,6 +203,7 @@ const Login_Register_Panel = (props) => {
             </Grid>
             <Register_Dialog
                 open={Open_Dialog}
+                setOpen = {Set_Open_Dialog}
                 onClose={handleClose_Dialog}
                 onOpen={handleClickOpen_Dialog}
             />

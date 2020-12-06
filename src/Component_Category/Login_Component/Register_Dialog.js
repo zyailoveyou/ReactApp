@@ -57,8 +57,8 @@ const Register_Dialog = (props) => {
     const [checkCondition, setCheckCondition] = useState(false);
     //控制是否应当设置数据
     const [flashData, setFlashData] = useState(false);
-    const [load, setLoad] = useState();
-    const [success, setSuccess] = useState();
+    const [load, setLoad] = useState(true);
+    const [success, setSuccess] = useState(false);
     //数据集
     const [infoGroup, setInfoGroup] = useState({
         email: "",
@@ -94,18 +94,29 @@ const Register_Dialog = (props) => {
     useEffect(() => {
         console.log(infoGroup)
         if (activeStep === 2) {
-            // app
-            //     .auth()
-            //     .signUpWithEmailAndPassword(infoGroup.email, infoGroup.password)
-            //     .then(() => {
-            //
-            //     }).catch(function (reason) {
-            //     console.log(reason)
-            // })
+            app
+                .auth()
+                .signUpWithEmailAndPassword(infoGroup.email, infoGroup.password)
+                .then(() => {
+                    console.log('注册邮件已经发送')
+                    setActiveStep((prevActiveStep) => (prevActiveStep + 1))
+                    setSuccess(true)
+                    setLoad(false)
+
+                }).catch(function (reason) {
+                console.log(reason)
+            })
         }
     }, [infoGroup], [activeStep])
 
-    const transitions = useTransition(activeStep, p => p, {
+    const transitions = useTransition(function () {
+        if (activeStep <=2){
+            return activeStep
+        }
+        else {
+            return 2
+        }
+    }(), p => p, {
         from: {opacity: 0, transform: 'translate3d(100%,0,0)'},
         enter: {opacity: 1, transform: 'translate3d(0%,0,0)', position: "relative"},
         leave: {opacity: 0, transform: 'translate3d(-50%,0,0)', position: "absolute"},
@@ -125,8 +136,9 @@ const Register_Dialog = (props) => {
     const handleClosed = () => {
         setOpen(false)
         setActiveStep(0)
-        // setShouldUpdate(false)
         setCheckCondition(false)
+        setLoad(true)
+        setSuccess(false)
         onClose();
     }
 
@@ -206,10 +218,9 @@ const Register_Dialog = (props) => {
                                                 })
                                             }
                                         </Grid>
-
                                     {
                                         function () {
-                                            if (activeStep === Step_Pages.length - 1) {
+                                            if (activeStep >= Step_Pages.length-1) {
                                                 return null
                                             } else {
                                                 return (
@@ -228,7 +239,6 @@ const Register_Dialog = (props) => {
                                                 )
                                             }
                                         }()
-
                                     }
                                 </Grid>
                             </Grid>

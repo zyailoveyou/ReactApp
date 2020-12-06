@@ -38,13 +38,13 @@ const page_map = [
     {
         value: 1,
         url: '/Main/Corporation/Worker'
+        // url: '/'
     }
 ]
 
 const Corporation_Page = (props) => {
     const history = useHistory();
     const location = useLocation()
-    console.log(location);
     const classes_tab = useStyles_tab();
 
     const [value, setValue] = useState(
@@ -60,6 +60,7 @@ const Corporation_Page = (props) => {
         const result = page_map.find((item)=>{
             return item.value === newValue
         })
+        console.log(history)
         history.push(result.url);
     };
 

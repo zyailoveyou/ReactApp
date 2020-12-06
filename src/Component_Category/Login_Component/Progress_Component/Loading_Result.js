@@ -6,6 +6,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../MyTheme/Theme";
 //Icons
 import Button_Progress from "../../Progress_Bar/Button_Progress";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog_Component from "../../Dialog/Dialog_Component";
 
 
 const useStyles = makeStyles({
@@ -18,8 +21,22 @@ const useStyles = makeStyles({
 const Loading_Result = (props) => {
     const classes = useStyles(props);
     const {load, setLoad, success, setSuccess} = props
+    const handleClosed = () => {
+        console.log('closed')
+    }
     return (
-        <Button_Progress Fab_Size={'8rem'} Circle_Size={'9rem'} Circle_Position={-8}/>
+        <Box>
+            <Button_Progress
+                load={load}
+                setLoad={setLoad}
+                success={success}
+                setSuccess={setSuccess}
+                Fab_Size={'8rem'}
+                Circle_Size={'9rem'}
+                Circle_Position={-8}/>
+
+            <Dialog_Component open={success} setOpen = {setSuccess}/>
+        </Box>
     );
 };
 

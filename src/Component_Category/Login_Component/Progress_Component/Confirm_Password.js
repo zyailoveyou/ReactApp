@@ -29,7 +29,8 @@ const useStyles = makeStyles({
         borderRadius: '2rem'
     },
     Input_Text: {
-        fontSize: '1.4rem',
+        height:'30px',
+        fontSize: '1.1rem',
     },
     Caption: {
         color: theme.palette.secondary.main

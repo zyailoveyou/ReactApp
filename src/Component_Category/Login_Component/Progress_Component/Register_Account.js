@@ -15,6 +15,7 @@ import theme from "../../../MyTheme/Theme";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Alert_Component from "../../Alert/Alert_Component";
 
 
 const useStyles = makeStyles({
@@ -31,7 +32,8 @@ const useStyles = makeStyles({
         borderRadius: '2rem'
     },
     Input_Text: {
-        fontSize: '1.4rem',
+        height:'30px',
+        fontSize:'1.1rem',
         border:'4px'
     },
     Input:{
@@ -52,8 +54,6 @@ const Register_Account = (props) => {
     }
 
     const Email_Ref = useRef();
-
-
     const checkEmail = (value) =>{
         const a = Certification.Certify_Email(value)
         setEmailState(a)
@@ -85,6 +85,7 @@ const Register_Account = (props) => {
             <Grid item id={'testup'}>
                 <TextField
                     label={'请输入注册邮箱'}
+                    size={"medium"}
                     fullWidth
                     InputLabelProps={{
                         classes: {
@@ -99,7 +100,7 @@ const Register_Account = (props) => {
                         },
                         startAdornment: (
                             <InputAdornment position="start">
-                                <EmailIcon color={"primary"}/>
+                                <EmailIcon color={"primary"} fontSize={"default"}/>
                             </InputAdornment>
                         ),
                         inputRef:Email_Ref
@@ -132,6 +133,9 @@ const Register_Account = (props) => {
                     }()}
                 >
                 </TextField>
+            </Grid>
+            <Grid item>
+                <Alert_Component content={'请注意填写真实邮箱，需要接受验证邮件'} severity={'warning'} switch={false}></Alert_Component>
             </Grid>
             <Grid item>
                 <Check_Box_With_Text

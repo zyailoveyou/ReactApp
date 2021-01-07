@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useState, useRef} from 'react';
+import React, {useEffect, useLayoutEffect, useState, useRef, useContext} from 'react';
 import ReactDOM from 'react-dom'
 import {Grid} from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog';
@@ -17,9 +17,9 @@ import Loading_Result from "./Progress_Component/Loading_Result";
 import IconButton from '@material-ui/core/IconButton';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Box from "@material-ui/core/Box";
-
+import CloudBase_Context from "../../Context/Context_Info/CloudBase_Context";
 //后台
-import cloudbase from "@cloudbase/js-sdk";
+
 
 const useStyles = makeStyles({
     Dialog: {
@@ -42,14 +42,13 @@ const useStyles = makeStyles({
     },
 })
 
-const app = cloudbase.init({
-    env: "good-5gou5n09e975182b"
-});
+
 
 
 const Register_Dialog = (props) => {
     const target = useRef(null);
     const classes = useStyles();
+    const CloudBase = useContext(CloudBase_Context)
     const {open, setOpen, onClose, onOpen,} = props;
     //控制界面跳转及动画
     const [activeStep, setActiveStep] = useState(0);
@@ -59,11 +58,14 @@ const Register_Dialog = (props) => {
     const [flashData, setFlashData] = useState(false);
     const [load, setLoad] = useState(true);
     const [success, setSuccess] = useState(false);
+    const [error,setError] = useState(false)
     //数据集
     const [infoGroup, setInfoGroup] = useState({
         email: "",
         password: "",
     })
+
+
 
     const Step_Pages = [
         <Register_Account
@@ -86,28 +88,29 @@ const Register_Dialog = (props) => {
             load={load}
             setLoad={setLoad}
             success={success}
+            error = {error}
+            setError={setError}
             setSuccess={setSuccess}
         />,
     ]
 
-
     useEffect(() => {
-        console.log(infoGroup)
         if (activeStep === 2) {
-            app
-                .auth()
+            CloudBase.auth
                 .signUpWithEmailAndPassword(infoGroup.email, infoGroup.password)
                 .then(() => {
                     console.log('注册邮件已经发送')
                     setActiveStep((prevActiveStep) => (prevActiveStep + 1))
                     setSuccess(true)
                     setLoad(false)
-
                 }).catch(function (reason) {
-                console.log(reason)
+                console.log(reason.toString())
+                setError(true)
             })
         }
     }, [infoGroup], [activeStep])
+
+
 
     const transitions = useTransition(function () {
         if (activeStep <=2){
@@ -139,6 +142,7 @@ const Register_Dialog = (props) => {
         setCheckCondition(false)
         setLoad(true)
         setSuccess(false)
+        setError(false)
         onClose();
     }
 

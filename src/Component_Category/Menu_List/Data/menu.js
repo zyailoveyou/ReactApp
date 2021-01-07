@@ -1,9 +1,4 @@
 import React from "react";
-import {Route, withRouter} from 'react-router-dom';
-import theme from "../../../MyTheme/Theme";
-
-
-
 //icons
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -86,7 +81,7 @@ const menu =
                                 Icon: <PeopleAltIcon/>,
                                 Id: 1,
                                 Upper_List_Indicator: 'Corp_Manage',
-                                On_Click:function(history){history.push('/Main/Corporation/Worker')},
+                                On_Click:function(history){history.push('/Main/Corporation/Information')},
                                 Level:3,
 
                             },

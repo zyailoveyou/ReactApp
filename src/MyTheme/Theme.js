@@ -19,6 +19,12 @@ const theme = createMuiTheme({
         },
         text: {}
     },
+    typography:{
+        // fontFamily: [
+        //     'ZCOOL KuaiLe',
+        //     'cursive',
+        // ].join(','),
+    }
 });
 
 export default theme;

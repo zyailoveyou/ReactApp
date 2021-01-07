@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Button_Group from "../Button/Button_Group";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import LockIcon from '@material-ui/icons/Lock';
+import Dialog_Component from "../Dialog/Dialog_Component";
+
 
 import TextField from '@material-ui/core/TextField';
 import Logo from '../../Image/Logo/Logo.png';
@@ -14,6 +16,8 @@ import theme from "../../MyTheme/Theme";
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import Register_Dialog from "./Register_Dialog";
 import {Box} from "@material-ui/core";
+
+import CloudBase_Context from "../../Context/Context_Info/CloudBase_Context";
 
 
 const useStyles = makeStyles({
@@ -31,7 +35,9 @@ const useStyles = makeStyles({
     },
     input_text: {
         color: 'white !important',
-        fontSize: '1.4rem',
+        height:'30px',
+        fontSize: '1.1rem',
+
     },
     input_underline: {
         '&:after': {
@@ -77,14 +83,19 @@ const useStyles = makeStyles({
 
 const Login_Register_Panel = (props) => {
     const classes = useStyles();
+    const CloudBase = useContext(CloudBase_Context)
     const Login_Data_Initial = {
         UserName: '',
         PassWord: '',
         Certification: '',
     }
-
+    const {Logging,Set_Logging} = props
+    const [Login_failed,Set_Login_failed] = useState(false);
     const [Login_Data, Set_Login_Data] = useState(Login_Data_Initial);
     const [Open_Dialog, Set_Open_Dialog] = useState(false);
+
+
+
     const history = useHistory();
 
     const SetUserName = (UserName_Input) => {
@@ -109,12 +120,19 @@ const Login_Register_Panel = (props) => {
 
     const OnClickLogin = () => {
         //执行登录操作
-        console.log('执行了OnClickLogin')
-        const username = Login_Data.UserName;
-        const password = Login_Data.PassWord;
-        console.log(username);
-        console.log(password);
-        history.push('/Main/Home');
+        Set_Logging(true)
+        CloudBase.auth.signInWithEmailAndPassword(Login_Data.UserName,Login_Data.PassWord).then((loginState)=>{
+            console.log(loginState)
+            console.log('登录成功')
+            Set_Logging(false)
+            history.push('/Main/Home');
+        }).catch(function onReject(e) {
+            Set_Logging(false)
+            Set_Login_failed(true)
+            console.error('some problem happened', e);
+        })
+
+        // history.push('/Main/Home');
     }
 
     const OnClickRegister = () => {
@@ -161,6 +179,7 @@ const Login_Register_Panel = (props) => {
                                 }}
                                 inputProps={{
                                     className: classes.input_text
+
                                 }
                                 }
                                 onBlur={event => SetUserName(event.target.value)}
@@ -206,6 +225,13 @@ const Login_Register_Panel = (props) => {
                 setOpen = {Set_Open_Dialog}
                 onClose={handleClose_Dialog}
                 onOpen={handleClickOpen_Dialog}
+            />
+            <Dialog_Component
+                open={Login_failed}
+                setOpen={Set_Login_failed}
+                type = {'error'}
+                title = {'登录失败'}
+                content = {'登录失败，页面将在3秒后自动跳转。'}
             />
         </Box>
 

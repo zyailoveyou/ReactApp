@@ -1,24 +1,20 @@
-//customized Component
 import React, {useContext} from "react";
-import Input_Selector_Component from "../../Component_Category/Input/Input_Selector_Component";
-import Input_Information_Component from "../../Component_Category/Input/Input_Information_Component";
-import Input_Password_Component from "../../Component_Category/Input/Input_Password_Component";
-import Alert_Component from "../../Component_Category/Alert/Alert_Component";
-import Group_Check_Box_Component from "../../Component_Category/Check_Box/Group_Check_Box_Component";
-import Switch_Component from "../../Component_Category/Switch/Switch_Component";
-import Check_Box_With_Text from "../../Component_Category/Check_Box/Check_Box_With_Text";
-import Single_Button_Component from "../../Component_Category/Button/Single_Button";
-import Show_Information_Component from "../../Component_Category/Information/Show_Information_Component";
-//material ui
-import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import Show_Information_Component from "../../../Component_Category/Information/Show_Information_Component";
+import Paper from "@material-ui/core/Paper";
+import Alert_Component from "../../../Component_Category/Alert/Alert_Component";
+import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
+import Input_Information_Component from "../../../Component_Category/Input/Input_Information_Component";
+import Input_Selector_Component from "../../../Component_Category/Input/Input_Selector_Component";
+import Input_Password_Component from "../../../Component_Category/Input/Input_Password_Component";
+import Group_Check_Box_Component from "../../../Component_Category/Check_Box/Group_Check_Box_Component";
+import Switch_Component from "../../../Component_Category/Switch/Switch_Component";
+import Check_Box_With_Text from "../../../Component_Category/Check_Box/Check_Box_With_Text";
+import Single_Button_Component from "../../../Component_Category/Button/Single_Button";
+import {makeStyles} from "@material-ui/core/styles";
 
-//context
-import {Corporation_Context} from "../../Context/Corporation_Context";
 
 
 const useStyles = makeStyles({
@@ -43,17 +39,16 @@ const useStyles = makeStyles({
     }
 });
 
-
-const Corporation_Information_Page = (props) => {
+const Set_Personal_Profile =()=>{
     const classes = useStyles();
-    const Corporation = useContext(Corporation_Context);
+    const Corporation = useContext(User_Context);
     return (
         <Grid container spacing={2} direction={"column"}>
             <Grid item style={{width:'100%'}}>
                 <Show_Information_Component/>
             </Grid>
             <Grid item style={{width:'100%'}}>
-                <Paper elevation={5} square={false} className={classes.paper}>
+                <Paper elevation={3} square={false} className={classes.paper}>
                     <div className={classes.container}>
                         <Grid container spacing={2} direction={"column"}>
                             <Grid item>
@@ -134,7 +129,6 @@ const Corporation_Information_Page = (props) => {
                                                     <Box style={{flex: 6}}>
                                                         <Input_Information_Component
                                                             Title="公司邮箱"
-                                                            Helper_Text='请输入公司邮箱'
                                                             Data_Set_Function={Corporation.SetData}
                                                             Data_Set_Name={'Corporation_Email'}
                                                             Has_Icon={false}
@@ -262,7 +256,7 @@ const Corporation_Information_Page = (props) => {
 
                                                     </Grid>
                                                     <Grid item xs={6} style={{
-                                                        }}>
+                                                    }}>
                                                         <Group_Check_Box_Component
                                                             Title="选项"
                                                             Padding = '2rem'
@@ -380,8 +374,7 @@ const Corporation_Information_Page = (props) => {
                 </Paper>
             </Grid>
         </Grid>
-    );
-};
+    )
+}
 
-export default Corporation_Information_Page;
-
+export default Set_Personal_Profile

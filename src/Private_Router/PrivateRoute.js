@@ -1,33 +1,41 @@
-import React, {Component} from 'react';
-import {Route, withRouter} from 'react-router-dom';
+import React, {Component, useContext, useEffect, useState} from 'react';
+import {Route, useHistory, withRouter} from 'react-router-dom';
+import CloudBase_Context from "../Context/Context_Info/CloudBase_Context";
+import Dialog_Component from "../Component_Category/Dialog/Dialog_Component";
+import Box from "@material-ui/core/Box";
+import {makeStyles} from "@material-ui/core/styles";
 
-class PrivateRoute extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isAuthenticated: false,
-        }
-    }
+const useStyle = makeStyles({
+    root: {
+        display: "flex",
+        width: '100%',
+        height: "100vh",
+        background: "url('../Image/BackGround/Cyber3.jpg')",
+        backgroundSize: "100% 100%",
+        zIndex: '1'
+    },
+})
 
-    componentWillMount() {
-        if(!this.state.isAuthenticated){
-            const {history} = this.props;
-            setTimeout(() => {
-                history.replace("/");
-            }, 1000)
-        }
 
-    }
+const PrivateRoute = (props) => {
+    const history = useHistory()
+    const CloudBase = useContext(CloudBase_Context)
+    const isAuthenticated = CloudBase.auth.hasLoginState() || false
 
-    render() {
-        // let {...props} = this.props;
-        let props2 = this.props;
-        return this.state.isAuthenticated ?
-            (<Route {...props2} />)
-            :
-            (<p style = {{"width": "100%", "text-align": "center", "fontSize": "20px", "lineHeight": "50px"}}>请登录...</p>)
+    return (
+        function () {
+            if (isAuthenticated) {
+                return (<Route {...props} />)
+            } else {
+                console.log('没有登录')
+                history.replace('/Error')
+                return (
+                    null
+                )
+            }
+        }()
+    )
 
-    }
 }
 
 export default withRouter(PrivateRoute);

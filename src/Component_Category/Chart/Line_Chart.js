@@ -1,9 +1,15 @@
 import React from 'react';
 import {ResponsiveLine} from '@nivo/line'
 import theme from "../../MyTheme/Theme";
+import Paper from "@material-ui/core/Paper";
+import AutoSizer from "react-virtualized-auto-sizer";
 
 
-const colors = {'Japan': theme.palette.grey["400"], 'China': theme.palette.secondary.main, 'American': theme.palette.primary.main}
+const colors = {
+    'Japan': theme.palette.grey["400"],
+    'China': theme.palette.secondary.main,
+    'American': theme.palette.primary.main
+}
 const getColor = bar => colors[bar.id]
 
 const data = [
@@ -63,70 +69,81 @@ const data = [
 
 ]
 
-const Line_Chart = () => {
+const Line_Chart = (props) => {
     return (
-        <ResponsiveLine
-            data={data}
-            margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-            xScale={{ type: 'linear' }}
-            yScale={{ type: 'linear', max: 'auto', reverse: false }}
-            axisTop={null}
-            axisRight={null}
-            axisBottom={{
-                orient: 'bottom',
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: 'Extend',
-                legendOffset: 36,
-                legendPosition: 'middle'
-            }}
-            axisLeft={{
-                orient: 'left',
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: 'Volume',
-                legendOffset: -40,
-                legendPosition: 'middle'
-            }}
-            colors={(bar) =>{
-                return getColor(bar)
-            }}
-            pointSize={8}
-            pointColor={'white'}
-            pointBorderWidth={2}
-            pointBorderColor={theme.palette.grey["500"]}
-            pointLabel="y"
-            pointLabelYOffset={-12}
-            useMesh={true}
-            legends={[
-                {
-                    anchor: 'bottom-right',
-                    direction: 'column',
-                    justify: false,
-                    translateX: 100,
-                    translateY: 0,
-                    itemsSpacing: 0,
-                    itemDirection: 'left-to-right',
-                    itemWidth: 80,
-                    itemHeight: 20,
-                    itemOpacity: 0.75,
-                    symbolSize: 12,
-                    symbolShape: 'circle',
-                    symbolBorderColor: 'rgba(0, 0, 0, .5)',
-                    effects: [
-                        {
-                            on: 'hover',
-                            style: {
-                                itemBackground: 'rgba(0, 0, 0, .03)',
-                                itemOpacity: 1
+        <AutoSizer defaultHeight={'400px'}>
+            {({ height, width }) => (
+                <Paper elevation={3} style={{
+                    width:width,
+                    height:height,
+                }}>
+                    <ResponsiveLine
+                        data={data}
+                        margin={{top: 50, right: 110, bottom: 50, left: 60}}
+                        xScale={{type: 'linear'}}
+                        yScale={{type: 'linear', max: 'auto', reverse: false}}
+                        axisTop={null}
+                        axisRight={null}
+                        axisBottom={{
+                            orient: 'bottom',
+                            tickSize: 5,
+                            tickPadding: 5,
+                            tickRotation: 0,
+                            legend: 'Extend',
+                            legendOffset: 36,
+                            legendPosition: 'middle'
+                        }}
+                        axisLeft={{
+                            orient: 'left',
+                            tickSize: 5,
+                            tickPadding: 5,
+                            tickRotation: 0,
+                            legend: 'Volume',
+                            legendOffset: -40,
+                            legendPosition: 'middle'
+                        }}
+                        colors={(bar) => {
+                            return getColor(bar)
+                        }}
+                        pointSize={8}
+                        pointColor={'white'}
+                        pointBorderWidth={2}
+                        pointBorderColor={theme.palette.grey["500"]}
+                        pointLabel="y"
+                        pointLabelYOffset={-12}
+                        useMesh={true}
+                        legends={[
+                            {
+                                anchor: 'bottom-right',
+                                direction: 'column',
+                                justify: false,
+                                translateX: 100,
+                                translateY: 0,
+                                itemsSpacing: 0,
+                                itemDirection: 'left-to-right',
+                                itemWidth: 80,
+                                itemHeight: 20,
+                                itemOpacity: 0.75,
+                                symbolSize: 12,
+                                symbolShape: 'circle',
+                                symbolBorderColor: 'rgba(0, 0, 0, .5)',
+                                effects: [
+                                    {
+                                        on: 'hover',
+                                        style: {
+                                            itemBackground: 'rgba(0, 0, 0, .03)',
+                                            itemOpacity: 1
+                                        }
+                                    }
+                                ]
                             }
-                        }
-                    ]
-                }
-            ]}
-        />
+                        ]}
+                    />
+                </Paper>
+                )}
+        </AutoSizer>
+
+
     );
 };
 

@@ -11,6 +11,8 @@ import transitions from "@material-ui/core/styles/transitions";
 import useResizeObserver from '@react-hook/resize-observer';
 
 import cloudbase from "@cloudbase/js-sdk";
+import Typography from "@material-ui/core/Typography";
+import Chip from "@material-ui/core/Chip";
 
 
 
@@ -55,6 +57,7 @@ export default function Myco3() {
             console.log(reason)
     })
     return (
-        <div>123123123</div>
+        <div>123</div>
+
     )
 }

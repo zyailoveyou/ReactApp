@@ -1,13 +1,9 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import theme from "../../MyTheme/Theme";
 import Grid from '@material-ui/core/Grid';
-
-
 
 
 const useStyles = makeStyles({
@@ -25,8 +21,8 @@ const useStyles = makeStyles({
 const Show_Information_Component = () => {
     const classes = useStyles()
     return (
-        <Paper className={classes.container} elevation={2}>
-            <Grid container item spacing={2}>
+        <Paper className={classes.container} elevation={3}>
+            <Grid container item spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant={'h5'}>使用说明</Typography>
                 </Grid>

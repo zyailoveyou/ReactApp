@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 
 const Loading_Result = (props) => {
     const classes = useStyles(props);
-    const {load, setLoad, success, setSuccess} = props
+    const {load, setLoad, success, setSuccess,error,setError} = props
     const handleClosed = () => {
         console.log('closed')
     }
@@ -35,7 +35,20 @@ const Loading_Result = (props) => {
                 Circle_Size={'9rem'}
                 Circle_Position={-8}/>
 
-            <Dialog_Component open={success} setOpen = {setSuccess}/>
+            <Dialog_Component
+                open={success}
+                setOpen={setSuccess}
+                type = {'success'}
+                title = {'注册成功'}
+                content = {'注册账号成功，请到注册邮箱激活账号后登录'}
+            />
+            <Dialog_Component
+                open={error}
+                setOpen={setError}
+                type = {'error'}
+                title = {'注册失败'}
+                content = {'注册账号失败,请稍后重试'}
+            />
         </Box>
     );
 };

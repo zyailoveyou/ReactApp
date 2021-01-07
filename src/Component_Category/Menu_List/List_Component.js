@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,memo} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import cloneDeep from 'lodash/cloneDeep';
@@ -15,7 +15,7 @@ const useStyles = makeStyles({
         width: '100%',
         position: "sticky",
         top: 0,
-        color: theme.palette.grey["400"],
+        // color: theme.palette.grey["400"],
         // background: theme.palette.grey.A100,
         // color: theme.palette.grey["200"],
     },
@@ -124,13 +124,15 @@ const List_Component = (props) => {
 
             for (let i = 0; i < Upper_Menu.List.length; i++) {
                 if (Upper_Menu.List[i].Indicator === now_indicator) {
-                    Upper_Menu.List[i].Selected = !Upper_Menu.List[i].Selected
-                    if (Upper_Menu.List[i].Node_Type === 'list')
-                    {
+
+                    if (Upper_Menu.List[i].Node_Type === 'list') {
                         copy_manager[0].Last_Choice_Type = 'list';
-                    }
-                    else {
+                        Upper_Menu.List[i].Selected = !Upper_Menu.List[i].Selected
+                    } else {
                         copy_manager[0].Last_Choice_Type = 'item';
+                        if (Upper_Menu.List[i].Selected !=true){
+                            Upper_Menu.List[i].Selected = !Upper_Menu.List[i].Selected
+                        }
                     }
                     copy_manager[0].Last_Choice_Indicator = now_indicator;
                 } else {
@@ -177,4 +179,4 @@ const List_Component = (props) => {
 };
 
 
-export default List_Component;
+export default memo(List_Component);

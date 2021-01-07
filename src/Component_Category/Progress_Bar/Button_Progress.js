@@ -59,28 +59,30 @@ const useStyles = makeStyles({
 const Button_Progress = (props) => {
     const classes = useStyles(props);
     const {load, setLoad, success, setSuccess,} = props
+
     const handleClosed = ()=>{
         console.log('closed')
     }
+
     const ButtonClassCombine = clsx({
         [classes.Button]:true,
         [classes.ButtonSuccess]: success,
     });
+
     return (
         <Box className={classes.Wrapper}>
             <Fab className={ButtonClassCombine} color={"primary"} >
                 {
-                    // success? <CheckIcon fontSize={'50px'} /> :<Typography variant={"h5"}>请稍等</Typography>
+                    //success? <CheckIcon fontSize={'50px'} /> :<Typography variant={"h5"}>请稍等</Typography>
                     success? <CheckIcon style={{ fontSize: 50 }} />:<Typography variant={"h5"}>请稍等</Typography>
                 }
             </Fab>
             {
-                load ?<CircularProgress
+                load ? <CircularProgress
                     className={classes.Progress_Bar}
                     size={props.Circle_Size}
                 />:null
             }
-
         </Box>
     );
 };

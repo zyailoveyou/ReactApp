@@ -10,6 +10,7 @@ import {useLocation} from "react-router-dom";
 import {useHistory} from "react-router-dom";
 
 const Navigation_Text_Component = (props) => {
+    console.log('render navigation text')
 
     const location = useLocation();
     const history = useHistory();
@@ -32,11 +33,10 @@ const Navigation_Text_Component = (props) => {
     return (
         <Box className='Navigation_Text_holder'>
             <Breadcrumbs aria-label="breadcrumb">
-
                 {
                     Group_Location.map((item, index) => {
                         return (
-                            <Link color="inherit" href="/" onClick={(e) => handleClick(e, history)}>
+                            <Link color="inherit" href="/" key={index} onClick={(e) => handleClick(e, history)}>
                                 {item}
                             </Link>
                         )

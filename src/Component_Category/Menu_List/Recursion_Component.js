@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{memo} from 'react';
 import Collapse from "@material-ui/core/Collapse";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -54,7 +54,6 @@ const useStyles = makeStyles({
         color: theme.palette.grey["400"],
     },
 
-
     Level_1: {},
 
     Level_2: {
@@ -80,7 +79,6 @@ const Recursion_Component = (props) => {
         {
             item.On_Click(history);
         }
-
     };
 
     const get_selected = (Passed, Now_Indicator) => {
@@ -133,7 +131,7 @@ const Recursion_Component = (props) => {
                                           root: classes.List_Item_Root,
                                           selected: function () {
                                               const result = get_style(props.menu, item.Indicator);
-                                              return result ?  classes.List_Item_Selected:null
+                                              return result ? classes.List_Item_Selected:null
                                           }()
                                       }}
                                       selected={get_selected(props.menu, item.Indicator)}
@@ -172,4 +170,4 @@ const Recursion_Component = (props) => {
     );
 };
 
-export default Recursion_Component;
+export default memo(Recursion_Component);

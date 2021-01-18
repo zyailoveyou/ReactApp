@@ -156,7 +156,7 @@ const Register_Dialog = (props) => {
                 paper: classes.Dialog
             }}
         >
-            <animated.div ref={target}>
+
                 <Grid container direction={"column"} className={classes.Dialog_Content}>
                     <Grid item>
                         <Box style={{
@@ -249,7 +249,7 @@ const Register_Dialog = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-            </animated.div>
+
         </Dialog>
 );
 };

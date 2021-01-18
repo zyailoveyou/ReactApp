@@ -38,12 +38,12 @@ const Avatar_Profile = (props) => {
     const classes = useStyles();
     const [File, setFile] = useState(null)
     const [Load, setLoad] = useState(true)
-    const User = useContext(User_Context);
+    const {userData} = useContext(User_Context);
 
     useEffect(()=>{
-        if (User !=null){
-            console.log(User)
-            setFile(User.AvatarUrl)
+        if (userData!=null){
+            console.log(userData)
+            setFile(userData.AvatarUrl)
             setLoad(false)
         }
         else {

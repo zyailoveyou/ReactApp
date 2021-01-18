@@ -18,20 +18,20 @@ const useStyles = makeStyles({
 });
 
 
-const Show_Information_Component = () => {
+const Show_Information_Component = (props) => {
     const classes = useStyles()
     return (
         <Paper className={classes.container} elevation={3}>
             <Grid container item spacing={3}>
                 <Grid item xs={12}>
-                    <Typography variant={'h5'}>使用说明</Typography>
+                    <Typography variant={'h5'}>{props.Title}</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Divider variant='middle'></Divider>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography>
-                        一般情况下在某种条件下使用这种表格，请需要填写你公司的基本信息的时候使用
+                    <Typography variant={"body1"}>
+                        {props.Content}
                     </Typography>
                 </Grid>
             </Grid>

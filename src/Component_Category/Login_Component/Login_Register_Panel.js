@@ -4,8 +4,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import LockIcon from '@material-ui/icons/Lock';
 import Dialog_Component from "../Dialog/Dialog_Component";
-
-
 import TextField from '@material-ui/core/TextField';
 import Logo from '../../Image/Logo/Logo.png';
 import Typography from "@material-ui/core/Typography";
@@ -18,6 +16,7 @@ import Register_Dialog from "./Register_Dialog";
 import {Box} from "@material-ui/core";
 
 import CloudBase_Context from "../../Context/Context_Info/CloudBase_Context";
+
 
 
 const useStyles = makeStyles({

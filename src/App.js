@@ -1,4 +1,5 @@
 import React, {useState,useMemo} from 'react';
+import $ from 'jquery';
 import 'jquery/dist/jquery.js'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js'
@@ -21,6 +22,7 @@ document.body.style.overflowY = 'overlay !important'
 const App =()=> {
     console.log('render top')
     const [errorOpen, setErrorOpen] = useState(true)
+
     return (
         <CloudBase_Context.Provider value={Cloud_Base}>
             <ThemeProvider theme={theme}>
@@ -36,6 +38,7 @@ const App =()=> {
                                     content='请先登录再进行操作'
                                     open={errorOpen}
                                     setOpen={setErrorOpen}
+                                    disableBackdropClick={true}
                                 />
                             )
                         }} />
@@ -44,7 +47,6 @@ const App =()=> {
             </ThemeProvider>
         </CloudBase_Context.Provider>
         // <div>123123</div>
-
     );
 }
 

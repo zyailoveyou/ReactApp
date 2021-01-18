@@ -1,18 +1,18 @@
 //customized Component
 import React from "react";
-import Show_Information_Component from "../../../Component_Category/Information/Show_Information_Component";
+import Show_Information_Component from "../../../../Component_Category/Information/Show_Information_Component";
 //material ui
 import {makeStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Avatar_Profile from "../../../Component_Category/Information/Avatar_Profile";
-import Chips_Profile from "../../../Component_Category/Information/Chips_Profile";
-import About_Profile from "../../../Component_Category/Information/About_Profile";
-import Table_Component from "../../../Component_Category/Table/Table_Component";
-import Bar_Chart from "../../../Component_Category/Chart/Bar_Chart";
+import Avatar_Profile from "../../../../Component_Category/Information/Avatar_Profile";
+import Chips_Profile from "../../../../Component_Category/Information/Chips_Profile";
+import About_Profile from "../../../../Component_Category/Information/About_Profile";
+import Table_Component from "../../../../Component_Category/Table/Table_Component";
+import Bar_Chart from "../../../../Component_Category/Chart/Bar_Chart";
 //context
-import Data_Panel from "../../../Component_Category/Information/Data_Panel";
+import Data_Panel from "../../../../Component_Category/Information/Data_Panel";
 import {Box} from "@material-ui/core";
-import theme from "../../../MyTheme/Theme";
+import theme from "../../../../MyTheme/Theme";
 
 
 const useStyles = makeStyles({
@@ -63,7 +63,10 @@ const Personal_Profile = (props) => {
         <Box>
             <Grid container spacing={2} direction={"column"}>
                 <Grid item>
-                    <Show_Information_Component/>
+                    <Show_Information_Component
+                        Title ={'面板说明'}
+                        Content={'用于展示个人文件信息，以及筛选个人信息'}
+                    />
                 </Grid>
                 <Grid item >
                     <Grid container spacing={2} direction={"row"} className={classes.container}>

@@ -9,7 +9,8 @@ const User_Data = {
     Province: '',
     City: '',
     Address: '',
-    AvatarFileID:''
+    AvatarFileID:'',
+    AvatarUrl:'',
 }
 
 

@@ -5,7 +5,7 @@ import Navigation_Text from '../../Component_Category/Breadcrumb/Navigation_Text
 import Home_Page from "./Home/Home_Page";
 import List_Component from "../../Component_Category/Menu_List/List_Component";
 import menu from "../../Component_Category/Menu_List/Data/menu";
-import User_Page from "./Corporation_Manage/User_Page";
+import User_Page from "./User_Manager/User_Page";
 import App_Bar from "../../Component_Category/App_Bar/App_Bar";
 //material ui
 import Divider from "@material-ui/core/Divider";
@@ -64,31 +64,34 @@ const Main_Page = () => {
     const [Load, setLoad] = useState(true)
     const [userData, setUserData] = useState(null)
     useSignOut();
-
     useEffect(() => {
         CLoudBase.auth.getCurrenUser().then((user) => {
             console.log('进入初始化用户')
             CLoudBase.db.collection("User").doc(user.uid).get().then((res) => {
                 if (res.data[0] != null) {
-                    if (res.data[0].AvatarFileID!=null){
+                    console.log('查找到用户文档')
+                    if (res.data[0].data.AvatarFileID!=''){
                         CLoudBase.app.getTempFileURL({
-                            fileList: [res.data[0].AvatarFileID]
+                            fileList: [res.data[0].data.AvatarFileID]
                         }).then((res2) => {
-                            res2.fileList.forEach((el) => {
-                                if (el.code === "SUCCESS") {
-                                    console.log({...res.data[0], AvatarUrl: el.tempFileURL})
-                                    setUserData({...res.data[0], AvatarUrl: el.tempFileURL})
-                                    setLoad(false)
-                                } else {
-                                    console.log('没有成功获取temperUrl')
-                                }
-                            });
+                            if (res2.code !='OPERATION_FAIL'){
+                                res2.fileList.forEach((el) => {
+                                    if (el.code === "SUCCESS") {
+                                        console.log({...res.data[0].data, AvatarUrl: el.tempFileURL})
+                                        setUserData({...res.data[0].data, AvatarUrl: el.tempFileURL})
+                                        setLoad(false)
+                                    } else {
+                                        console.log('没有成功获取temperUrl')
+                                    }
+                                });
+                            }
                         })
                     }else {
-                        setUserData(res.data[0])
+                        setUserData({...res.data[0].data, AvatarUrl: null})
                         setLoad(false)
                     }
                 } else {
+                    console.log('未查找到用户文档')
                     setUserData(User_Data)
                     setLoad(false)
                 }
@@ -98,7 +101,7 @@ const Main_Page = () => {
 
 
     return (
-        <User_Context.Provider value={userData}>
+        <User_Context.Provider value={{userData:userData,setUserData:setUserData}}>
             <Grid container>
                 <Grid item xs={2}>
                     <Box className={classes.fill_in}>
@@ -124,7 +127,7 @@ const Main_Page = () => {
                                         </Grid>
                                         <Grid item>
                                             <Route path='/Main/Home' component={Home_Page}></Route>
-                                            <Route path='/Main/Corporation' component={User_Page}></Route>
+                                            <Route path='/Main/User' component={User_Page}></Route>
                                         </Grid>
                                         <Footer_Component Title='React Admin ©2020 Created By Neo Zhang'/>
                                     </Grid>

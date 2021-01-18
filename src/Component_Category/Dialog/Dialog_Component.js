@@ -8,6 +8,7 @@ import theme from "../../MyTheme/Theme";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import WarningIcon from '@material-ui/icons/Warning';
+import InfoIcon from '@material-ui/icons/Info';
 import Typography from "@material-ui/core/Typography";
 import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
@@ -27,6 +28,8 @@ const useStyles = makeStyles({
                     return theme.palette.error.main
                 case 'warning':
                     return theme.palette.warning.main
+                case 'info':
+                    return theme.palette.info.main
             }
         },
         height: '8rem',
@@ -52,6 +55,8 @@ const useStyles = makeStyles({
                     return theme.palette.error.main
                 case 'warning':
                     return theme.palette.warning.main
+                case 'info':
+                    return theme.palette.info.main
             }
         },
         '&:hover': {
@@ -63,6 +68,8 @@ const useStyles = makeStyles({
                         return theme.palette.error.main
                     case 'warning':
                         return theme.palette.warning.main
+                    case 'info':
+                        return theme.palette.info.main
                 }
             }
         },
@@ -72,18 +79,27 @@ const useStyles = makeStyles({
 
 const Dialog_Component = (props) => {
     console.log('render dialog component')
-    const {open, setOpen, title, content, type} = props
+    const {open, setOpen, title, content, type,url,justShow,disableBackdropClick} = props
     const classes = useStyles(props);
     const history = useHistory();
     const location = useLocation();
     const handleClose = () => {
-        console.log(history)
-        console.log(location)
-        if (location.pathname ==='/'){
-            window.location.reload(true)
+
+        if (justShow===true){
+            setOpen(false)
         }
         else {
-            history.push('/')
+            if (url === undefined){
+                console.log(url)
+                if (location.pathname ==='/'){
+                    window.location.reload(true)
+                }
+                else {
+                    history.push('/')
+                }
+            }else {
+                history.push(url)
+            }
         }
     }
     return (
@@ -95,7 +111,7 @@ const Dialog_Component = (props) => {
             classes={{
                 paper: classes.Dialog
             }}
-            disableBackdropClick = {false}
+            disableBackdropClick = {disableBackdropClick}
         >
             <Paper elevation={3}>
                 <Box className={classes.title}>
@@ -119,6 +135,10 @@ const Dialog_Component = (props) => {
                                         <WarningIcon
                                             style={{fontSize: '7rem', color: "white"}}
                                         />
+                                    )
+                                case 'info':
+                                    return (
+                                        <InfoIcon style={{fontSize: '7rem', color: "white"}} />
                                     )
                             }
 

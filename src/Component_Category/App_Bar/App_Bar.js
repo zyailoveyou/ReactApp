@@ -49,12 +49,12 @@ const App_Bar = (props) => {
     const [File, setFile] = useState(null)
     const [Load, setLoad] = useState(true)
     const [Open,setOpen] = useState(false)
-    const User = useContext(User_Context)
+    const {userData} = useContext(User_Context)
 
     useEffect(()=>{
-        if (User !=null){
-            console.log(User)
-            setFile(User.AvatarUrl)
+        if (userData !=null){
+            console.log(userData)
+            setFile(userData.AvatarUrl)
             setLoad(false)
         }
         else {

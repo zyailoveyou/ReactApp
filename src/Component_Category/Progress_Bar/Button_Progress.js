@@ -36,6 +36,7 @@ const useStyles = makeStyles({
         pointerEvents:"none",
         width: props => props.Fab_Size,
         height: props => props.Fab_Size,
+        zIndex:2,
     },
 
     ButtonSuccess: {
@@ -51,7 +52,7 @@ const useStyles = makeStyles({
         color:theme.palette.secondary.main,
         top: props => props.Circle_Position,
         left: props => props.Circle_Position,
-        zIndex: -1,
+        zIndex: 1,
     },
 
 })

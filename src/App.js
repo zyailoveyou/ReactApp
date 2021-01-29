@@ -16,6 +16,8 @@ import CloudBase_Context from "./Context/Context_Info/CloudBase_Context";
 import Cloud_Base from "./Context/Data/Cloud_Base_Data";
 
 //test
+import Myco3 from "./Test_Component/Myco3";
+import Myco from "./Test_Component/Myco";
 
 document.body.style.overflowY = 'overlay !important'
 
@@ -47,6 +49,8 @@ const App =()=> {
             </ThemeProvider>
         </CloudBase_Context.Provider>
         // <div>123123</div>
+        // <Myco3 />
+        // <Myco/>
     );
 }
 

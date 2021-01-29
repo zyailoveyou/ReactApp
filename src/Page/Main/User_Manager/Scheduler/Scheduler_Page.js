@@ -66,8 +66,6 @@ const Scheduler_Page = (props) => {
     };
 
 
-    const test = ['day','week'];
-    const [currentViewName,setCurrentViewName] = useState(test[0])
 
     return (
         <Box>
@@ -88,7 +86,7 @@ const Scheduler_Page = (props) => {
                         />
                     </Grid>
                     <Grid item>
-                        <Paper>
+                        <Paper elevation={3}>
                             <Scheduler_Component />
                         </Paper>
                     </Grid>

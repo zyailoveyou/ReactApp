@@ -1,146 +1,159 @@
-import React, {useEffect, useRef} from 'react';
-import Collapse from "@material-ui/core/Collapse";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import {makeStyles} from "@material-ui/core/styles";
-import theme from "../MyTheme/Theme";
-import {Box} from "@material-ui/core";
-import Myco2 from "./Myco2";
-import cloneDeep from 'lodash/cloneDeep';
-import Button from '@material-ui/core/Button';
-import Avatar from "@material-ui/core/Avatar";
-import Logo from "../Component_Category/Menu_List/Avatar/Logo.png";
+import * as React from 'react';
+import Paper from '@material-ui/core/Paper';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { withStyles } from '@material-ui/core/styles';
+import {
+    ViewState,
+} from '@devexpress/dx-react-scheduler';
+import {
+    Scheduler,
+    WeekView,
+    DayView,
+    Appointments,
+    Toolbar,
+    DateNavigator,
+    ViewSwitcher,
+    AppointmentForm,
+    AppointmentTooltip,
+    TodayButton,
+} from '@devexpress/dx-react-scheduler-material-ui';
 
+const PUBLIC_KEY = 'AIzaSyBnNAISIUKe6xdhq1_rjor2rxoI3UlMY7k';
+const CALENDAR_ID = 'f7jnetm22dsjc3npc2lu3buvu4@group.calendar.google.com';
 
-const useStyles = makeStyles({
-    root: {
+const getData = (setData, setLoading) => {
+    const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/', CALENDAR_ID, '/events?key=', PUBLIC_KEY].join('');
+    setLoading(true);
+
+    return fetch(dataUrl)
+        .then(response => response.json())
+        .then((data) => {
+            setTimeout(() => {
+                console.log(data)
+                setData(data.items);
+                setLoading(false);
+            }, 600);
+        });
+};
+
+const styles = {
+    toolbarRoot: {
+        position: 'relative',
+    },
+    progress: {
+        position: 'absolute',
         width: '100%',
+        bottom: 0,
+        left: 0,
+    },
+};
 
-    },
-    nested: {
-        paddingLeft: (props) => {
-            return theme.spacing(props.left);
-        }
-    },
-    test: {
-        position: "relative"
-    }
+const ToolbarWithLoading = withStyles(styles, { name: 'Toolbar' })(
+    ({ children, classes, ...restProps }) => (
+        <div className={classes.toolbarRoot}>
+            <Toolbar.Root {...restProps}>
+                {children}
+            </Toolbar.Root>
+            <LinearProgress className={classes.progress} />
+        </div>
+    ),
+);
+
+const usaTime = date => new Date(date).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+
+const mapAppointmentData = appointment => ({
+    id: appointment.id,
+    startDate: usaTime(appointment.start.dateTime),
+    endDate: usaTime(appointment.end.dateTime),
+    title: appointment.summary,
 });
 
+const initialState = {
+    data: [],
+    loading: false,
+    currentDate: '2017-05-23',
+    currentViewName: 'Day',
+};
 
-const Myco = (props) => {
-    const classes = useStyles(props);
-    const [Open_Manager, Set_Open_Manager] = React.useState(
-        props.menu
-    );
-
-
-    useEffect(() => {
-        if(Open_Manager[0].Last_Choice_Type ==='item'){
-            Unselected_Other_item();
-        }
-
-        // console.log(Open_Manager[0].Last_Choice_Type)
-        // console.log(Open_Manager[0].Last_Choice_Indicator)
-
-    }, [Open_Manager])
-
-    const Unselected_Other_item = () => {
-        Set_Open_Manager((PreManager) => {
-            let copy_manager = cloneDeep(PreManager);
-            console.log(copy_manager);
-            const result = Cancel_Other_Item(copy_manager,copy_manager[0].Last_Choice_Indicator);
-            result[0].Last_Choice_Indicator = null;
-            result[0].Last_Choice_Type = null;
-            return result;
-        })
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'setLoading':
+            return { ...state, loading: action.payload };
+        case 'setData':
+            return (
+                console.log(action.payload),
+                { ...state, data: action.payload.map(mapAppointmentData) }
+            ) ;
+        case 'setCurrentViewName':
+            return { ...state, currentViewName: action.payload };
+        case 'setCurrentDate':
+            return { ...state, currentDate: action.payload };
+        default:
+            return state;
     }
+};
 
-    const Cancel_Other_Item = (Passed,indicator) => {
+export default () => {
+    const [state, dispatch] = React.useReducer(reducer, initialState);
 
-        for (let i = 0; i < Passed.length; i++) {
-            if (Passed[i].Node_Type === 'item') {
-                if (Passed[i].Indicator != indicator){
-                    Passed[i].Selected = false;
-                }
-            } else {
-                if (Passed[i].List != null && Passed[i].List != undefined) {
-                    Cancel_Other_Item(Passed[i].List, indicator)
-                }
-            }
-        }
-        return Passed;
-    }
+    const {
+        data, loading, currentViewName, currentDate,
+    } = state;
 
+    const setCurrentViewName = React.useCallback(nextViewName => dispatch(
+        {
+            type: 'setCurrentViewName', payload: nextViewName,
+        }), [dispatch]);
 
-    const Search_Menu_Indicator = (Passed, indicator) => {
-        console.log('执行次数')
-        for (let i = 0; i < Passed.length; i++) {
-            if (Passed[i].Indicator === indicator) {
-                return Passed[i]
-            } else {
-                if (Passed[i].List != null && Passed[i].List != undefined) {
-                    const result = Search_Menu_Indicator(Passed[i].List, indicator)
-                    if (result != null) {
-                        return result
-                    }
-                }
-            }
-        }
-        return null
-    }
+    const setData = React.useCallback((nextData) => dispatch({
+        type: 'setData', payload: nextData,
+    }),[dispatch])
 
+    const setCurrentDate = React.useCallback(nextDate => dispatch({
+        type: 'setCurrentDate', payload: nextDate,
+    }), [dispatch]);
 
-    const Set_State = (e, now_indicator, upper_indicator) => {
-        Set_Open_Manager((PreManager) => {
-            let copy_manager = cloneDeep(PreManager);
-            console.log(copy_manager);
-            let Upper_Menu = Search_Menu_Indicator(copy_manager, upper_indicator);
-            console.log(Upper_Menu)
+    const setLoading = React.useCallback(nextLoading => dispatch({
+        type: 'setLoading', payload: nextLoading,
+    }), [dispatch]);
 
-            for (let i = 0; i < Upper_Menu.List.length; i++) {
-
-                if (Upper_Menu.List[i].Indicator === now_indicator) {
-                    if (Upper_Menu.List[i].Node_Type === 'list') {
-                        Upper_Menu.List[i].On_Open = !Upper_Menu.List[i].On_Open
-                        copy_manager[0].Last_Choice_Type = 'list';
-                        copy_manager[0].Last_Choice_Indicator = now_indicator;
-                    } else {
-                        Upper_Menu.List[i].Selected = !Upper_Menu.List[i].Selected
-                        copy_manager[0].Last_Choice_Type = 'item';
-                        copy_manager[0].Last_Choice_Indicator = now_indicator;
-                        break;
-                    }
-                }
-            }
-            return copy_manager;
-        })
-    }
-
-    function Creat_List(List) {
-        return (
-            List.map((item, index) => {
-                    if (item.Is_Top === true) {
-                        return (
-                            <Box name={'top'} className={classes.sticky} key={index}>
-                                <ListItem classes={classes.List_Header}>
-                                    <Avatar src={Logo} className={classes.Avatar}></Avatar>
-                                </ListItem>
-                                <Myco2 menu={item.List} left={4} Set_Data={Set_State} level={item.Level}/>
-                            </Box>
-                        )
-                    }
-                }
-            )
-
-        )
-    }
+    React.useEffect(() => {
+        getData(setData, setLoading);
+    }, [setData, currentViewName, currentDate]);
 
     return (
-        Creat_List(Open_Manager)
+        <Paper>
+            <Scheduler
+                data={data}
+                height={660}
+            >
+                <ViewState
+                    currentDate={currentDate}
+                    currentViewName={currentViewName}
+                    onCurrentViewNameChange={setCurrentViewName}
+                    onCurrentDateChange={setCurrentDate}
+                />
+                <DayView
+                    startDayHour={7.5}
+                    endDayHour={17.5}
+                />
+                <WeekView
+                    startDayHour={7.5}
+                    endDayHour={17.5}
+                />
+                <Appointments />
+                <Toolbar
+                    {...loading ? { rootComponent: ToolbarWithLoading } : null}
+                />
+                <DateNavigator />
+                <TodayButton />
+                <ViewSwitcher />
+                <AppointmentTooltip
+                    showOpenButton
+                    showCloseButton
+                />
+                <AppointmentForm readOnly />
+            </Scheduler>
+        </Paper>
     );
-}
-
-
-export default Myco;
+};

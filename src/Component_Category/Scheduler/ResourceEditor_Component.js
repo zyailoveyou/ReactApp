@@ -46,6 +46,13 @@ const useStyles = makeStyles(({spacing}) => ({
     },
 }));
 
+const NotCheck_Resources  =   {
+    fieldName: 'subtype',
+    title: '未打卡',
+    instances: NotCheck_Type,
+    allowMultiple: false,
+}
+
 
 const Vacation_Resources  =   {
     fieldName: 'subtype',
@@ -54,15 +61,8 @@ const Vacation_Resources  =   {
     allowMultiple: false,
 }
 
-const NotCheck_Resources  =   {
-    fieldName: 'subtype2',
-    title: '未打卡',
-    instances: NotCheck_Type,
-    allowMultiple: false,
-}
-
 const ExtraWork_Resources  =   {
-    fieldName: 'subtype3',
+    fieldName: 'subtype',
     title: '加班',
     instances: ExtraWork_Type,
     allowMultiple: false,

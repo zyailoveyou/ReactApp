@@ -57,10 +57,6 @@ export const Vacation_Type = [
         text: '产假',
         id: 5,
         color: '#AB47BC',
-    }, {
-        text: '未打卡',
-        id: 6,
-        color: '#FFA726',
     },
 ];
 
@@ -88,3 +84,22 @@ export const NotCheck_Type = [
         color: '#7E57C2',
     },
 ];
+
+export const Relative_Sheet = [
+    {
+        name: '未打卡',
+        id:1,
+        RelativeType:NotCheck_Type
+    },
+    {
+        name: '请假' ,
+        id:2,
+        RelativeType:Vacation_Type
+    },
+    {
+        name: '加班',
+        id:3,
+        RelativeType:ExtraWork_Type
+    },
+
+]

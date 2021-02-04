@@ -21,7 +21,7 @@ const Navigation_Text_Component = (props) => {
 
     Location_Array.forEach((item) => {
         console.log(item)
-        Group_Location.push(capitalize(item))
+        Group_Location.push(item)
     })
 
     const handleClick = (event, history) => {

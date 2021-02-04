@@ -182,7 +182,7 @@ const Set_Personal_Profile = () => {
                                                         Data_Set_Function={userData_Temper.SetData}
                                                         Data_Set_Name={'Gender'}
                                                         Data_Group={[
-                                                            {value: '男'}, {value: '女'}
+                                                            '男', '女'
                                                         ]}
                                                         Has_Icon={false}
                                                         Value={userData_Temper.data.Gender}
@@ -195,7 +195,7 @@ const Set_Personal_Profile = () => {
                                                         Data_Set_Function={userData_Temper.SetData}
                                                         Data_Set_Name={'Department'}
                                                         Data_Group={[
-                                                            {value: '工程部'}, {value: '销售部'}
+                                                            '工程部', '销售部'
                                                         ]}
                                                         Has_Icon={false}
                                                         Value={userData_Temper.data.Department}
@@ -243,10 +243,10 @@ const Set_Personal_Profile = () => {
                                                         Data_Set_Function={userData_Temper.SetData}
                                                         Data_Set_Name={'Province'}
                                                         Data_Group={[
-                                                            {value: '四川'},
-                                                            {value: '重庆'},
-                                                            {value: '陕西'},
-                                                            {value: '北京'},
+                                                            '四川',
+                                                            '重庆',
+                                                            '陕西',
+                                                            '北京',
                                                         ]}
                                                         Has_Icon={false}
                                                         Value={userData_Temper.data.Province}

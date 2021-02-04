@@ -81,7 +81,7 @@ const menu =
                                 Icon: <PeopleAltIcon/>,
                                 Id: 1,
                                 Upper_List_Indicator: 'Personal_Profile',
-                                On_Click:function(history){history.push('/Main/User/Scheduler')},
+                                On_Click:function(history){history.push('/Main/User/Scheduler/SetDate')},
                                 Level:3,
 
                             },

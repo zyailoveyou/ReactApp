@@ -31,8 +31,20 @@ import OpenButton_Component from "./OpenButton_Component";
 import Switcher_Component from "./Switcher_Component";
 import ResourceEditor from "./ResourceEditor_Component";
 import DateEditor_Component from "./DateEditor_Component";
+import Content from "./Content_Component";
+import BasicLayout from "./BasicLayout_Component";
+import Layout_Component from "./Layout_Component";
+import Appointment from "./Appointment_Component";
 
-import {resourcesData,Vacation_Type,schedulerData,NotCheck_Type,ExtraWork_Type} from "./Test_Data/Data";
+import {
+    resourcesData,
+    Vacation_Type,
+    schedulerData,
+    NotCheck_Type,
+    ExtraWork_Type,
+    Relative_Sheet
+} from "./Test_Data/Data";
+import theme from "../../MyTheme/Theme";
 
 const Appointment_Form_Local = {
     detailsLabel: '标题',
@@ -49,6 +61,21 @@ const Today_Button_Local = {
 }
 
 
+const test = [
+    {
+        text: '未打卡',
+        id: 1,
+        color: theme.palette.secondary.light
+    }, {
+        text: '请假',
+        id: 2,
+        color: theme.palette.primary.main,
+    }, {
+        text: '加班',
+        id: 3,
+        color: theme.palette.secondary.main,
+    }
+];
 
 
 const Scheduler_Component = (props) => {
@@ -64,8 +91,8 @@ const Scheduler_Component = (props) => {
             },
             {
                 fieldName: 'subtype',
-                title: '请假',
-                instances: Vacation_Type,
+                title: '未打卡',
+                instances: NotCheck_Type,
                 allowMultiple: false,
             }
         ],
@@ -119,16 +146,8 @@ const Scheduler_Component = (props) => {
                             startDateStamp: added.startDate.getTime(),
                             endDateStamp: added.endDate.getTime(),
                             approved: false,
-                            typetext:function () {
-                                console.log(added.type)
-                                for (let i = 0;i< resourcesData.length;i++){
-                                    console.log(resourcesData[i].id)
-                                    console.log(resourcesData[i].text)
-                                    if (resourcesData[i].id = added.type){
-                                        return resourcesData[i].text
-                                    }
-                                }
-                            }(),
+                            type: resourcesData[0],
+                            subtype: Relative_Sheet[0].RelativeType[0],
                             ...added,
                         }
                     ];
@@ -215,20 +234,18 @@ const Scheduler_Component = (props) => {
                         switcherComponent={Switcher_Component}
                     />
                     <Appointments
-                        // appointmentComponent={Appointment_Component}
+                        appointmentComponent={Appointment}
                     />
                     <AppointmentTooltip
+                        contentComponent={Content}
                         showOpenButton
                         showDeleteButton
                     />
                     <AppointmentForm
                         messages={Appointment_Form_Local}
+                        layoutComponent={Layout_Component}
                         dateEditorComponent={DateEditor_Component}
-                        resourceEditorComponent={ResourceEditor}
-                    />
-                    <Resources
-                        data={data.resources}
-                        mainResourceName="type"
+                        basicLayoutComponent={BasicLayout}
                     />
                     <AllDayPanel/>
                 </Scheduler>

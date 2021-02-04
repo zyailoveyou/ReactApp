@@ -4,7 +4,7 @@ import Footer_Component from "../../Component_Category/Footer/Footer_Component";
 import Navigation_Text from '../../Component_Category/Breadcrumb/Navigation_Text_Component'
 import Home_Page from "./Home/Home_Page";
 import List_Component from "../../Component_Category/Menu_List/List_Component";
-import menu from "../../Component_Category/Menu_List/Data/menu";
+import menu from "../../Component_Category/Menu_List/Data/Menu";
 import User_Page from "./User_Manager/User_Page";
 import App_Bar from "../../Component_Category/App_Bar/App_Bar";
 //material ui

@@ -5,22 +5,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Box from "@material-ui/core/Box";
 
 
-
 const useStyles = makeStyles({
-    root: {
-        paddingLeft: props => {
-            return props.Padding
-        }
-    },
+
     box_Container: {
         width:'100%',
         height:'100%',
     },
-    box_Title: {},
-    MenuItem_size: {
-        paddingLeft: '1rem',
-        paddingRight: '1rem',
-    }
+
 });
 
 
@@ -49,9 +40,9 @@ const Input_Selector_Component = (props) => {
                 value={currency}
                 onChange={(e) => handleChange(e)}
             >
-                {Data_Group.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.value}
+                {Data_Group.map((option,index) => (
+                    <MenuItem key={option+index} value={option}>
+                        {option}
                     </MenuItem>
                 ))}
             </TextField>

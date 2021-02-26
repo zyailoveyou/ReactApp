@@ -119,7 +119,7 @@ const Scheduler_Component = (props) => {
         CloudBase.db.collection("Appointments").where({
             startDateStamp: _.gte(upperTemp.getTime()).and(_.lte(lowerTemp.getTime())),
             name:_.eq(userData.Name)
-        }).get().then((res) => {
+        }).limit(1000).get().then((res) => {
             console.log(res.data)
             setLoading(false)
             setData((preData) => {
@@ -255,7 +255,7 @@ const Scheduler_Component = (props) => {
 };
 
 
-const ToolbarWithLoading = (props) => {
+const ToolbarWithLoading = ({style,children,...restProps}) => {
     const Scheduler_Data = useContext(Scheduler_Context);
     const {userData, setUserData} = useContext(User_Context)
     const CloudBase = useContext(CloudBase_Context)
@@ -280,8 +280,12 @@ const ToolbarWithLoading = (props) => {
     }
     return (
         <Box>
-            <Toolbar.Root {...props}>
-                {props.children}
+            <Toolbar.Root {...restProps}
+            style={{
+                ...style,
+                alignItems:"center",
+            }}>
+                {children}
                 <Button
                     variant={"contained"}
                     color={"primary"}

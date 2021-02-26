@@ -2,7 +2,6 @@ import React,{memo} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
 import theme from "../../MyTheme/Theme";
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -75,6 +74,7 @@ const Table_Component = (props) => {
                 className={classes.table}
                 size={dense ? 'small' : 'medium'}
             >
+
                 <TableHead>
                     <TableRow>
                         <TableCell align={"left"} classes={{

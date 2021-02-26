@@ -3,9 +3,11 @@ import React, {memo, useContext, useEffect, useState} from "react";
 import Footer_Component from "../../Component_Category/Footer/Footer_Component";
 import Navigation_Text from '../../Component_Category/Breadcrumb/Navigation_Text_Component'
 import Home_Page from "./Home/Home_Page";
+import User_Page from "./User_Manager/User_Page";
+import Corporation_Page from "./Corporation_Manager/Corporation_Page";
 import List_Component from "../../Component_Category/Menu_List/List_Component";
 import menu from "../../Component_Category/Menu_List/Data/Menu";
-import User_Page from "./User_Manager/User_Page";
+
 import App_Bar from "../../Component_Category/App_Bar/App_Bar";
 //material ui
 import Divider from "@material-ui/core/Divider";
@@ -128,6 +130,7 @@ const Main_Page = () => {
                                         <Grid item>
                                             <Route path='/Main/Home' component={Home_Page}></Route>
                                             <Route path='/Main/User' component={User_Page}></Route>
+                                            <Route path='/Main/Corporation' component={Corporation_Page}></Route>
                                         </Grid>
                                         <Footer_Component Title='React Admin ©2020 Created By Neo Zhang'/>
                                     </Grid>

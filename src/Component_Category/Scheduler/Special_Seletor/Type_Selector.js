@@ -35,13 +35,13 @@ const Type_Selector = (props) => {
         Data_Group,
         Value,
         Title,
+        setValue,
         onValueChange,
     } = props
     const classes = useStyles(props);
-    const [currency, setCurrency] = useState(Value);
     const handleChange = (e) => {
         console.log(e.target.value)
-        setCurrency(e.target.value);
+        setValue(e.target.value);
         if (onValueChange) {
             onValueChange(e.target.value)
         }
@@ -50,7 +50,6 @@ const Type_Selector = (props) => {
     return (
         <Box className={classes.Box_Container}>
             <TextField
-                id="standard-select-currency"
                 fullWidth
                 margin={margin}
                 select
@@ -58,7 +57,7 @@ const Type_Selector = (props) => {
                 variant={variant ? variant : 'outlined'}
                 hiddenLabel={hiddenLabel}
                 size={size ? size : 'small'}
-                value={currency}
+                value={Value}
                 margin="normal"
                 onChange={(e) => handleChange(e)}
             >

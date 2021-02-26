@@ -9,8 +9,6 @@ const useSetUser = (userData) => {
             return {...prevCorporation, [data_name]: data};
         })
     }
-
-
 };
 
 export default useSetUser;

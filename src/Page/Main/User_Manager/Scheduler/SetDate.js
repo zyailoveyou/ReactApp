@@ -16,7 +16,18 @@ import theme from "../../../../MyTheme/Theme";
 import Paper from "@material-ui/core/Paper";
 import Scheduler_Component from "../../../../Component_Category/Scheduler/Scheduler_Component";
 
+
+const useStyles = makeStyles(
+    {
+        container: {
+            position:"relative"
+        },
+    }
+);
+
+
 const SetDate = (props) => {
+    const classes = useStyles()
     return (
         <Grid container spacing={2} direction={"column"}>
             <Grid item>
@@ -27,7 +38,7 @@ const SetDate = (props) => {
             </Grid>
             <Grid item>
                 <Paper elevation={3}>
-                    <Scheduler_Component />
+                    <Scheduler_Component/>
                 </Paper>
             </Grid>
         </Grid>

@@ -11,11 +11,44 @@ const BasicLayout = ({onFieldChange, appointmentData, ...restProps}) => {
 
 
     const [subTypeSheet, setSubTypeSheet] = useState(Relative_Sheet[0].RelativeType)
+    const [typeValue,setTypeValue] = useState(function () {
+        if (appointmentData.type) {
+            return appointmentData.type.id - 1
+        } else {
+            return 0
+        }
+    }());
+    const [subtypeValue,setSubTypeValue] = useState(function () {
+        if (appointmentData.subtype) {
+            return appointmentData.subtype.id - 1
+        } else {
+            return 0
+        }
+    }());
+
+
+    useEffect(() => {
+
+        if (appointmentData.subtype) {
+            setSubTypeSheet(() => {
+                const result = Relative_Sheet.find((item, index) => {
+                    console.log(appointmentData)
+                    console.log(item)
+                    return appointmentData.type.id === item.id
+                })
+                return result.RelativeType
+            })
+        } else {
+            setSubTypeSheet(Relative_Sheet[0].RelativeType)
+        }
+    }, [])
+
     const onTypeTextChange = (nextValue) => {
         const Relative_Subtype_Result = Relative_Sheet.find((item, index) => {
             return item.id === nextValue + 1
         })
         setSubTypeSheet(Relative_Subtype_Result.RelativeType)
+        setSubTypeValue(0)
         const typeResult = resourcesData.find((item, index) => {
             return item.id === nextValue + 1
         })
@@ -36,20 +69,7 @@ const BasicLayout = ({onFieldChange, appointmentData, ...restProps}) => {
     };
 
 
-    useEffect(() => {
-        if (appointmentData.subtype) {
-            setSubTypeSheet(() => {
-                const result = Relative_Sheet.find((item, index) => {
-                    console.log(appointmentData)
-                    console.log(item)
-                    return appointmentData.type.id === item.id
-                })
-                return result.RelativeType
-            })
-        } else {
-            setSubTypeSheet(Relative_Sheet[0].RelativeType)
-        }
-    }, [])
+
 
     return (
         <AppointmentForm.BasicLayout
@@ -73,13 +93,8 @@ const BasicLayout = ({onFieldChange, appointmentData, ...restProps}) => {
                     Data_Set_Name={'Province'}
                     Data_Group={resourcesData}
                     size={'medium'}
-                    Value={function () {
-                        if (appointmentData.type) {
-                            return appointmentData.type.id - 1
-                        } else {
-                            return 0
-                        }
-                    }()}
+                    Value={typeValue}
+                    setValue={setTypeValue}
                     onValueChange={onTypeTextChange}
                     hasIcon={true}
                 />
@@ -91,13 +106,8 @@ const BasicLayout = ({onFieldChange, appointmentData, ...restProps}) => {
                     hiddenLabel
                     Data_Group={subTypeSheet}
                     size={'medium'}
-                    Value={function () {
-                        if (appointmentData.subtype) {
-                            return appointmentData.subtype.id - 1
-                        } else {
-                            return 0
-                        }
-                    }()}
+                    Value={subtypeValue}
+                    setValue={setSubTypeValue}
                     onValueChange={onSubTypeTextChange}
                     hasIcon={true}
                 />

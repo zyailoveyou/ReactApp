@@ -1,25 +1,23 @@
 import React, {useState,useMemo} from 'react';
-import $ from 'jquery';
 import 'jquery/dist/jquery.js'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js'
-import './App.css';
 import Main_Page from './Page/Main/Main_Page';
 import Login_Page from './Page/Login_Register/Login_Page';
 import Error_Page from "./Page/Error/Error_Page";
-import 'animate.css/animate.min.css'
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import PrivateRoute from "./Private_Router/PrivateRoute";
 import {ThemeProvider} from '@material-ui/core/styles';
 import theme from "./MyTheme/Theme";
 import CloudBase_Context from "./Context/Context_Info/CloudBase_Context";
 import Cloud_Base from "./Context/Data/Cloud_Base_Data";
+import NewTable_Component from "./Component_Category/Table/BigDataVirtualTable";
 
 //test
 import Myco3 from "./Test_Component/Myco3";
 import Myco from "./Test_Component/Myco";
 
-document.body.style.overflowY = 'overlay !important'
+
 
 const App =()=> {
     console.log('render top')

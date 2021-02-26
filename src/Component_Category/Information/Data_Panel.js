@@ -58,7 +58,10 @@ const Data_Panel = (props) => {
                             percentage > 0 ? '+' + percentage + '%' : percentage + '%'
                         }</Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} style={{
+                        display:"flex",
+                        justifyContent:"flex-end"
+                    }}>
                         <Typography variant={'subtitle1'} className={classes.hint}>{period}</Typography>
                     </Grid>
                 </Grid>

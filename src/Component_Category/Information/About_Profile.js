@@ -2,16 +2,9 @@ import React from 'react';
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import Avatar_Test from '../../Image/Logo/Avatar_Test.jpg'
 import {makeStyles} from "@material-ui/core/styles";
 import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
-import theme from "../../MyTheme/Theme";
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
-
-
 import PinDropIcon from '@material-ui/icons/PinDrop';
 import BusinessIcon from '@material-ui/icons/Business';
 import ScheduleIcon from '@material-ui/icons/Schedule';

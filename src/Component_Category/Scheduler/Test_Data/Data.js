@@ -65,15 +65,20 @@ export const ExtraWork_Type = [
     {
         text: '节假日加班',
         id: 1,
-        color: '#7E57C2',
+        color: '#F58E0C',
     }, {
         text: '休息日加班',
         id: 2,
-        color: '#FF7043',
+        color: '#FF710D',
     }, {
         text: '超时加班',
         id: 3,
-        color: '#E91E63',
+        color: '#E74001',
+    },
+    {
+        text: '计换休',
+        id: 4,
+        color: '#FF2A0D',
     },
 ];
 

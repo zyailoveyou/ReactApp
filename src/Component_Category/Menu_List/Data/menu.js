@@ -86,8 +86,8 @@ const menu =
 
                             },
                             {
-                                Title: '部门层级',
-                                Indicator: 'Corp_Department',
+                                Title: '功能3',
+                                Indicator: 'Function_3',
                                 Selected:false,
                                 Node_Type: 'item',
                                 Clickable: true,
@@ -97,8 +97,8 @@ const menu =
                                 Level:3,
                             },
                             {
-                                Title: '账号维护',
-                                Indicator: 'Corp_Maintain',
+                                Title: '功能4',
+                                Indicator: 'Function_4',
                                 Selected:false,
                                 Node_Type: 'item',
                                 Clickable: true,
@@ -173,14 +173,15 @@ const menu =
                         Level:2,
                         List: [
                             {
-                                Title: '功能1',
-                                Indicator: 'Function_1',
+                                Title: '部门管理',
+                                Indicator: 'Department_Management',
                                 Selected:false,
                                 Node_Type: 'item',
                                 Clickable: true,
                                 Icon: <PaletteIcon/>,
                                 Id: 0,
                                 Upper_List_Indicator: 'Function_Manager',
+                                On_Click:function(history){history.push('/Main/Corporation/Department')},
                                 Level:3,
                             },
                             {

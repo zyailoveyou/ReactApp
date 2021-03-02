@@ -57,7 +57,6 @@ const Input_Password_Component = (props) => {
 
     const handleChange = (prop) => (event) => {
         setValues({...values, [prop]: event.target.value});
-
     };
 
     const handleClickShowPassword = () => {

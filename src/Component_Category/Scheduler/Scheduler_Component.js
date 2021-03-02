@@ -45,6 +45,8 @@ import {
     Relative_Sheet
 } from "./Test_Data/Data";
 import theme from "../../MyTheme/Theme";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 const Appointment_Form_Local = {
     detailsLabel: '标题',
@@ -77,13 +79,43 @@ const test = [
     }
 ];
 
+const schedulerHeaderHeight = 28;
+const schedulerHeight = 650;
+
+const MonthTableCell = props => {
+    return (
+        <MonthView.TimeTableCell
+            {...props}
+            style={{ height: (schedulerHeight-schedulerHeaderHeight)/6 }}
+        />
+    );
+};
+
+const WeekTableCell = props => {
+    return (
+        <WeekView.TimeTableCell
+            {...props}
+            style={{ height: (schedulerHeight-schedulerHeaderHeight)/11 }}
+        />
+    );
+};
+
+const DayTableCell = props => {
+    return (
+        <DayView.TimeTableCell
+            {...props}
+            style={{ height: (schedulerHeight-schedulerHeaderHeight)/11 }}
+        />
+    );
+};
+
 
 const Scheduler_Component = (props) => {
     const [data, setData] = useState({
         dateGroup: schedulerData,
-        deleteGroup:[],
+        deleteGroup: [],
         currentDate: new Date(),
-        resources:[
+        resources: [
             {
                 fieldName: 'type',
                 title: '类型',
@@ -103,6 +135,8 @@ const Scheduler_Component = (props) => {
     const {userData, setUserData} = useContext(User_Context)
     const CloudBase = useContext(CloudBase_Context)
 
+
+
     useEffect(() => {
         updateData(data.currentDate)
     }, [])
@@ -118,7 +152,7 @@ const Scheduler_Component = (props) => {
         lowerTemp.setDate(1)
         CloudBase.db.collection("Appointments").where({
             startDateStamp: _.gte(upperTemp.getTime()).and(_.lte(lowerTemp.getTime())),
-            name:_.eq(userData.Name)
+            name: _.eq(userData.Name)
         }).limit(1000).get().then((res) => {
             console.log(res.data)
             setLoading(false)
@@ -174,92 +208,103 @@ const Scheduler_Component = (props) => {
 
 
     return (
-        <Scheduler_Context.Provider value={{data, setData, loading, setLoading,sending,setSending}}>
-            <Box style={{
-                pointerEvents:loading?'none':"auto"
-            }}>
-                <Scheduler
-                    data={data.dateGroup}
-                    locale={'zh-CN'}
-                >
-                    <ViewState
-                        currentDate={data.currentDate}
-                        onCurrentDateChange={(currentDate) => {
-                            setData((preData) => {
-                                return (
-                                    {...preData, currentDate: currentDate}
-                                )
-                            })
-                            updateData(currentDate)
-                        }}
-                        onCurrentViewNameChange={(viewName) => {
-                            console.log(viewName)
-                        }}
-                    />
-                    <EditingState
-                        onCommitChanges={commitChanges}
-                    />
-                    <IntegratedEditing/>
-                    <MonthView
-                        name="mouth"
-                        displayName="整月显示"
-                        startDayHour={9}
-                        endDayHour={14}
-                        intervalCount={1}
-                    />
-                    <WeekView
-                        name="week"
-                        displayName="整周显示"
-                        startDayHour={9}
-                        endDayHour={14}
-                    />
-                    <DayView
-                        name="day"
-                        displayName="单日显示"
-                        startDayHour={9}
-                        endDayHour={14}
-                    />
-                    <Toolbar
-                        rootComponent={ToolbarWithLoading}
-                    />
-                    <TodayButton
-                        buttonComponent={TodayButton_Component}
-                        messages={Today_Button_Local}
-                    />
-                    <DateNavigator
-                        navigationButtonComponent={NavigationButton_Component}
-                        openButtonComponent={OpenButton_Component}
-                    />
-                    <ViewSwitcher
-                        switcherComponent={Switcher_Component}
-                    />
-                    <Appointments
-                        appointmentComponent={Appointment}
-                    />
-                    <AppointmentTooltip
-                        contentComponent={Content}
-                        showOpenButton
-                        showDeleteButton
-                    />
-                    <AppointmentForm
-                        messages={Appointment_Form_Local}
-                        layoutComponent={Layout_Component}
-                        dateEditorComponent={DateEditor_Component}
-                        basicLayoutComponent={BasicLayout}
-                    />
-                    <AllDayPanel/>
-                </Scheduler>
-            </Box>
-        </Scheduler_Context.Provider>
+
+        <Paper elevation={3}
+               style={{
+                   pointerEvents: loading ? 'none' : "auto",
+                   height:{schedulerHeight}
+               }}
+        >
+            <Scheduler_Context.Provider value={{data, setData, loading, setLoading, sending, setSending}}>
+                    <Scheduler
+                        data={data.dateGroup}
+                        locale={'zh-CN'}
+                    >
+                        <ViewState
+                            currentDate={data.currentDate}
+                            onCurrentDateChange={(currentDate) => {
+                                setData((preData) => {
+                                    return (
+                                        {...preData, currentDate: currentDate}
+                                    )
+                                })
+                                updateData(currentDate)
+                            }}
+                            onCurrentViewNameChange={(viewName) => {
+                                console.log(viewName)
+                            }}
+                        />
+                        <EditingState
+                            onCommitChanges={commitChanges}
+                        />
+                        <IntegratedEditing/>
+                        <MonthView
+                            name="mouth"
+                            displayName="整月显示"
+                            startDayHour={9}
+                            endDayHour={14}
+                            intervalCount={1}
+                            timeTableCellComponent={MonthTableCell}
+                        />
+                        <WeekView
+                            name="week"
+                            displayName="整周显示"
+                            startDayHour={9}
+                            endDayHour={14}
+                            style={{
+                                height:1000
+                            }}
+                            timeTableCellComponent={WeekTableCell}
+                        />
+                        <DayView
+                            name="day"
+                            displayName="单日显示"
+                            startDayHour={9}
+                            endDayHour={14}
+                            timeTableCellComponent={DayTableCell}
+                        />
+                        <Toolbar
+                            rootComponent={ToolbarWithLoading}
+                        />
+                        <TodayButton
+                            buttonComponent={TodayButton_Component}
+                            messages={Today_Button_Local}
+                        />
+                        <DateNavigator
+                            navigationButtonComponent={NavigationButton_Component}
+                            openButtonComponent={OpenButton_Component}
+                        />
+                        <ViewSwitcher
+                            switcherComponent={Switcher_Component}
+                        />
+                        <Appointments
+                            appointmentComponent={Appointment}
+                        />
+                        <AppointmentTooltip
+                            contentComponent={Content}
+                            showOpenButton
+                            showDeleteButton
+                        />
+                        <AppointmentForm
+                            messages={Appointment_Form_Local}
+                            layoutComponent={Layout_Component}
+
+                            basicLayoutComponent={BasicLayout}
+                        />
+                        <AllDayPanel/>
+                    </Scheduler>
+            </Scheduler_Context.Provider>
+        </Paper>
+
     );
 };
 
 
-const ToolbarWithLoading = ({style,children,...restProps}) => {
+const ToolbarWithLoading = ({style, children, ...restProps}) => {
     const Scheduler_Data = useContext(Scheduler_Context);
     const {userData, setUserData} = useContext(User_Context)
     const CloudBase = useContext(CloudBase_Context)
-    const {data, loading,sending,setSending } = Scheduler_Data
+    const {data, loading, sending, setSending} = Scheduler_Data
     const onSave = () => {
         setSending(true)
         if (userData.Name != '') {
@@ -268,7 +313,7 @@ const ToolbarWithLoading = ({style,children,...restProps}) => {
                     name: "setAppointments",
                     data: {
                         dateGroup: data.dateGroup,
-                        deleteGroup:data.deleteGroup,
+                        deleteGroup: data.deleteGroup,
                     }
                 })
                 .then((res) => {
@@ -281,10 +326,10 @@ const ToolbarWithLoading = ({style,children,...restProps}) => {
     return (
         <Box>
             <Toolbar.Root {...restProps}
-            style={{
-                ...style,
-                alignItems:"center",
-            }}>
+                          style={{
+                              ...style,
+                              alignItems: "center",
+                          }}>
                 {children}
                 <Button
                     variant={"contained"}
@@ -299,7 +344,7 @@ const ToolbarWithLoading = ({style,children,...restProps}) => {
                 <Dialog_Load load={sending}/>
             </Toolbar.Root>
             {
-                loading ? <LinearProgress/> :null
+                loading ? <LinearProgress/> : null
             }
         </Box>
     );

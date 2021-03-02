@@ -294,7 +294,10 @@ const BigDataVirtualTable = () => {
     }
 
     return (
-        <Paper elevation={3}>
+        <Paper elevation={3} >
+            <Box style={{
+            }} >
+
             <Grid
                 rows={rows}
                 columns={columns}
@@ -318,7 +321,7 @@ const BigDataVirtualTable = () => {
                 <IntegratedFiltering/>
                 <CellTooltip/>
                 <VirtualTable
-                    height={'500px'}
+                    height={'70vh'}
                 />
                 <TableHeaderRow
                     contentComponent={TableHeaderContent}
@@ -340,6 +343,7 @@ const BigDataVirtualTable = () => {
                 columns={columns}
                 onSave={onSave}
             />
+            </Box>
         </Paper>
     );
 };

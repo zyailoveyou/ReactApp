@@ -37,9 +37,8 @@ const SetDate = (props) => {
                 />
             </Grid>
             <Grid item>
-                <Paper elevation={3}>
-                    <Scheduler_Component/>
-                </Paper>
+                <Scheduler_Component/>
+
             </Grid>
         </Grid>
     );

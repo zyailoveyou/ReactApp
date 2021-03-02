@@ -7,10 +7,13 @@ import IconButton from '@material-ui/core/IconButton';
 const Alert_Component = (props) => {
     const [open, setOpen] = useState(true);
     return (
-        <Collapse in={open}>
+        <Collapse in={open} style={{
+            width:'100%'
+        }}>
             <Alert
                 severity={props.severity}
                 variant={props.variant}
+
                 action={
                     props.switch?
                     <IconButton

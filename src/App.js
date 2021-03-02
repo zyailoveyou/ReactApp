@@ -17,12 +17,9 @@ import NewTable_Component from "./Component_Category/Table/BigDataVirtualTable";
 import Myco3 from "./Test_Component/Myco3";
 import Myco from "./Test_Component/Myco";
 
-
-
 const App =()=> {
     console.log('render top')
     const [errorOpen, setErrorOpen] = useState(true)
-
     return (
         <CloudBase_Context.Provider value={Cloud_Base}>
             <ThemeProvider theme={theme}>

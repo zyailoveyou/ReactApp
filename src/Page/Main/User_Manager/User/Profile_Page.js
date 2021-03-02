@@ -1,4 +1,4 @@
-import React, {useEffect, useState, memo, useContext} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {Box} from "@material-ui/core";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
@@ -7,10 +7,6 @@ import theme from "../../../../MyTheme/Theme";
 import {Route, useHistory, useLocation} from "react-router-dom";
 import Personal_Profile from "./Personal_Profile";
 import Set_Personal_Profile from "./Set_Personal_Profile";
-import Scheduler_Page from "../Scheduler/Scheduler_Page";
-import CloudBase_Context from "../../../../Context/Context_Info/CloudBase_Context";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import User_Context from "../../../../Context/Context_Info/User_Context";
 
 
 const useStyles_tab = makeStyles(

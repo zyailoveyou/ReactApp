@@ -37,37 +37,15 @@ import rowsBackUp from "./TestData/Data";
 const columns = [
     {
         name: 'name', title: '姓名',
-
     },
     {
-        name: 'department', title: '部门',
-
+        name: 'gender', title: '性别',
     },
     {
-        name: 'title', title: '标题',
-
+        name: 'workStartDate', title: '入职时间',
     },
     {
-        name: 'startDate', title: '起始时间',
-        getCellValue: row => (row.startDate ? new Date(row.startDate).toLocaleString() : '未知'),
-    },
-    {
-        name: 'endDate', title: '截止时间',
-        getCellValue: row => (row.endDate ? new Date(row.endDate).toLocaleString() : '未知'),
-    },
-    {
-        name: 'type', title: '类型',
-        getCellValue: row => (row.type ? row.type.text : '未知'),
-
-    },
-    {
-        name: 'subtype', title: '二级类型',
-        getCellValue: row => (row.subtype ? row.subtype.text : '未知'),
-
-    },
-    {
-        name: 'approved', title: '审批',
-        getCellValue: row => (row.approved ? '是' : '否'),
+        name: 'department', title: '所属部门',
     },
 ];
 

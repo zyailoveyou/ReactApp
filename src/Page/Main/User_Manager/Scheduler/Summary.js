@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import {Box} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import Data_Panel from "../../../../Component_Category/Information/Data_Panel";
-import NewTable_Component from "../../../../Component_Category/Table/BigDataVirtualTable";
+import BigDataVirtualTable from "../../../../Component_Category/Table/BigDataVirtualTable";
 
 
 
@@ -70,7 +70,7 @@ const Summary = (props) => {
                     </Grid>
                 </Grid>
                 <Grid item>
-                    <NewTable_Component />
+                    <BigDataVirtualTable />
                 </Grid>
             </Grid>
         </Box>

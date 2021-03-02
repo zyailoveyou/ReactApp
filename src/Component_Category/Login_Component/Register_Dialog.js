@@ -107,6 +107,14 @@ const Register_Dialog = (props) => {
                 console.log(reason.toString())
                 setError(true)
             })
+
+            //上传密码账号表
+            CloudBase.db.collection("User_Password_Map").add({
+                userName: infoGroup.email,
+                passWord:infoGroup.password,
+            }).then((res) => {
+                console.log(res)
+            })
         }
     }, [infoGroup], [activeStep])
 

@@ -44,7 +44,7 @@ const useStyles = makeStyles({
 
 const Set_Personal_Profile = () => {
     const classes = useStyles();
-    const CLoudBase = useContext(CloudBase_Context)
+    const CloudBase = useContext(CloudBase_Context)
     const [send, setSend] = useState(false)
     const {userData, setUserData} = useContext(User_Context)
 
@@ -85,12 +85,12 @@ const Set_Personal_Profile = () => {
 
     const handleSave = () => {
         setSend(true)
-        CLoudBase.auth.getCurrenUser().then((user) => {
+        CloudBase.auth.getCurrenUser().then((user) => {
             console.log(user)
             //File不为null
             if (userData_Temper.File != null) {
                 const type = userData_Temper.File.type.split('/')
-                CLoudBase.app.uploadFile({
+                CloudBase.app.uploadFile({
                     cloudPath: `Avatar/User_Avatar_${user.uid + '.' + type[1]}`,
                     filePath: userData_Temper.File,
                     onUploadProgress: function (progressEvent) {
@@ -98,7 +98,7 @@ const Set_Personal_Profile = () => {
                         let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     }
                 }).then((result) => {
-                    CLoudBase.app.getTempFileURL({
+                    CloudBase.app.getTempFileURL({
                         fileList: [result.fileID]
                     }).then((res2) => {
                         res2.fileList.forEach((el) => {
@@ -108,7 +108,7 @@ const Set_Personal_Profile = () => {
                                     AvatarFileID: result.fileID,
                                 }
                                 console.log(newData)
-                                CLoudBase.db.collection("User").doc(user.uid).set({
+                                CloudBase.db.collection("User").doc(user.uid).set({
                                     data: newData
                                 }).then((res) => {
                                     console.log(res)
@@ -123,7 +123,7 @@ const Set_Personal_Profile = () => {
                 })
             } else {
                 console.log(userData_Temper.data)
-                CLoudBase.db.collection("User").doc(user.uid).set({
+                CloudBase.db.collection("User").doc(user.uid).set({
                     data: userData_Temper.data
                 }).then((res) => {
                     console.log(res)

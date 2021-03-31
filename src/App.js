@@ -1,4 +1,4 @@
-import React, {useState,useMemo} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import 'jquery/dist/jquery.js'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js'
@@ -11,13 +11,14 @@ import {ThemeProvider} from '@material-ui/core/styles';
 import theme from "./MyTheme/Theme";
 import CloudBase_Context from "./Context/Context_Info/CloudBase_Context";
 import Cloud_Base from "./Context/Data/Cloud_Base_Data";
+import TreeData_Context from "./Context/Context_Info/TreeData_Context";
 import NewTable_Component from "./Component_Category/Table/BigDataVirtualTable";
 
 //test
 import Myco3 from "./Test_Component/Myco3";
 import Myco from "./Test_Component/Myco";
 
-const App =()=> {
+const App = () => {
     console.log('render top')
     const [errorOpen, setErrorOpen] = useState(true)
     return (
@@ -25,8 +26,8 @@ const App =()=> {
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Switch>
-                        <Route path='/' exact component={Login_Page} />
-                        <PrivateRoute path='/Main' component={Main_Page} />
+                        <Route path='/' exact component={Login_Page}/>
+                        <PrivateRoute path='/Main' component={Main_Page}/>
                         <Route path='/Error' render={() => {
                             return (
                                 <Error_Page
@@ -38,7 +39,7 @@ const App =()=> {
                                     disableBackdropClick={true}
                                 />
                             )
-                        }} />
+                        }}/>
                     </Switch>
                 </BrowserRouter>
             </ThemeProvider>

@@ -152,7 +152,7 @@ const Scheduler_Component = (props) => {
         lowerTemp.setDate(1)
         CloudBase.db.collection("Appointments").where({
             startDateStamp: _.gte(upperTemp.getTime()).and(_.lte(lowerTemp.getTime())),
-            name: _.eq(userData.Name)
+            Uid: _.eq(userData.Uid)
         }).limit(1000).get().then((res) => {
             console.log(res.data)
             setLoading(false)
@@ -175,10 +175,10 @@ const Scheduler_Component = (props) => {
                     [...copy_data.dateGroup,
                         {
                             id: startingAddedId,
-                            name: userData.Name,
                             department: userData.Department,
                             startDateStamp: added.startDate.getTime(),
                             endDateStamp: added.endDate.getTime(),
+                            Uid:userData.Uid,
                             approved: false,
                             type: resourcesData[0],
                             subtype: Relative_Sheet[0].RelativeType[0],
@@ -202,6 +202,7 @@ const Scheduler_Component = (props) => {
                 copy_data.deleteGroup.push(deleted)
                 console.log(copy_data)
             }
+            console.log(copy_data)
             return copy_data
         });
     }
@@ -288,7 +289,6 @@ const Scheduler_Component = (props) => {
                         <AppointmentForm
                             messages={Appointment_Form_Local}
                             layoutComponent={Layout_Component}
-
                             basicLayoutComponent={BasicLayout}
                         />
                         <AllDayPanel/>

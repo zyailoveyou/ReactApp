@@ -1,15 +1,23 @@
-import React, { useState, useCallback } from "react";
+import React, {useState, useCallback} from "react";
+import Sticky from 'react-stickynode';
 
-import Myco from "./Myco";
-
-
-const  MomentLocalizationExample = (props) => {
-
-    const  message = (text) =>{
-        console.log(text)
+const MomentLocalizationExample = (props) => {
+    const handleStateChange = (status) =>{
+        console.log(status.status)
     }
+
     return (
-        <Myco func={message}></Myco>
+
+
+        <div style={{
+            background: "red",
+            height: 300,
+            overflow: "auto"
+        }}>
+
+        </div>
+
+
     );
 }
 

@@ -20,6 +20,7 @@ import User_Context from "../../Context/Context_Info/User_Context";
 import CloudBase_Context from "../../Context/Context_Info/CloudBase_Context";
 import User_Data from "../../Context/Data/User_Data";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import TreeData_Context from "../../Context/Context_Info/TreeData_Context";
 
 const useStyles = makeStyles({
     position: {
@@ -62,84 +63,120 @@ const Main_Page = () => {
 
     console.log('render main page')
     const classes = useStyles();
-    const CLoudBase = useContext(CloudBase_Context)
+    const CloudBase = useContext(CloudBase_Context)
     const [Load, setLoad] = useState(true)
+    const [treeData, setTreeData] = useState([])
     const [userData, setUserData] = useState(null)
+    const [loadingUserData, setLoadingUserData] = useState(true)
+    const [loadingTreeData, setLoadingTreeData] = useState(true)
     useSignOut();
-    useEffect(() => {
-        CLoudBase.auth.getCurrenUser().then((user) => {
+
+    const loadingUser = () => {
+        CloudBase.auth.getCurrenUser().then((user) => {
             console.log('进入初始化用户')
-            CLoudBase.db.collection("User").doc(user.uid).get().then((res) => {
+            CloudBase.db.collection("User").doc(user.uid).get().then((res) => {
                 if (res.data[0] != null) {
                     console.log('查找到用户文档')
-                    if (res.data[0].data.AvatarFileID!=''){
-                        CLoudBase.app.getTempFileURL({
+                    if (res.data[0].data.AvatarFileID != '') {
+                        CloudBase.app.getTempFileURL({
                             fileList: [res.data[0].data.AvatarFileID]
                         }).then((res2) => {
-                            if (res2.code !='OPERATION_FAIL'){
+                            if (res2.code != 'OPERATION_FAIL') {
                                 res2.fileList.forEach((el) => {
                                     if (el.code === "SUCCESS") {
-                                        console.log({...res.data[0].data, AvatarUrl: el.tempFileURL})
-                                        setUserData({...res.data[0].data, AvatarUrl: el.tempFileURL})
-                                        setLoad(false)
+                                        console.log({...res.data[0].data, AvatarUrl: el.tempFileURL,Uid:user.uid})
+                                        setUserData({...res.data[0].data, AvatarUrl: el.tempFileURL,Uid:user.uid})
+                                        setLoadingUserData(false)
                                     } else {
                                         console.log('没有成功获取temperUrl')
                                     }
                                 });
                             }
                         })
-                    }else {
+                    } else {
                         setUserData({...res.data[0].data, AvatarUrl: null})
-                        setLoad(false)
+                        setLoadingUserData(false)
                     }
                 } else {
                     console.log('未查找到用户文档')
-                    setUserData(User_Data)
-                    setLoad(false)
+                    setUserData({...User_Data,Uid:user.uid})
+                    setLoadingUserData(false)
                 }
             })
+
         })
+    }
+
+    const loadingTree = () => {
+        CloudBase.db.collection("Department").where({
+            _id: 'Department'
+        }).get().then((res) => {
+            console.log(res.data[0].treeData)
+            if (res.data[0].treeData) {
+                console.log('set treeData')
+                setTreeData(res.data[0].treeData)
+                setLoadingTreeData(false)
+            } else {
+                console.log('failed on loading tree')
+                setLoadingTreeData(false)
+            }
+        });
+    }
+
+
+    useEffect(() => {
+        loadingUser()
+        loadingTree()
     }, [])
 
 
+    useEffect(() => {
+        if (!loadingUserData && !loadingTreeData) {
+            setLoad(false)
+        }
+    }, [loadingUserData, loadingTreeData])
+
+
     return (
-        <User_Context.Provider value={{userData:userData,setUserData:setUserData}}>
-            <Grid container>
-                <Grid item xs={2}>
-                    <Box className={classes.fill_in}>
-                        <List_Component menu={menu} left={2} Accordion={true}/>
-                    </Box>
-                </Grid>
-                <Grid item xs={10}>
-                    {
-                        Load ?
-                            <Box className={classes.Load}>
-                                <CircularProgress size={'8rem'}/>
-                            </Box>
-                            :
-                            <Box>
-                                <App_Bar/>
-                                <Box className={classes.container}>
-                                    <Grid container spacing={2} direction={"column"}>
-                                        <Grid item xs={12}>
-                                            <Navigation_Text/>
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <Divider orientation='horizontal' variant='middle'/>
-                                        </Grid>
-                                        <Grid item>
-                                            <Route path='/Main/Home' component={Home_Page}></Route>
-                                            <Route path='/Main/User' component={User_Page}></Route>
-                                            <Route path='/Main/Corporation' component={Corporation_Page}></Route>
-                                        </Grid>
-                                        <Footer_Component Title='React Admin ©2020 Created By Neo Zhang'/>
-                                    </Grid>
+        <TreeData_Context.Provider value={{treeData:treeData, setTreeData:setTreeData}}>
+            <User_Context.Provider value={{userData: userData, setUserData: setUserData}}>
+                <Grid container>
+                    <Grid item xs={2}>
+                        <Box className={classes.fill_in}>
+                            <List_Component menu={menu} left={2} Accordion={true}/>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={10}>
+                        {
+                            Load ?
+                                <Box className={classes.Load}>
+                                    <CircularProgress size={'8rem'}/>
                                 </Box>
-                            </Box>
-                    }
+                                :
+                                <Box>
+                                    <App_Bar/>
+                                    <Box className={classes.container}>
+                                        <Grid container spacing={2} direction={"column"}>
+                                            <Grid item xs={12}>
+                                                <Navigation_Text/>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Divider orientation='horizontal' variant='middle'/>
+                                            </Grid>
+                                            <Grid item>
+                                                <Route path='/Main/Home' component={Home_Page}></Route>
+                                                <Route path='/Main/User' component={User_Page}></Route>
+                                                <Route path='/Main/Corporation' component={Corporation_Page}></Route>
+                                            </Grid>
+                                            <Footer_Component Title='React Admin ©2020 Created By Neo Zhang'/>
+                                        </Grid>
+                                    </Box>
+                                </Box>
+                        }
+                    </Grid>
                 </Grid>
-            </Grid>
-        </User_Context.Provider>
+            </User_Context.Provider>
+        </TreeData_Context.Provider>
     )
 }
 

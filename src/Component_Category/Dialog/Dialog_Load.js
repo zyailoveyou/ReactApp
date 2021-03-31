@@ -31,14 +31,14 @@ const Dialog_Load = (props) => {
         {
             opacity: load ? 1 : 1,
             transform: load ? 'translate3d(0,0,0)':'translate3d(0,-50%,0)',
-
             config: {
                 duration: 1000,
                 easing:t=>easeBounceOut(t),
             }})
     return (
 
-        <Backdrop className={classes.backdrop} open={load} transitionDuration={{appear: 100, enter: 100, exit: 1500}}>
+        <Backdrop className={classes.backdrop} open={load} transitionDuration={{appear: 100, enter: 100, exit: 1500}}
+        >
             {
                 load ? <CircularProgress size={'8rem'}/> :
                     <animated.div style={animate}>

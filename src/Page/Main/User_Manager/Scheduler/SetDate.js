@@ -38,7 +38,6 @@ const SetDate = (props) => {
             </Grid>
             <Grid item>
                 <Scheduler_Component/>
-
             </Grid>
         </Grid>
     );

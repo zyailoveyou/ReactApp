@@ -20,12 +20,11 @@ const Navigation_Text_Component = (props) => {
     const Group_Location = []
 
     Location_Array.forEach((item) => {
-        console.log(item)
+
         Group_Location.push(item)
     })
 
     const handleClick = (event, history) => {
-        console.log(history)
         event.preventDefault();
         console.log('clicked')
     }

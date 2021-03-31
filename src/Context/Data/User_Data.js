@@ -11,6 +11,8 @@ const User_Data = {
     Address: '',
     AvatarFileID:'',
     AvatarUrl:'',
+    Uid:'',
+    Authority:[],
 }
 
 

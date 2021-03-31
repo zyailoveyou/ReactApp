@@ -96,7 +96,6 @@ const Login_Register_Panel = (props) => {
 
 
     const history = useHistory();
-
     const SetUserName = (UserName_Input) => {
         console.log('执行了Set_Username')
         Set_Login_Data((PreData) => {

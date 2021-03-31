@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Box from "@material-ui/core/Box";
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from '@material-ui/core/IconButton';
@@ -8,11 +8,13 @@ import SortableTree from './react-sortable-tree/src/react-sortable-tree'
 import {addNodeUnderParent} from "./react-sortable-tree/src/utils/tree-data-utils";
 import {getNodeAtPath, removeNodeAtPath, getVisibleNodeCount} from "./react-sortable-tree/src/utils/tree-data-utils";
 import theme from "../../MyTheme/Theme";
-import TreeData_Context from "../../Context/Context_Info/TreeData_Context";
 import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import {v4 as uuidv4} from 'uuid';
+import Members_Context from "../../Context/Context_Info/Members_Context";
+import CloudBase_Context from "../../Context/Context_Info/CloudBase_Context";
 
 const useStyles = makeStyles({
     iconButton: {
@@ -22,27 +24,37 @@ const useStyles = makeStyles({
         background: theme.palette.grey["100"],
     },
     container: {
-        height: 650,
         padding: '1rem',
-        position: "relative"
+        position: "relative",
+        height: '100%'
     },
-    container_loading: {
-        height: 650,
-
-    }
 });
 
 
 const Tree = (props) => {
     const {treeData, loadingTree, setLoadingTree, setTreeData} = props
-    const nodeClicked = (rowInfo) => {
-        console.log(rowInfo)
-    }
+    const {
+        nowDepartmentNode,
+        setNowDepartmentNode,
+        nowDepartmentNodePath,
+        nowSelectedMember,
+        setNowSelectedMember,
+        setNowDepartmentNodePath,
+        setMembers,
+        members,
+        authorityCheckList,
+        setAuthorityCheckList,
+        send,
+        setSend,
+
+    } = useContext(Members_Context)
+    const CloudBase = useContext(CloudBase_Context)
+
     const classes = useStyles()
     const addNode = (path) => {
-        let NEW_NODE = {title: 'Another Node',Manager:[]};
+        const department_id = uuidv4()
+        let NEW_NODE = {title: 'Another Node', Members: [], department_id: department_id};
         // let {node, treeIndex, path} = rowInfo;
-
         // path.pop();
         let parentNode = getNodeAtPath({
             treeData: treeData,
@@ -69,89 +81,150 @@ const Tree = (props) => {
 
     const removeNode = (rowInfo) => {
         let {node, treeIndex, path} = rowInfo;
-        let newTree = removeNodeAtPath({
-            treeData: treeData,
-            path: path,
-            getNodeKey: ({treeIndex}) => treeIndex,
-            ignoreCollapsed: true
-        })
-        console.log(newTree)
-        setTreeData(newTree)
+        if (node.Members.length <= 0) {
+            let newTree = removeNodeAtPath({
+                treeData: treeData,
+                path: path,
+                getNodeKey: ({treeIndex}) => treeIndex,
+                ignoreCollapsed: true
+            })
+            console.log(newTree)
+            setTreeData(newTree)
+        } else {
+            console.log('has members to remove')
+            let newTree = removeNodeAtPath({
+                treeData: treeData,
+                path: path,
+                getNodeKey: ({treeIndex}) => treeIndex,
+                ignoreCollapsed: true
+            })
+            console.log(newTree)
+            setTreeData(newTree)
+        }
+    }
+
+
+    // const deleteMembersAuthority = (nodeMembers) => {
+    //     const defaultAuthority = authorityCheckList.map((item) => {
+    //         return {...item, Checked: false}
+    //     })
+    //     console.log(defaultAuthority)
+    //     setSend(true)
+    //     CloudBase.app
+    //         .callFunction({
+    //             name: "getUserList",
+    //             data: {
+    //                 usersGroup: nodeMembers,
+    //             }
+    //         })
+    //         .then((res) => {
+    //             const result = res.result; //云函数执行结果
+    //             const saveMembers = result.map((item) => {
+    //                 console.log(item)
+    //                 return {...item, data: {...item.data, Authority: defaultAuthority}}
+    //             })
+    //             console.log(saveMembers)
+    //             CloudBase.app
+    //                 .callFunction({
+    //                     name: "setUserList",
+    //                     data: {
+    //                         usersGroup: saveMembers
+    //                     }
+    //                 })
+    //                 .then((res) => {
+    //                     const result = res.result; //云函数执行结果
+    //                     console.log(result)
+    //                     setSend(false)
+    //                     defaultData()
+    //                 });
+    //         });
+    //
+    // }
+
+
+    const defaultData = () => {
+        setNowDepartmentNode([])
+        setNowSelectedMember({})
+        setMembers(undefined)
     }
 
     return (
-        <Paper elevation={3}>
+        <Paper elevation={3} style={{
+            width: '100%',
+            height: '100%',
+        }}>
             {
                 loadingTree ?
-                    <Box className={classes.container_loading}>
+                    <Box className={classes.container}>
                         <LinearProgress/>
                     </Box>
                     :
                     <Box className={classes.container}>
-                        <TreeData_Context.Provider value={{treeData, setTreeData}}>
-                            <SortableTree
-                                treeData={function () {
-                                    console.log(treeData)
-                                    return treeData
-                                }()}
-                                onChange={treeData => setTreeData(treeData)}
-                                innerStyle={{
-                                    // fontSize:'2rem'
-                                }}
-                                generateNodeProps={
-                                    (rowInfo) => {
-                                        return (
-                                            {
-                                                buttons: [
-                                                    <IconButton
-                                                        className={classes.iconButton}
-                                                        onClick={() => {
-                                                            console.log(rowInfo)
-                                                            addNode(rowInfo.path)
 
-                                                            // setTreeData(()=>{
-                                                            //     return newTree
-                                                            // })
-                                                        }}
-                                                    >
-                                                        <AddCircleOutlineIcon/>
-                                                    </IconButton>,
-                                                    function () {
-                                                        return (
-                                                            <IconButton
-                                                                className={classes.iconButton}
-                                                                onClick={() => {
-                                                                    console.log(rowInfo)
-                                                                    removeNode(rowInfo)
-                                                                }}
-                                                            >
-                                                                <RemoveCircleOutlineIcon/>
-                                                            </IconButton>
-                                                        )
+                        <SortableTree
+                            treeData={function () {
+                                return treeData
+                            }()}
+                            onChange={treeData => setTreeData(treeData)}
+                            innerStyle={{
+                                // fontSize:'2rem'
+                            }}
+                            generateNodeProps={
+                                (rowInfo) => {
+                                    return (
+                                        {
+                                            buttons: [
+                                                <IconButton
+                                                    className={classes.iconButton}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        console.log('add node clicked')
+                                                        addNode(rowInfo.path)
+                                                    }}
+                                                >
+                                                    <AddCircleOutlineIcon/>
+                                                </IconButton>,
+                                                function () {
+                                                    return (
+                                                        <IconButton
+                                                            className={classes.iconButton}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                console.log('remove node clicked')
+                                                                let {node, treeIndex, path} = rowInfo;
+                                                                console.log(node)
 
-                                                    }()
-                                                ],
-                                            }
-                                        )
-                                    }
+                                                                defaultData()
+                                                                removeNode(rowInfo)
+                                                            }}
+                                                        >
+                                                            <RemoveCircleOutlineIcon/>
+                                                        </IconButton>
+                                                    )
+
+                                                }()
+                                            ],
+                                        }
+                                    )
                                 }
-                            />
-                            <Fab color={'secondary'}
-                                 style={{
-                                     position: "absolute",
-                                     top: '83%',
-                                     left: '85%',
-                                     outline: "none",
-                                     width: '5rem',
-                                     height: '5rem'
-                                 }}
-                                 onClick={() => {
-                                     addNode([])
-                                 }}
-                            >
-                                <AddIcon/>
-                            </Fab>
-                        </TreeData_Context.Provider>
+                            }
+                        />
+                        <Fab color={'secondary'}
+                             style={{
+                                 position: "absolute",
+                                 top: '88%',
+                                 left: '90%',
+                                 outline: "none",
+                                 width: '3rem',
+                                 height: '3rem'
+                             }}
+                             onClick={() => {
+                                 addNode([])
+                             }}
+                        >
+                            <AddIcon/>
+                        </Fab>
+
                     </Box>
             }
         </Paper>

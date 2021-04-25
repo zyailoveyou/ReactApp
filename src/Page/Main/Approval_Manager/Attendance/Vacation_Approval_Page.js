@@ -1,16 +1,15 @@
-import React, {memo, useEffect, useState} from 'react';
-import {Box} from "@material-ui/core";
+import React, {useEffect, useState} from 'react';
+import Box from "@material-ui/core/Box";
+import {Route, useHistory, useLocation} from "react-router-dom";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../../../../MyTheme/Theme";
-import {Route, useHistory, useLocation} from "react-router-dom";
-import Personal_Profile from "./Personal_Profile";
-import Set_Personal_Profile from "./Set_Personal_Profile";
-import Show_Information_Component from "../../../../Component_Category/Information/Show_Information_Component";
+import Vacation_Handle_Page from "./Vacation_Handle_Page";
+import Vacation_Summary_Page from "./Vacation_Summary_Page";
 
 
-const useStyles_tab = makeStyles(
+const useStyles = makeStyles(
     {
         root: {
             background: (theme.palette.grey["400"]),
@@ -28,35 +27,40 @@ const useStyles_tab = makeStyles(
         indicator: {
             background: (theme.palette.secondary.main),
         },
-        container: {
-            width: '100%',
-            height: '60vh',
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-        }
+
     });
 
 const page_map = [
     {
         value: 0,
-        url: '/Main/User/Profile/Info'
+        url: '/Main/Attendance/Vacation/Unhandled'
     },
     {
         value: 1,
-        url: '/Main/User/Profile/SetInfo'
-    }
+        url: '/Main/Attendance/Vacation/Summary'
+    },
 ]
 
-const Profile_Page = (props) => {
-    console.log('render user page')
+
+const Vacation_Approval_Page = () => {
+
+
     const history = useHistory();
     const location = useLocation()
+    const classes = useStyles()
     const result = page_map.find((item) => {
         return item.url === location.pathname
     })
+
     const [value, setValue] = useState(result.value);
-    const classes = useStyles_tab();
+
+    const handleChange = (event, newValue) => {
+        const result = page_map.find((item) => {
+            return item.value === newValue
+        })
+        history.push(result.url);
+    };
+
 
     useEffect(() => {
         const result = page_map.find((page_inf) => {
@@ -66,42 +70,28 @@ const Profile_Page = (props) => {
     }, [location])
 
 
-    const handleChange = (event, newValue) => {
-        const result = page_map.find((item) => {
-            return item.value === newValue
-        })
-        history.push(result.url);
-    };
-
     return (
         <Box>
+
             <Tabs value={value} onChange={handleChange}
                   classes={{indicator: classes.indicator}}>
-                <Tab label="信息面板"
+                <Tab label="考勤审批"
                      classes={{
                          root: classes.root,
                          selected: classes.selected,
                      }}/>
-                <Tab label="更新信息"
+                <Tab label="记录统计"
                      classes={{
                          root: classes.root,
                          selected: classes.selected,
                      }}/>
             </Tabs>
-            <Box>
-                <Route exact path='/Main/User/Profile/Info'
-                       component={Personal_Profile}></Route>
-                <Route exact path='/Main/User/Profile/SetInfo'
-                       component={Set_Personal_Profile}></Route>
-            </Box>
+            <Route path='/Main/Attendance/Vacation/Unhandled'
+                   component={Vacation_Handle_Page}></Route>
+            <Route path='/Main/Attendance/Vacation/Summary'
+                   component={Vacation_Summary_Page}></Route>
         </Box>
     );
 };
 
-export default memo(Profile_Page, (prevProps, nextProps) => {
-    if (prevProps != nextProps) {
-        return false
-    } else {
-        return true
-    }
-});
+export default Vacation_Approval_Page;

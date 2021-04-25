@@ -2,19 +2,19 @@ import theme from "../../../MyTheme/Theme";
 
 export const schedulerData = [
     {
-        allDay: false,
-        title: 'Website Re-Design Plan',
-        startDate: new Date(2021, 0, 23, 9, 30),
-        endDate: new Date(2021, 0, 23, 11, 30),
-        name: '张千唱',
-        approved: false,
-        department: '办公室',
-        id: '2db7a5a2-738d-4da1-ba93-aadb4976c220',
-        notes: "456456",
-        startDateStamp: new Date(2021, 0, 23, 9, 30).getTime(),
-        endDateStamp: new Date(2021, 0, 23, 11, 30).getTime(),
-        type: 1,
-        subtype: 1,
+        AllDay: false,
+        Title: 'Website Re-Design Plan',
+        StartDate: new Date(2021, 0, 23, 9, 30),
+        EndDate: new Date(2021, 0, 23, 11, 30),
+        Name: '张千唱',
+        Approved: false,
+        Department: '办公室',
+        Id: '2db7a5a2-738d-4da1-ba93-aadb4976c220',
+        Notes: "456456",
+        StartDateStamp: new Date(2021, 0, 23, 9, 30).getTime(),
+        EndDateStamp: new Date(2021, 0, 23, 11, 30).getTime(),
+        Type: 1,
+        Subtype: 1,
     },
 ];
 

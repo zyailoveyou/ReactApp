@@ -36,7 +36,6 @@ const useStyles = makeStyles({
         color: 'white !important',
         height:'30px',
         fontSize: '1.1rem',
-
     },
     input_underline: {
         '&:after': {

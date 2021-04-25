@@ -73,7 +73,6 @@ const Chips_Profile = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-
             </Box>
         </Paper>
 

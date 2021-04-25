@@ -1,18 +1,26 @@
-import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
+import React from 'react';
+import Box from "@material-ui/core/Box";
+import Button from '@material-ui/core/Button';
 
-
-
-export default (props) => {
-    const {func} = props
-    const progress = ()=>{
-        func(5)
-    }
-    const b = 5
+const Myco = (props) => {
+    let {testgroup,setRefresh}= props
     return (
-        <div onClick={progress}>
-            123123
-        </div>
-
+        <Box>
+            this is myco
+            <Button onClick={()=>{
+                let temper = testgroup.test1
+                console.log(temper)
+                temper = temper +1
+                console.log(temper)
+                testgroup.test1 = temper
+                console.log('this is second')
+                console.log(testgroup)
+                setRefresh((pre)=>{
+                    return !pre
+                })
+            }}>button</Button>
+        </Box>
     );
 };
+
+export default Myco;

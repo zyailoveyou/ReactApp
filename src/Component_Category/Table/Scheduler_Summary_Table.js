@@ -15,7 +15,6 @@ import {
     FilteringState,
     IntegratedFiltering,
     ExportPanel,
-
 } from "@devexpress/dx-react-grid";
 import {GridExporter} from '@devexpress/dx-react-grid-export';
 import {
@@ -31,46 +30,13 @@ import {Button} from "@material-ui/core";
 import User_Context from "../../Context/Context_Info/User_Context";
 import CloudBase_Context from "../../Context/Context_Info/CloudBase_Context";
 import {saveAs} from 'file-saver'
-import rowsBackUp from "./TestData/Data";
 import theme from "../../MyTheme/Theme";
+import getFlatDepartmentFromTree from "../../Function_List/getFlatDepartmentFromTree";
+import TreeData_Context from "../../Context/Context_Info/TreeData_Context";
+import {getTreeFromFlatData} from "react-sortable-tree";
 
 
-const columns = [
-    {
-        name: 'name', title: '姓名',
 
-    },
-    {
-        name: 'department', title: '部门',
-
-    },
-    {
-        name: 'title', title: '标题',
-
-    },
-    {
-        name: 'startDate', title: '起始时间',
-        getCellValue: row => (row.startDate ? new Date(row.startDate).toLocaleString() : '未知'),
-    },
-    {
-        name: 'endDate', title: '截止时间',
-        getCellValue: row => (row.endDate ? new Date(row.endDate).toLocaleString() : '未知'),
-    },
-    {
-        name: 'type', title: '类型',
-        getCellValue: row => (row.type ? row.type.text : '未知'),
-
-    },
-    {
-        name: 'subtype', title: '二级类型',
-        getCellValue: row => (row.subtype ? row.subtype.text : '未知'),
-
-    },
-    {
-        name: 'approved', title: '审批',
-        getCellValue: row => (row.approved ? '是' : '否'),
-    },
-];
 
 
 const pagePanelMessages = {
@@ -86,9 +52,6 @@ const filterRowMessages = {
 }
 
 
-
-
-
 const TooltipFormatter = ({row: {phone, birthDate}, value}) => (
     <Tooltip title={<div>{value}</div>}
     >
@@ -98,21 +61,15 @@ const TooltipFormatter = ({row: {phone, birthDate}, value}) => (
     </Tooltip>
 );
 
-const CellTooltip = props => (
-    <DataTypeProvider
-        for={columns.map(({name}) => name)}
-        formatterComponent={TooltipFormatter}
-        {...props}
-    />
-);
 
-const TableRow = (props) =>{
+
+const TableRow = (props) => {
 
     return (
         <Table.Row {...props}
-            style={{
-                background:theme.palette.primary.main
-            }}
+                   style={{
+                       background: theme.palette.primary.main
+                   }}
         >
             {props.children}
         </Table.Row>
@@ -124,7 +81,7 @@ const TableHeaderContent = (props) => {
         <TableHeaderRow.Content
             column={props.column}
             style={{
-                color:"white",
+                color: "white",
             }}
             {...props}
 
@@ -145,9 +102,10 @@ const CustomToolBar = ({style, children, loading, setLoading, setRows, startExpo
     const loadData = () => {
         setLoading(true)
         const _ = CloudBase.db.command;
+        console.log(userData.Uid)
         CloudBase.db.collection("Appointments").where({
             startDateStamp: _.gte(selectedStartDate.getTime()).and(_.lte(selectedEndDate.getTime())),
-            name: _.eq(userData.Name)
+            Uid: _.eq(userData.Uid)
         }).get().then((res) => {
             console.log(res.data)
             setRows(res.data)
@@ -214,7 +172,7 @@ const CustomToolBar = ({style, children, loading, setLoading, setRows, startExpo
                                     outline: 'none',
                                     marginLeft: '1rem'
                                 }}
-                                onClick={(e)=>{
+                                onClick={(e) => {
                                     e.preventDefault()
                                     console.log('点击')
                                     startExport()
@@ -248,18 +206,21 @@ const FilterCell = (props) => {
 };
 
 
-const BigDataVirtualTable = () => {
+const Scheduler_Summary_Table = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [pageSizes] = useState([5, 10, 15]);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [loadingAppointments, setLoadingAppointments,] = useState(true)
+    const [loadingDepartment, setLoadingDepartment,] = useState(true)
     const [filters, setFilters] = useState([{columnName: 'owner', value: 'D'}]);
     const {userData, setUserData} = useContext(User_Context);
     const CloudBase = useContext(CloudBase_Context);
     const [rows, setRows] = useState([])
     const exporterRef = useRef(null);
+    const [treeData, setTreeData] = useState([])
 
-    const startExport = ()=> {
+    const startExport = () => {
         exporterRef.current.exportGrid();
     };
 
@@ -274,8 +235,18 @@ const BigDataVirtualTable = () => {
         getInitialData(new Date())
     }, [])
 
+    useEffect(()=>{
+        if (!loadingDepartment && !loadingAppointments){
+            setLoading(false)
+        }
+
+    },[loadingAppointments,loadingDepartment])
+
     const getInitialData = (Passed_Date) => {
         setLoading(true)
+        setLoadingAppointments(true)
+        setLoadingDepartment(true)
+
         const _ = CloudBase.db.command;
         let upperTemp = new Date(Passed_Date)
         let lowerTemp = new Date(Passed_Date)
@@ -283,69 +254,169 @@ const BigDataVirtualTable = () => {
         lowerTemp.setMonth((lowerTemp.getMonth()) + 1)
         upperTemp.setDate(29)
         lowerTemp.setDate(1)
-        CloudBase.db.collection("Appointments").where({
-            startDateStamp: _.gte(upperTemp.getTime()).and(_.lte(lowerTemp.getTime())),
-            name:_.eq(userData.Name)
-        }).limit(1000).get().then((res) => {
-            console.log(res.data)
-            setLoading(false)
-            setRows(res.data)
-        });
+
+        CloudBase.app
+            .callFunction({
+                name: "aggregateAppointments",
+            })
+            .then((res) => {
+                const result1 = res.result; //云函数执行结果
+                console.log(result1)
+                CloudBase.app
+                    .callFunction({
+                        name: "aggregateDepartment",
+                    })
+                    .then((res) => {
+                        const result2 = res.result; //云函数执行结果
+                        console.log(res)
+                        console.log(result2)
+
+                        const nestTree = getTreeFromFlatData({
+                            flatData: result2,
+                            getKey: (node) => node.id,
+                            getParentKey: (node) => node.parentNode,
+                            rootKey: 0
+                        })
+
+                        console.log(nestTree)
+
+                        if (result2) {
+                            console.log('set treeData')
+                            setTreeData(nestTree)
+                            setRows(result1)
+                            setLoadingAppointments(false)
+                            setLoadingDepartment(false)
+                        } else {
+                            console.log('failed on loading tree')
+                            setTreeData(nestTree)
+                            setRows(result1)
+                            setLoadingAppointments(false)
+                            setLoadingDepartment(false)
+                        }
+                    });
+            })
+
+    }
+
+
+    const columns = [
+        {
+            name: 'name', title: '姓名',
+            getCellValue: row => {
+                if (row.User) {
+                    return row.User[0].Name
+                } else {
+                    return '未知'
+                }
+            }
+        },
+        {
+            name: 'department', title: '部门',
+            getCellValue: row => {
+                console.log(treeData)
+                const newArray = getFlatDepartmentFromTree(treeData)
+                console.log(newArray)
+                console.log(row)
+                const result = newArray.find((item) => {
+                    return item.id === row.User[0].Department
+                })
+                console.log(result)
+                return result.title
+            }
+
+        },
+        {
+            name: 'title', title: '标题',
+
+        },
+        {
+            name: 'startDate', title: '起始时间',
+            getCellValue: row => (row.startDate ? new Date(row.startDate).toLocaleString() : '未知'),
+        },
+        {
+            name: 'endDate', title: '截止时间',
+            getCellValue: row => (row.endDate ? new Date(row.endDate).toLocaleString() : '未知'),
+        },
+        {
+            name: 'type', title: '类型',
+            getCellValue: row => (row.type ? row.type.text : '未知'),
+
+        },
+        {
+            name: 'subtype', title: '二级类型',
+            getCellValue: row => (row.subtype ? row.subtype.text : '未知'),
+
+        },
+        {
+            name: 'approved', title: '审批',
+            getCellValue: row => (row.approved ? '是' : '否'),
+        },
+    ];
+
+    const CellTooltip = props => (
+        <DataTypeProvider
+            for={columns.map(({name}) => name)}
+            formatterComponent={TooltipFormatter}
+            {...props}
+        />
+    );
+
+    const noDataMessage = {
+        noData: '暂无数据',
     }
 
     return (
-        <Paper elevation={3} >
-            <Box style={{
-            }} >
-
-            <Grid
-                rows={rows}
-                columns={columns}
-            >
-                <FilteringState
-                    filters={filters}
-                    onFiltersChange={setFilters}
+        <Paper elevation={3}>
+            <Box style={{}}>
+                <Grid
+                    rows={ rows}
+                    columns={columns}
+                >
+                    <FilteringState
+                        filters={filters}
+                        onFiltersChange={setFilters}
+                    />
+                    <PagingState
+                        currentPage={currentPage}
+                        onCurrentPageChange={(value) => {
+                            console.log(value)
+                            setCurrentPage(value)
+                        }}
+                        pageSize={pageSize}
+                        onPageSizeChange={(value) => {
+                            console.log(value)
+                            setPageSize(value)
+                        }}
+                    />
+                    <IntegratedFiltering/>
+                    <CellTooltip/>
+                    <VirtualTable
+                        height={'70vh'}
+                        messages={noDataMessage}
+                    />
+                    <TableHeaderRow
+                        contentComponent={TableHeaderContent}
+                        rowComponent={TableRow}
+                    />
+                    <TableFilterRow
+                        messages={filterRowMessages}
+                    />
+                    <CustomToolBar
+                        loading={loading}
+                        setLoading={setLoading}
+                        setRows={setRows}
+                        startExport={startExport}
+                    />
+                </Grid>
+                <GridExporter
+                    ref={exporterRef}
+                    rows={rows}
+                    columns={columns}
+                    onSave={onSave}
                 />
-                <PagingState
-                    currentPage={currentPage}
-                    onCurrentPageChange={(value) => {
-                        console.log(value)
-                        setCurrentPage(value)
-                    }}
-                    pageSize={pageSize}
-                    onPageSizeChange={(value) => {
-                        console.log(value)
-                        setPageSize(value)
-                    }}
-                />
-                <IntegratedFiltering/>
-                <CellTooltip/>
-                <VirtualTable
-                    height={'70vh'}
-                />
-                <TableHeaderRow
-                    contentComponent={TableHeaderContent}
-                    rowComponent={TableRow}
-                />
-                <TableFilterRow
-                    messages={filterRowMessages}
-                />
-                <CustomToolBar
-                    loading={loading}
-                    setLoading={setLoading}
-                    setRows={setRows}
-                    startExport={startExport}
-                />
-            </Grid>
-            <GridExporter
-                ref={exporterRef}
-                rows={rows}
-                columns={columns}
-                onSave={onSave}
-            />
             </Box>
         </Paper>
     );
 };
 
-export default memo(BigDataVirtualTable);
+export default memo(Scheduler_Summary_Table);

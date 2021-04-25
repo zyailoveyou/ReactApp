@@ -11,13 +11,13 @@ import Avatar_Upload from "../../../../Component_Category/Information/Avatar_Upl
 import Button from '@material-ui/core/Button';
 import CloudBase_Context from "../../../../Context/Context_Info/CloudBase_Context";
 import Input_Selector_Component from "../../../../Component_Category/Input/Input_Selector_Component";
-import Department_Select from "../../../../Component_Category/Information/Department_Select";
+import Department_Select from "../../../../Component_Category/Input/Department_Select";
 import User_Context from "../../../../Context/Context_Info/User_Context";
 import Dialog_Load from "../../../../Component_Category/Dialog/Dialog_Load";
 import theme from "../../../../MyTheme/Theme";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import TreeData_Context from "../../../../Context/Context_Info/TreeData_Context";
-import {getFlatDataFromTree} from "react-sortable-tree";
+import {getFlatDataFromTree, getTreeFromFlatData} from "react-sortable-tree";
 
 
 const useStyles = makeStyles({
@@ -29,8 +29,8 @@ const useStyles = makeStyles({
     },
     paper: {
         width: '100%',
-        height: loading => {
-            if (loading) {
+        height: loadingProfile => {
+            if (loadingProfile) {
                 return 492
             } else {
                 return '100%'
@@ -54,27 +54,31 @@ const useStyles = makeStyles({
 });
 
 const Set_Personal_Profile = (props) => {
-    const [loading, setLoading] = useState(false)
-    const [departmentGroup,setDepartmentGroup] = useState([])
-    const classes = useStyles(loading);
+
+    const [loadingProfile, setLoadingProfile] = useState(false)
+    const [departmentGroup, setDepartmentGroup] = useState([])
+    const classes = useStyles(loadingProfile);
     const CloudBase = useContext(CloudBase_Context)
     const [send, setSend] = useState(false)
-    const [sendUser,setSendUser] = useState(false)
-    const [sendTree,setSendTree] = useState(false)
+    const [sendUser, setSendUser] = useState(false)
+    const [sendTree, setSendTree] = useState(false)
     const {userData, setUserData} = useContext(User_Context)
-    const {treeData,setTreeData} = useContext(TreeData_Context)
-    console.log(treeData)
+    const [treeData, setTreeData] = useState([])
+
 
     const setData = (data_name, data) => {
         setUserData_Temper((prevUserData) => {
-            return (
-                {
-                    ...prevUserData,
-                    data: {
-                        ...prevUserData.data,
-                        [data_name]: data
-                    }
+            console.log(data_name)
+            const test = {
+                ...prevUserData,
+                data: {
+                    ...prevUserData.data,
+                    [data_name]: data
                 }
+            }
+            console.log(test)
+            return (
+                test
             )
         })
     }
@@ -90,6 +94,7 @@ const Set_Personal_Profile = (props) => {
         })
     }
 
+
     const [userData_Temper, setUserData_Temper] = useState(
         {
             data: userData,
@@ -99,12 +104,56 @@ const Set_Personal_Profile = (props) => {
         });
 
 
-    const sendUserData =()=>{
+    console.log(userData_Temper)
+
+
+    const initialTreeData = () => {
+        setLoadingProfile(true)
+        CloudBase.app
+            .callFunction({
+                name: "aggregateDepartment",
+            })
+            .then((res) => {
+                const result = res.result; //云函数执行结果
+                console.log(res)
+                console.log(result)
+
+                const nestTree = getTreeFromFlatData({
+                    flatData: result,
+                    getKey: (node) => node.id,
+                    getParentKey: (node) => node.parentNode,
+                    rootKey: 0
+                })
+
+                console.log(nestTree)
+
+                if (result) {
+                    console.log('set treeData')
+                    setTreeData(nestTree)
+                    setLoadingProfile(false)
+
+
+                } else {
+                    console.log('failed on loading tree')
+                    setTreeData(nestTree)
+                    setLoadingProfile(false)
+                }
+            });
+    }
+
+
+    useEffect(() => {
+        initialTreeData()
+    }, [])
+
+
+    const sendUserData = () => {
         setSendUser(true)
         CloudBase.auth.getCurrenUser().then((user) => {
             console.log(user)
             //File不为null
             if (userData_Temper.File != null) {
+                console.log('into if')
                 const type = userData_Temper.File.type.split('/')
                 CloudBase.app.uploadFile({
                     cloudPath: `Avatar/User_Avatar_${user.uid + '.' + type[1]}`,
@@ -120,12 +169,24 @@ const Set_Personal_Profile = (props) => {
                         res2.fileList.forEach((el) => {
                             if (el.code === "SUCCESS") {
                                 const newData = {
-                                    ...userData_Temper.data,
+                                    Name: userData_Temper.data.Name,
+                                    Career: userData_Temper.data.Career,
+                                    Department: userData_Temper.data.Department,
+                                    Email: userData_Temper.data.Email,
+                                    Gender: userData_Temper.data.Gender,
+                                    QQ: userData_Temper.data.QQ,
+                                    Phone: userData_Temper.data.Phone,
+                                    Province: userData_Temper.data.Province,
+                                    City: userData_Temper.data.City,
+                                    Address: userData_Temper.data.Address,
+                                    AvatarUrl: userData_Temper.data.AvatarUrl,
+                                    Uid: userData_Temper.data.Uid,
+                                    Authority: userData_Temper.data.Authority,
                                     AvatarFileID: result.fileID,
                                 }
                                 console.log(newData)
                                 CloudBase.db.collection("User").doc(user.uid).set({
-                                    data: newData
+                                    ...newData
                                 }).then((res) => {
                                     console.log(res)
                                     setUserData({...newData, AvatarUrl: el.tempFileURL})
@@ -138,8 +199,26 @@ const Set_Personal_Profile = (props) => {
                     })
                 })
             } else {
+                console.log('info else')
+                const newData = {
+                    Name: userData_Temper.data.Name,
+                    Career: userData_Temper.data.Career,
+                    Department: userData_Temper.data.Department,
+                    Email: userData_Temper.data.Email,
+                    Gender: userData_Temper.data.Gender,
+                    QQ: userData_Temper.data.QQ,
+                    Phone: userData_Temper.data.Phone,
+                    Province: userData_Temper.data.Province,
+                    City: userData_Temper.data.City,
+                    Address: userData_Temper.data.Address,
+                    AvatarFileID: userData_Temper.data.AvatarFileID,
+                    AvatarUrl: userData_Temper.data.AvatarUrl,
+                    Uid: userData_Temper.data.Uid,
+                    Authority: userData_Temper.data.Authority,
+                }
+                console.log(newData)
                 CloudBase.db.collection("User").doc(user.uid).set({
-                    data: userData_Temper.data
+                    ...newData
                 }).then((res) => {
                     console.log(res)
                     setUserData(userData_Temper.data)
@@ -151,27 +230,26 @@ const Set_Personal_Profile = (props) => {
     }
 
 
-    const sendTreeData =()=>{
-        setSendTree(true)
-        CloudBase.db.collection("Department").doc("Department").set({
-            treeData: treeData
-        }).then((res) => {
-            console.log(res)
-            setSendTree(false)
-        })
-    }
+    // const sendTreeData =()=>{
+    //     setSendTree(true)
+    //     CloudBase.db.collection("Department").doc("Department").set({
+    //         treeData: treeData
+    //     }).then((res) => {
+    //         console.log(res)
+    //         setSendTree(false)
+    //     })
+    // }
 
     const handleSave = () => {
         setSend(true)
         sendUserData()
-        sendTreeData()
     }
 
     useEffect(() => {
-        if (!sendTree&&!sendUser){
+        if (!sendUser) {
             setSend(false)
         }
-    }, [sendTree,sendUser])
+    }, [sendTree, sendUser])
 
     return (
         <Grid container spacing={2} direction={"column"}>
@@ -184,7 +262,7 @@ const Set_Personal_Profile = (props) => {
             <Grid item>
                 <Paper className={classes.paper} elevation={3}>
                     {
-                        loading ? <LinearProgress/> :
+                        loadingProfile ? <LinearProgress/> :
                             <Box className={classes.container}>
                                 <Grid container direction={"row"} spacing={2}>
                                     <Grid item xs={9}>
@@ -225,11 +303,11 @@ const Set_Personal_Profile = (props) => {
                                                                 Title="所属部门"
                                                                 Data_Set_Function={userData_Temper.SetData}
                                                                 Data_Set_Name={'Department'}
-                                                                Data_Group={[
-                                                                    '工程部', '销售部'
-                                                                ]}
+                                                                treeData={treeData}
+                                                                setTreeData={setTreeData}
                                                                 Has_Icon={false}
-                                                                Value={userData_Temper.data.Department.treeIndex}
+                                                                lastDepartment={userData_Temper.data.Department}
+                                                                Value={userData_Temper.data.Department}
                                                             />
                                                         </Grid>
                                                         <Grid item xs={4}>
@@ -294,7 +372,7 @@ const Set_Personal_Profile = (props) => {
                                                         </Grid>
                                                         <Grid item xs={12}>
                                                             <Input_Information_Component
-                                                                Title="详细地址"
+                                                                Title="详细住址"
                                                                 Data_Set_Function={userData_Temper.SetData}
                                                                 Data_Set_Name={'Address'}
                                                                 Has_Icon={false}

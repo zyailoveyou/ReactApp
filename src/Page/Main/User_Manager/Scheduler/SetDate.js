@@ -30,13 +30,17 @@ const SetDate = (props) => {
     const classes = useStyles()
     return (
         <Grid container spacing={2} direction={"column"}>
-            <Grid item>
+            <Grid item style={{
+                width:'100%'
+            }}>
                 <Show_Information_Component
                     Title={'使用说明'}
                     Content={'查询以及设置个人出勤及安排个人计划'}
                 />
             </Grid>
-            <Grid item>
+            <Grid item style={{
+                width:'100%'
+            }}>
                 <Scheduler_Component/>
             </Grid>
         </Grid>

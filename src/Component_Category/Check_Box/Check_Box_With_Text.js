@@ -47,8 +47,13 @@ const useStyles = makeStyles({
         paddingBottom: 0,
         paddingLeft: 0,
         // marginRight:0,
+        '&$checked': {
+            color: theme.palette.success.main,
+        },
 
     },
+
+    checked: {},
 });
 
 const Check_Box_With_Text = (props) => {
@@ -76,10 +81,10 @@ const Check_Box_With_Text = (props) => {
                 color={"secondary"}
                 classes={{
                     root: classes.root_checkBox,
+                    checked:classes.checked
                 }}
                 checked={checked}
                 onChange={(e) => onHandleChange(e)}
-                
             />
             <Typography>请认真阅读</Typography>
             <Link href='#' onClick={(e) => onLinkClicked(e)} style={{color: theme.palette.primary.light}}>此协议</Link>

@@ -24,13 +24,12 @@ import {
     ViewSwitcher,
     Resources,
     WeekView,
+
 } from '@devexpress/dx-react-scheduler-material-ui';
 import TodayButton_Component from "./TodayButton_Component";
 import NavigationButton_Component from "./NavigationButton_Component";
 import OpenButton_Component from "./OpenButton_Component";
 import Switcher_Component from "./Switcher_Component";
-import ResourceEditor from "./ResourceEditor_Component";
-import DateEditor_Component from "./DateEditor_Component";
 import Content from "./Content_Component";
 import BasicLayout from "./BasicLayout_Component";
 import Layout_Component from "./Layout_Component";
@@ -46,7 +45,7 @@ import {
 } from "./Test_Data/Data";
 import theme from "../../MyTheme/Theme";
 import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
+
 
 const Appointment_Form_Local = {
     detailsLabel: '标题',
@@ -135,8 +134,6 @@ const Scheduler_Component = (props) => {
     const {userData, setUserData} = useContext(User_Context)
     const CloudBase = useContext(CloudBase_Context)
 
-
-
     useEffect(() => {
         updateData(data.currentDate)
     }, [])
@@ -175,11 +172,14 @@ const Scheduler_Component = (props) => {
                     [...copy_data.dateGroup,
                         {
                             id: startingAddedId,
-                            department: userData.Department,
+                            department: userData.department,
                             startDateStamp: added.startDate.getTime(),
                             endDateStamp: added.endDate.getTime(),
                             Uid:userData.Uid,
+                            handlerId:null,
+                            handledTime:null,
                             approved: false,
+                            handled:false,
                             type: resourcesData[0],
                             subtype: Relative_Sheet[0].RelativeType[0],
                             ...added,
@@ -307,6 +307,7 @@ const ToolbarWithLoading = ({style, children, ...restProps}) => {
     const {data, loading, sending, setSending} = Scheduler_Data
     const onSave = () => {
         setSending(true)
+        console.log(data.dateGroup)
         if (userData.Name != '') {
             CloudBase.app
                 .callFunction({

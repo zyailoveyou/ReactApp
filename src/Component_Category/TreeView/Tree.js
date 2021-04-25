@@ -32,7 +32,16 @@ const useStyles = makeStyles({
 
 
 const Tree = (props) => {
-    const {treeData, loadingTree, setLoadingTree, setTreeData} = props
+    const {
+        treeData,
+        setTreeData,
+        loadingDepartmentTree,
+        setLoadingDepartmentTree,
+        removeTreeData,
+        setRemoveTreeData,
+        removeMemberList,
+        setRemoveMemberList,
+    } = props
     const {
         nowDepartmentNode,
         setNowDepartmentNode,
@@ -46,14 +55,21 @@ const Tree = (props) => {
         setAuthorityCheckList,
         send,
         setSend,
-
     } = useContext(Members_Context)
     const CloudBase = useContext(CloudBase_Context)
 
     const classes = useStyles()
+
+
     const addNode = (path) => {
         const department_id = uuidv4()
-        let NEW_NODE = {title: 'Another Node', Members: [], department_id: department_id};
+        const NEW_NODE =
+            {
+                title: '新部门',
+                Members: [],
+                id: department_id,
+            };
+
         // let {node, treeIndex, path} = rowInfo;
         // path.pop();
         let parentNode = getNodeAtPath({
@@ -62,6 +78,10 @@ const Tree = (props) => {
             getNodeKey: ({treeIndex}) => treeIndex,
             ignoreCollapsed: true
         });
+
+        console.log(parentNode)
+        console.log(NEW_NODE)
+
         let getNodeKey = ({node: object, treeIndex: number}) => {
             return number;
         };
@@ -76,31 +96,50 @@ const Tree = (props) => {
             parentKey: parentKey,
             getNodeKey: ({treeIndex}) => treeIndex
         });
+
+        console.log(newTree)
         setTreeData(newTree.treeData);
     }
 
     const removeNode = (rowInfo) => {
         let {node, treeIndex, path} = rowInfo;
-        if (node.Members.length <= 0) {
-            let newTree = removeNodeAtPath({
-                treeData: treeData,
-                path: path,
-                getNodeKey: ({treeIndex}) => treeIndex,
-                ignoreCollapsed: true
-            })
-            console.log(newTree)
-            setTreeData(newTree)
-        } else {
-            console.log('has members to remove')
-            let newTree = removeNodeAtPath({
-                treeData: treeData,
-                path: path,
-                getNodeKey: ({treeIndex}) => treeIndex,
-                ignoreCollapsed: true
-            })
-            console.log(newTree)
-            setTreeData(newTree)
-        }
+
+        let newTree = removeNodeAtPath({
+            treeData: treeData,
+            path: path,
+            getNodeKey: ({treeIndex}) => treeIndex,
+            ignoreCollapsed: true
+        })
+        console.log(newTree)
+        setTreeData(newTree)
+
+        // console.log('has members to remove')
+        // let newTree = removeNodeAtPath({
+        //     treeData: treeData,
+        //     path: path,
+        //     getNodeKey: ({treeIndex}) => treeIndex,
+        //     ignoreCollapsed: true
+        // })
+        // console.log(newTree)
+        // setTreeData(newTree)
+
+        setRemoveTreeData((preRemove) => {
+            let newRemove = preRemove
+            console.log(node.id)
+            newRemove.push(node.id)
+            console.log(newRemove)
+            return newRemove
+        })
+
+
+        setRemoveMemberList((preRemove)=>{
+            let newRemove = preRemove
+            console.log(node)
+            newRemove = newRemove.concat(node.Members)
+            console.log(newRemove)
+            return newRemove
+        })
+
     }
 
 
@@ -143,9 +182,8 @@ const Tree = (props) => {
 
 
     const defaultData = () => {
-        setNowDepartmentNode([])
-        setNowSelectedMember({})
-        setMembers(undefined)
+        setNowDepartmentNode(undefined)
+        setNowSelectedMember(undefined)
     }
 
     return (
@@ -154,10 +192,8 @@ const Tree = (props) => {
             height: '100%',
         }}>
             {
-                loadingTree ?
-                    <Box className={classes.container}>
-                        <LinearProgress/>
-                    </Box>
+                loadingDepartmentTree ?
+                    <LinearProgress/>
                     :
                     <Box className={classes.container}>
 
@@ -193,7 +229,6 @@ const Tree = (props) => {
                                                                 console.log('remove node clicked')
                                                                 let {node, treeIndex, path} = rowInfo;
                                                                 console.log(node)
-
                                                                 defaultData()
                                                                 removeNode(rowInfo)
                                                             }}

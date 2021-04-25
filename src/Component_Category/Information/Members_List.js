@@ -10,8 +10,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
 import Members_Context from "../../Context/Context_Info/Members_Context";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import theme from "../../MyTheme/Theme";
@@ -20,7 +18,6 @@ import {animated, useSpring} from "react-spring";
 import {easePolyIn} from "d3-ease";
 import CloudBase_Context from "../../Context/Context_Info/CloudBase_Context";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import {StickyContainer, Sticky} from 'react-sticky';
 
 
 const useStyles = makeStyles({
@@ -42,9 +39,9 @@ const useStyles = makeStyles({
         outline: "none !important",
         color: theme.palette.secondary.main,
     },
-    addNewMember:{
-        fontSize:'1rem',
-        color:theme.palette.grey["500"]
+    addNewMember: {
+        fontSize: '1rem',
+        color: theme.palette.grey["500"]
     }
 })
 
@@ -52,13 +49,6 @@ const Members_List = (props) => {
     console.log('rerender ManagerList')
     const classes = useStyles()
     const subHeaderRef = useRef()
-
-    const {
-        loadingMembers,
-        setLoadingMembers,
-        members,
-        setMembers
-    } = props
     const [Opacity, setOpacity] = useState(true)
     const [selectedIndex, setSelectedIndex] = useState(0);
     const CloudBase = useContext(CloudBase_Context)
@@ -69,6 +59,8 @@ const Members_List = (props) => {
         setNowSelectedMember,
     } = useContext(Members_Context)
 
+
+    console.log(nowDepartmentNode)
     const animate = useSpring(
         {
             opacity: Opacity ? 1 : 0,
@@ -85,7 +77,6 @@ const Members_List = (props) => {
         setSelectedIndex(index);
         setNowSelectedMember(nowDepartmentNode.Members[index]);
     };
-
 
     return (
         <Paper
@@ -113,49 +104,49 @@ const Members_List = (props) => {
             }}
         >
             {
-                loadingMembers ? <LinearProgress/>
-                    :
-                    <Box className={classes.container}>
-                        <List
-                            subheader={
-                                <animated.div style={{
-                                    position: "sticky",
-                                    top: -1,
-                                    ...animate
-                                }} ref={subHeaderRef}>
-                                    <ListSubheader>
-                                        {
-                                            nowDepartmentNode.title
-                                        }
-                                    </ListSubheader>
-                                </animated.div>
-                            }
-                        >
-                            {
-                                function () {
-                                    console.log(members)
-                                    if (members) {
-                                        return (
-                                            <Box>
-                                                <ListItem
-                                                    button
-                                                    key={23232}
-                                                >
-                                                    <ListItemAvatar>
+
+                function () {
+                    if (nowDepartmentNode) {
+                        return <Box className={classes.container}>
+                            <List
+                                subheader={
+                                    <animated.div style={{
+                                        position: "sticky",
+                                        top: -1,
+                                        ...animate
+                                    }} ref={subHeaderRef}>
+                                        <ListSubheader>
+                                            {
+                                                nowDepartmentNode.title
+                                            }
+                                        </ListSubheader>
+                                    </animated.div>
+                                }
+                            >
+                                {
+                                    function () {
+                                        console.log(nowDepartmentNode.Members)
+                                        if (nowDepartmentNode.Members) {
+                                            return (
+                                                <Box>
+                                                    <ListItem
+                                                        button
+                                                        key={23232}
+                                                    >
+                                                        <ListItemAvatar>
                                                             <AddCircleIcon style={{
-                                                                color:theme.palette.primary.main,
-                                                                fontSize:'2rem'
-                                                            }} />
-                                                    </ListItemAvatar>
-                                                    <ListItemText classes={{
-                                                        primary: classes.addNewMember,
+                                                                color: theme.palette.primary.main,
+                                                                fontSize: '2rem'
+                                                            }}/>
+                                                        </ListItemAvatar>
+                                                        <ListItemText classes={{
+                                                            primary: classes.addNewMember,
 
-                                                    }} primary={'添加新员工'}/>
-                                                </ListItem>
-                                                {
-                                                    members.map((item, index) => {
-                                                        return (
-
+                                                        }} primary={'添加新员工'}/>
+                                                    </ListItem>
+                                                    {
+                                                        nowDepartmentNode.Members.map((item, index) => {
+                                                            return (
                                                                 <ListItem
                                                                     button
                                                                     key={index}
@@ -163,10 +154,10 @@ const Members_List = (props) => {
                                                                     onClick={() => handleListItemClick(index, item)}
                                                                 >
                                                                     <ListItemAvatar>
-                                                                        <Avatar src={item.data.AvatarUrl}/>
+                                                                        <Avatar src={item.AvatarUrl}/>
                                                                     </ListItemAvatar>
-                                                                    <ListItemText primary={item.data.Name}
-                                                                                  secondary={item.data.Career}/>
+                                                                    <ListItemText primary={item.Name}
+                                                                                  secondary={item.Career}/>
                                                                     <ListItemSecondaryAction>
                                                                         <IconButton
                                                                             className={classes.iconButton}
@@ -176,16 +167,21 @@ const Members_List = (props) => {
                                                                     </ListItemSecondaryAction>
                                                                 </ListItem>
 
-                                                        )
-                                                    })
-                                                }
-                                            </Box>
-                                        )
-                                    }
-                                }()
-                            }
-                        </List>
-                    </Box>
+                                                            )
+                                                        })
+                                                    }
+                                                </Box>
+                                            )
+                                        }
+                                    }()
+                                }
+                            </List>
+                        </Box>
+                    } else {
+                        return null
+                    }
+
+                }()
             }
         </Paper>
     );

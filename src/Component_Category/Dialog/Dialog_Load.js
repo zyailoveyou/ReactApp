@@ -35,8 +35,8 @@ const Dialog_Load = (props) => {
                 duration: 1000,
                 easing:t=>easeBounceOut(t),
             }})
-    return (
 
+    return (
         <Backdrop className={classes.backdrop} open={load} transitionDuration={{appear: 100, enter: 100, exit: 1500}}
         >
             {
@@ -49,7 +49,6 @@ const Dialog_Load = (props) => {
                     </animated.div>
             }
         </Backdrop>
-
     );
 };
 

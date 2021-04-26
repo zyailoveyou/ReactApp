@@ -19,7 +19,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import Logo_List from '../../../Image/Logo/Logo_Avatar.png'
 
 
-const menu =
+const menu2 =
 
     [
         {
@@ -447,7 +447,7 @@ const menu =
     ]
 
 
-export default menu;
+export default menu2;
 
 // export default withRouter(menu);
 

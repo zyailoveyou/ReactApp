@@ -23,30 +23,30 @@ const App = () => {
     console.log('render top')
     const [errorOpen, setErrorOpen] = useState(true)
     return (
-        // <CloudBase_Context.Provider value={Cloud_Base}>
-        //     <ThemeProvider theme={theme}>
-        //         <BrowserRouter>
-        //             <Switch>
-        //                 <Route path='/' exact component={Login_Page}/>
-        //                 <PrivateRoute path='/Main' component={Main_Page}/>
-        //                 <Route path='/Error' render={() => {
-        //                     return (
-        //                         <Error_Page
-        //                             type='error'
-        //                             title='非法操作'
-        //                             content='请先登录再进行操作'
-        //                             open={errorOpen}
-        //                             setOpen={setErrorOpen}
-        //                             disableBackdropClick={true}
-        //                         />
-        //                     )
-        //                 }}/>
-        //             </Switch>
-        //         </BrowserRouter>
-        //     </ThemeProvider>
-        // </CloudBase_Context.Provider>
+        <CloudBase_Context.Provider value={Cloud_Base}>
+            <ThemeProvider theme={theme}>
+                <BrowserRouter>
+                    <Switch>
+                        <Route path='/' exact component={Login_Page}/>
+                        <PrivateRoute path='/Main' component={Main_Page}/>
+                        <Route path='/Error' render={() => {
+                            return (
+                                <Error_Page
+                                    type='error'
+                                    title='非法操作'
+                                    content='请先登录再进行操作'
+                                    open={errorOpen}
+                                    setOpen={setErrorOpen}
+                                    disableBackdropClick={true}
+                                />
+                            )
+                        }}/>
+                    </Switch>
+                </BrowserRouter>
+            </ThemeProvider>
+        </CloudBase_Context.Provider>
         // <div>123123</div>
-        <Myco3 />
+        // <Myco3 />
         // <Myco/>
     );
 }

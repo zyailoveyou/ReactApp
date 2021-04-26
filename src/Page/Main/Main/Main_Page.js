@@ -7,7 +7,7 @@ import User_Page from "../User_Manager/User_Page";
 import Department_Page from "../Corporation_Manager/Department/Department_Page";
 import Corporation_Page from "../Corporation_Manager/Corporation_Page";
 import List_Component from "../../../Component_Category/Menu_List/List_Component";
-import menu from "../../../Component_Category/Menu_List/Data/Menu";
+import menu2 from "../../../Component_Category/Menu_List/Data/menu";
 import Attendance_Page from "../Approval_Manager/Attendance_Page";
 
 import App_Bar from "../../../Component_Category/App_Bar/App_Bar";
@@ -136,7 +136,7 @@ const Main_Page = () => {
                 }}>
                     <Grid item xs={2}>
                         <Box className={classes.fill_in}>
-                            <List_Component menu={menu} left={2} Accordion={true}/>
+                            <List_Component menu={menu2} left={2} Accordion={true}/>
                         </Box>
                     </Grid>
                     <Grid item xs={10}>

@@ -74,7 +74,7 @@ const useStyles = makeStyles({
         flexDirection: "column",
         alignItems: "center",
         borderRadius: '1rem',
-        width: '40vh'
+        width: 300
     }
 });
 

@@ -172,7 +172,7 @@ const Scheduler_Component = (props) => {
                     [...copy_data.dateGroup,
                         {
                             id: startingAddedId,
-                            department: userData.department,
+                            department: userData.Department,
                             startDateStamp: added.startDate.getTime(),
                             endDateStamp: added.endDate.getTime(),
                             Uid:userData.Uid,

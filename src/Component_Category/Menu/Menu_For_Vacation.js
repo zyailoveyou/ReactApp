@@ -10,27 +10,24 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
+import Button from '@material-ui/core/Button';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import theme from "../../MyTheme/Theme";
 
 
 const useStyles = makeStyles({
-    Dialog: {
-        borderRadius: '1rem !important',
-        overflow: 'hidden !important',
+
+    Icon: {
+        minWidth:0,
+        marginRight:5,
+
     },
-    Dialog_Content: {
-        overflow: "hidden !important",
-    },
-    Button: {
-        outline: "none !important",
-        borderRadius: '2rem'
-    },
-    Input_Text: {
-        fontSize: '1.4rem',
-    },
-    Step_Content: {
-        overflow: "hidden",
-        // position:"relative"
-    },
+
+    MenuList:{
+        paddingBottom:0,
+        paddingTop:0,
+    }
 })
 
 const Menu_For_Vacation = () => {
@@ -40,12 +37,7 @@ const Menu_For_Vacation = () => {
     const [selectedIndex, setSelectedIndex] = React.useState(1);
 
 
-    const options = [
-        'Show some love to Material-UI',
-        'Show all notification content',
-        'Hide sensitive notification content',
-        'Hide all notification content',
-    ];
+
 
     const handleClickListItem = (event) => {
         console.log(event.currentTarget)
@@ -65,42 +57,92 @@ const Menu_For_Vacation = () => {
 
 
     return (
-        <Box>
-            <List component="nav" aria-label="Device settings">
-                <ListItem
-                    button
-                    aria-haspopup="true"
-                    aria-controls="lock-menu"
-                    aria-label="when device is locked"
-                    onClick={handleClickListItem}
-                >
-                    <ListItemText primary="When device is locked" secondary={options[selectedIndex]} />
-                </ListItem>
-            </List>
+        <Box style={{
+            width:'100%'
+
+        }}>{
+            function () {
+                switch (selectedIndex) {
+                    case 0 :
+                        return (
+                            <Button
+                                onClick={handleClickListItem}
+                                color="primary"
+                                variant="contained"
+                                size={"medium"}
+
+                                style={{
+                                    background:theme.palette.error.main,
+                                    color:theme.palette.primary.contrastText
+                                }}
+                            >拒绝
+                            </Button>
+                        )
+                    case 1:
+                        return (
+                            <Button
+                                onClick={handleClickListItem}
+                                color="primary"
+                                variant="contained"
+                                size={"medium"}
+
+                                style={{
+                                    background:theme.palette.success.main,
+                                    color:theme.palette.primary.contrastText
+                                }}
+                            >同意
+                            </Button>
+                        )
+
+                }
+            }()
+        }
+
             <Menu
                 id="lock-menu"
                 anchorEl={anchorEl}
                 keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
+                getContentAnchorEl={null}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                classes={{
+                    list:classes.MenuList
+                }}
             >
-                {options.map((option, index) => (
                     <MenuItem
-                        key={option}
-                        id={123+index}
-                        disabled={index === 0}
-                        selected={index === selectedIndex}
-                        onClick={(event) => handleMenuItemClick(event, index)}
-                        value = {option}
-                    >
-                        <ListItemIcon>
-                            <SendIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary={option}/>
-                    </MenuItem>
-                ))}
-            </Menu>
+                        selected={1 === selectedIndex}
+                        onClick={(event) => handleMenuItemClick(event, 1)}
+                        value = {'同意'}
+                        style={{
+                            background:theme.palette.success.main,
 
+                        }}
+                    >
+                        <ListItemText primary={'同意'} style={{
+                            color:theme.palette.primary.contrastText,
+                        }}/>
+                    </MenuItem>
+                <MenuItem
+                    selected={0 === selectedIndex}
+                    onClick={(event) => handleMenuItemClick(event, 0)}
+                    value = {'拒绝'}
+                    style={{
+                        background:theme.palette.error.main
+                    }}
+                >
+                    <ListItemText primary={'拒绝'} style={{
+                        color:theme.palette.primary.contrastText,
+                    }}/>
+                </MenuItem>
+            </Menu>
         </Box>
     );
 };

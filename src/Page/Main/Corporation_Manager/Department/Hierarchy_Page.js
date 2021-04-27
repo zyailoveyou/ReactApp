@@ -187,12 +187,12 @@ const Hierarchy_Page = () => {
                                     <Grid item xs={5}>
                                         <Grid container spacing={2}>
                                             <Grid item xs={12} style={{
-                                                height: 500,
+                                                height: '60vh',
                                             }}>
                                                 <Members_List/>
                                             </Grid>
                                             <Grid item xs={12} style={{
-                                                height: 300
+                                                height: '40vh'
                                             }}>
                                                 <Authority_List
                                                     loadAuthorityList={loadAuthorityList}

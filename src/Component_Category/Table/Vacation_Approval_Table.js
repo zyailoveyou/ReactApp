@@ -25,6 +25,7 @@ import theme from "../../MyTheme/Theme";
 import Department_Select_For_Members_Summary_Table from "../Input/Department_Select_For_Members_Summary_Table";
 import Dialog_Load from "../Dialog/Dialog_Load";
 import User_Rows_Context from "../../Context/Context_Info/User_Rows_Context";
+import Menu_For_Vacation from "../Menu/Menu_For_Vacation";
 
 
 
@@ -75,20 +76,14 @@ const columns = [
 const selectCell = (props) => {
     const {column, value, row,children} = props;
     console.log(row)
+    console.log(children)
+    console.log(value)
     return (
         function () {
             if (column.name === 'handler') {
                 return (
                     <Table.Cell {...props} >
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            size={"medium"}
-                            fullWidth={true}
-                            style={{
-                                background:theme.palette.success.main
-                            }}
-                        >同意</Button>
+                        <Menu_For_Vacation />
                     </Table.Cell>
                 )
             } else {
@@ -277,14 +272,21 @@ const Vacation_Approval_Table = (props) => {
     }
 
 
-    const getInitialData = () => {
+     const getInitialData = async () => {
         setLoading(true)
         const _ = CloudBase.db.command;
-        CloudBase.db.collection("Appointments").limit(1000).get().then((res) => {
-            console.log(res.data)
-            setUserRows(res.data)
-            setLoading(false)
-        });
+        // CloudBase.db.collection("Appointments").limit(1000).get().then((res) => {
+        //     console.log(res.data)
+        //     setUserRows(res.data)
+        //     setLoading(false)
+        // });
+
+        const res = await CloudBase.db.collection("User").where({
+            Uid:"0a9f3a1c41a244079a0f79e1076d6d22"
+        }).get()
+
+         console.log(res.data)
+         console.log(res.data[0].Authority)
     }
 
     useEffect(()=>{

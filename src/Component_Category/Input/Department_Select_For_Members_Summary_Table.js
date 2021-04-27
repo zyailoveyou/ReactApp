@@ -29,6 +29,7 @@ const Department_Select_For_Members_Summary_Table = (props) => {
         Data_Set_Name,
         flatTree,
         row
+
     } = props
 
     const {userRows, setUserRows} = useContext(User_Rows_Context)

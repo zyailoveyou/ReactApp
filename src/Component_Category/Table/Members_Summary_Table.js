@@ -149,6 +149,8 @@ const CustomToolBar = (
 const selectCell = (props) => {
     const {column, value, row,children} = props;
     console.log(row)
+    console.log(children)
+    console.log(value)
     return (
         function () {
             if (column.name === 'department') {
@@ -184,7 +186,7 @@ const Members_Summary_Table = (props) => {
     const [pageSize, setPageSize] = useState(5);
     const [pageSizes] = useState([5, 10, 15]);
     const [loading, setLoading] = useState(false)
-    const [filters, setFilters] = useState([{columnName: 'owner', value: 'D'}]);
+    const [filters, setFilters] = useState([]);
     const [userRows, setUserRows] = useState([])
     const [send, setSend] = useState(false)
     const exporterRef = useRef(null);
